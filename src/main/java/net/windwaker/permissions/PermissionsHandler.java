@@ -21,6 +21,8 @@ package net.windwaker.permissions;
 import net.windwaker.permissions.api.GroupManager;
 import net.windwaker.permissions.api.Permissions;
 import net.windwaker.permissions.api.UserManager;
+import net.windwaker.permissions.api.permissible.Permissible;
+import net.windwaker.permissions.api.permissible.User;
 
 import org.spout.api.event.EventHandler;
 import org.spout.api.event.Listener;
@@ -29,28 +31,35 @@ import org.spout.api.event.Result;
 import org.spout.api.event.server.permissions.PermissionGetGroupsEvent;
 import org.spout.api.event.server.permissions.PermissionGroupEvent;
 import org.spout.api.event.server.permissions.PermissionNodeEvent;
-import org.spout.api.permissions.PermissionsSubject;
 
 /**
  * @author Windwaker
  */
 public class PermissionsHandler implements Listener {
 
-	private final GroupManager groupManager = Permissions.getGroupManager();
 	private final UserManager userManager = Permissions.getUserManager();
+	private final GroupManager groupManager = Permissions.getGroupManager();
 	
 	@EventHandler(order = Order.EARLIEST)
 	public void onGroupsGet(PermissionGetGroupsEvent event) {
-		PermissionsSubject subject = event.getSubject();
-		String[] group = {userManager.getUser(subject.getName()).getGroup().getName()};
+		User user = userManager.getUser(event.getSubject().getName());
+		if (user == null) {
+			return;
+		}
+		
+		String[] group = {user.getGroup().getName()};
 		event.setGroups(group);
 	}
 
 	@EventHandler(order = Order.EARLIEST)
 	public void onGroupCheck(PermissionGroupEvent event) {
-		PermissionsSubject subject = event.getSubject();
+		User user = userManager.getUser(event.getSubject().getName());
+		if (user == null) {
+			return;
+		}
+		
 		String name = event.getGroup();
-		if (userManager.getUser(subject.getName()).getGroup().getName().equalsIgnoreCase(name)) {
+		if (user.getGroup().getName().equalsIgnoreCase(name)) {
 			event.setResult(true);
 		} else {
 			event.setResult(false);
@@ -59,8 +68,17 @@ public class PermissionsHandler implements Listener {
 
 	@EventHandler(order = Order.EARLIEST)
 	public void onNodeCheck(PermissionNodeEvent event) {
-		PermissionsSubject subject = event.getSubject();
-		if (userManager.getUser(subject.getName()).hasPermission(event.getNode())) {
+		String name = event.getSubject().getName();
+		Permissible subject = userManager.getUser(name);
+		if (subject == null) {
+			subject = groupManager.getGroup(name);
+		}
+		
+		if (subject == null) {
+			return;
+		}
+		
+		if (subject.hasPermission(event.getNode())) {
 			event.setResult(Result.ALLOW);
 		} else {
 			event.setResult(Result.DENY);
