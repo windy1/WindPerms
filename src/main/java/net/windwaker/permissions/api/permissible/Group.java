@@ -24,7 +24,7 @@ import java.util.Set;
 /**
  * @author Windwaker
  */
-public class Group implements Permissible, MetadataSubject {
+public class Group implements Permissible {
 
 	private final String name;
 	private Set<Group> inherited;
@@ -41,6 +41,7 @@ public class Group implements Permissible, MetadataSubject {
 	 *
 	 * @return
 	 */
+	@Override
 	public String getName() {
 		return name;
 	}

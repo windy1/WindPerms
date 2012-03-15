@@ -24,7 +24,7 @@ import java.util.Map;
 /**
  * @author Windwaker
  */
-public class User implements Permissible, MetadataSubject {
+public class User implements Permissible {
 
 	private final String name;
 	private Group group;
@@ -40,6 +40,7 @@ public class User implements Permissible, MetadataSubject {
 	 *
 	 * @return username
 	 */
+	@Override
 	public String getName() {
 		return name;
 	}

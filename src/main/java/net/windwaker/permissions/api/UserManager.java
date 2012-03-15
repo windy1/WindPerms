@@ -18,7 +18,6 @@
  */
 package net.windwaker.permissions.api;
 
-import net.windwaker.permissions.api.permissible.MetadataSubject;
 import net.windwaker.permissions.api.permissible.User;
 
 import java.util.Set;
@@ -26,7 +25,7 @@ import java.util.Set;
 /**
  * @author Windwaker
  */
-public interface UserManager extends MetadataSubject {
+public interface UserManager {
 
 	/**
 	 * Adds a user

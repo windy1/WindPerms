@@ -19,7 +19,6 @@
 package net.windwaker.permissions.api;
 
 import net.windwaker.permissions.api.permissible.Group;
-import net.windwaker.permissions.api.permissible.MetadataSubject;
 
 import java.util.Set;
 
@@ -27,7 +26,7 @@ import java.util.Set;
  *
  * @author Windwaker
  */
-public interface GroupManager extends MetadataSubject {
+public interface GroupManager {
 
 	/**
 	 * Adds a group

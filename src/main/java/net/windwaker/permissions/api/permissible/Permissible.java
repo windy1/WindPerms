@@ -65,8 +65,24 @@ public interface Permissible {
 	/**
 	 * Whether or not the subject can build.
 	 *
-	 * @return
+	 * @return true if subject can build.
 	 */
 	public boolean canBuild();
+	
+	/**
+	 * Sets a metadata value to the subject.
+	 * 
+	 * @param unique identifier 
+	 * @param value
+	 */
+	//public void setMetadata(String identifier, DataValue value);
+	
+	/**
+	 * Gets a metadata value from the subject via a unique identifier.
+	 * 
+	 * @param identifier
+	 * @return value
+	 */
+	//public DataValue getMetadata(String identifier);
 
 }
