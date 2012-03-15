@@ -40,6 +40,7 @@ public class SimpleUserManager implements UserManager {
 
 	@Override
 	public void addUser(String username) {
+		users.add(new User(username));
 		String path = "users." + username;
 		data.setValue(path + ".group", "default");
 		data.setValue(path + ".permissions.foo", false);
@@ -52,12 +53,12 @@ public class SimpleUserManager implements UserManager {
 
 	@Override
 	public void removeUser(String username) {
-		// TODO: Remove users
+		data.setValue("users." + username, null);
+		data.save();
 	}
 
 	@Override
 	public User getUser(String name) {
-		Set<User> users = getUsers();
 		for (User user : users) {
 			if (user.getName().equals(name)) {
 				return user;
@@ -69,11 +70,6 @@ public class SimpleUserManager implements UserManager {
 
 	@Override
 	public Set<User> getUsers() {
-		Set<String> names = data.getKeys("users");
-		for (String name : names) {
-			users.add(new User(name));
-		}
-
 		return users;
 	}
 }

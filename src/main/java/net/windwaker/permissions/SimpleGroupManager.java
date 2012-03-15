@@ -41,6 +41,7 @@ public class SimpleGroupManager implements GroupManager {
 	
 	@Override
 	public void addGroup(String name) {
+		groups.add(new Group(name));
 		String path = "groups." + name;
 		data.setValue(path + ".inherited.admin", false);
 		data.setValue(path + ".default", false);
@@ -52,12 +53,12 @@ public class SimpleGroupManager implements GroupManager {
 
 	@Override
 	public void removeGroup(String name) {
-		// TODO: Remove groups!
+		data.setValue("groups." + name, null);
+		data.save();
 	}
 
 	@Override
 	public Group getGroup(String name) {
-		Set<Group> groups = getGroups();
 		for (Group group : groups) {
 			if (group.getName().equals(name)) {
 				return group;
@@ -69,11 +70,6 @@ public class SimpleGroupManager implements GroupManager {
 	
 	@Override
 	public Set<Group> getGroups() {
-		Set<String> names = data.getKeys("groups");
-		for (String name : names) {
-			groups.add(new Group(name));
-		}
-
 		return groups;
 	}
 }

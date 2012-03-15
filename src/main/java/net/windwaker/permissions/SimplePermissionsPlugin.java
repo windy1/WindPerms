@@ -19,6 +19,7 @@
 package net.windwaker.permissions;
 
 import net.windwaker.permissions.api.GroupManager;
+import net.windwaker.permissions.api.Permissions;
 import net.windwaker.permissions.api.PermissionsPlugin;
 import net.windwaker.permissions.api.UserManager;
 import org.spout.api.plugin.CommonPlugin;
@@ -40,6 +41,9 @@ public class SimplePermissionsPlugin extends CommonPlugin implements Permissions
 	
 	@Override
 	public void onEnable() {
+		Permissions.setPlugin(this);
+		SimpleGroupManager.init();
+		SimpleUserManager.init();
 		logger.info("Permissions v" + getDescription().getVersion() + " enabled!");
 	}
 

@@ -18,8 +18,6 @@
  */
 package net.windwaker.permissions.api.permissible;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -35,27 +33,7 @@ public class Group implements Permissible, MetadataSubject {
 	private Map<String, Boolean> permissions;
 
 	public Group(String name) {
-		this(name, null);
-	}
-	
-	public Group(String name, Set<Group> inherited) {
-		this(name, inherited, false);
-	}
-	
-	public Group(String name, Set<Group> inherited, boolean def) {
-		this(name, inherited, def, true);
-	}
-	
-	public Group(String name, Set<Group> inherited, boolean def, boolean canBuild) {
-		this(name, inherited, def, canBuild, null);
-	}
-	
-	public Group(String name, Set<Group> inherited, boolean def, boolean canBuild, Map<String, Boolean> permissions) {
 		this.name = name;
-		this.inherited = inherited;
-		this.def = def;
-		this.canBuild = canBuild;
-		this.permissions = permissions;
 	}
 
 	/**

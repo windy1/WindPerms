@@ -32,22 +32,7 @@ public class User implements Permissible, MetadataSubject {
 	private boolean canBuild = false;
 	
 	public User(String name) {
-		this(name, null, null, true);
-	}
-	
-	public User(String name, Group group) {
-		this(name, group, null, true);
-	}
-	
-	public User(String name, Group group, Map<String, Boolean> permissions) {
-		this(name, group, permissions, true);
-	}
-	
-	public User(String name, Group group, Map<String, Boolean> permissions, boolean canBuild) {
 		this.name = name;
-		this.group = group;
-		this.permissions = permissions;
-		this.canBuild = canBuild;
 	}
 
 	/**
