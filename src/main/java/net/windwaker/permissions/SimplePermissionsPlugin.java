@@ -18,6 +18,7 @@
  */
 package net.windwaker.permissions;
 
+import net.windwaker.permissions.command.GroupCommand;
 import net.windwaker.permissions.data.SimpleUserManager;
 import net.windwaker.permissions.data.SimpleGroupManager;
 import net.windwaker.permissions.api.GroupManager;

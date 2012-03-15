@@ -16,7 +16,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package net.windwaker.permissions;
+package net.windwaker.permissions.command;
 
 import net.windwaker.permissions.api.GroupManager;
 import net.windwaker.permissions.api.Permissions;
@@ -26,6 +26,7 @@ import org.spout.api.ChatColor;
 import org.spout.api.command.CommandContext;
 import org.spout.api.command.CommandSource;
 import org.spout.api.command.annotated.Command;
+import org.spout.api.command.annotated.CommandPermissions;
 import org.spout.api.data.DataValue;
 import org.spout.api.exception.CommandException;
 
@@ -37,11 +38,12 @@ public class GroupCommand {
 	
 	private final GroupManager groupManager = Permissions.getGroupManager();
 	
-	@Command(aliases = {"group", "gr"}, desc = "Modifies a group", usage = "<info|set> [inherit|default|perm|canBuild|data] <group> [bool:canBuild|bool:default|group|perm|identifier] [bool:inherit|bool:permState|object:data]")
+	@Command(aliases = {"group", "gr"}, desc = "Modifies a group", usage = "<info|set> [inherit|default|perm|canBuild|data] <group> [bool:canBuild|bool:default|group|perm|identifier] [bool:inherit|bool:permState|object:data]", min = 2, max = 5)
+	@CommandPermissions("permissions.command.group")
 	public void group(CommandContext args, CommandSource source) throws CommandException {
 		if (args.length() == 2) {
 			if (args.getString(0).equalsIgnoreCase("info")) {					
-				printGroupInfo(source, args.getString(1));
+				printInfo(source, args.getString(1));
 			}
 		}
 		
@@ -68,21 +70,20 @@ public class GroupCommand {
 				}
 				
 				if (args.getString(1).equalsIgnoreCase("data")) {
-					
+					setData(source, args.getString(2), args.getString(3), args.getString(4));
 				}
 			}
 		}
 	}
 	
-	private void printGroupInfo(CommandSource source, String name) throws CommandException {
+	private void printInfo(CommandSource source, String name) throws CommandException {
 		Group group = groupManager.getGroup(name);
 		if (group == null) {
 			throw new CommandException(name + " doesn't exist!");
 		}
 		
 		source.sendMessage(ChatColor.BRIGHT_GREEN + "----------" + ChatColor.WHITE + " [" + ChatColor.CYAN + group.getName() + ChatColor.WHITE 
-				+ "] " + ChatColor.BRIGHT_GREEN + "----------");
-		source.sendMessage(ChatColor.BRIGHT_GREEN + "- Name: " + ChatColor.CYAN + group.getName());
+		+ "] " + ChatColor.BRIGHT_GREEN + "----------");
 		source.sendMessage(ChatColor.BRIGHT_GREEN + "- Default: " + ChatColor.CYAN + group.isDefault());
 		source.sendMessage(ChatColor.BRIGHT_GREEN + "- Can Build: " + ChatColor.CYAN + group.canBuild());
 	}
