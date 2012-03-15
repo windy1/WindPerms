@@ -34,8 +34,8 @@ public class SimpleGroupManager implements GroupManager {
 
 	private final Configuration data = new Configuration(new File("plugins/Permissions/groups.yml"));
 	private final Set<Group> groups = new HashSet<Group>();
-	
-	public SimpleGroupManager() {
+
+	public void load() {
 		data.load();
 		Set<String> names = data.getKeys("groups");
 		for (String name :  names) {

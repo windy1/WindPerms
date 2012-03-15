@@ -53,6 +53,10 @@ public class SimplePermissionsPlugin extends CommonPlugin implements Permissions
 		
 		// Set plugin of platform
 		Permissions.setPlugin(this);
+
+		// Load data
+		groupManager.load();
+		userManager.load();
 		
 		// Register events
 		Spout.getEventManager().registerEvents(new PermissionsHandler(), this);
