@@ -16,7 +16,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package net.windwaker.permissions;
+package net.windwaker.permissions.data;
 
 import net.windwaker.permissions.api.UserManager;
 import net.windwaker.permissions.api.permissible.User;
@@ -34,7 +34,7 @@ public class SimpleUserManager implements UserManager {
 	private static final Configuration data = new Configuration(new File("plugins/Permissions/users.yml"));
 	private final Set<User> users = new HashSet<User>();
 
-	protected SimpleUserManager() {
+	public SimpleUserManager() {
 		data.load();
 		Set<String> names = data.getKeys("users");
 		for (String name : names) {

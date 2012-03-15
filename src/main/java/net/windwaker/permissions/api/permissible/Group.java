@@ -30,9 +30,9 @@ import org.spout.api.data.DataValue;
 public class Group implements Permissible {
 
 	private final String name;
-	private Set<Group> inherited = new HashSet<Group>();
 	private boolean def = false;
 	private boolean canBuild = true;
+	private Map<Group, Boolean> inherited = new HashMap<Group, Boolean>();
 	private Map<String, Boolean> permissions = new HashMap<String, Boolean>();
 	private Map<String, DataValue> data = new HashMap<String, DataValue>();
 
@@ -47,7 +47,7 @@ public class Group implements Permissible {
 
 	@Override
 	public String toString() {
-		return name;
+		return "PermissionsGroup{name=" + name + ",default=" + def + ",canBuild=" + canBuild + "}";
 	}
 
 	/**
@@ -55,7 +55,7 @@ public class Group implements Permissible {
 	 *
 	 * @return inherited groups.
 	 */
-	public Set<Group> getInheritedGroups() {
+	public Map<Group, Boolean> getInheritedGroups() {
 		return inherited;
 	}
 
@@ -64,8 +64,8 @@ public class Group implements Permissible {
 	 *
 	 * @param group
 	 */
-	public void addInheritedGroup(Group group) {
-		inherited.add(group);
+	public void setInheritedGroup(Group group, boolean inherit) {
+		inherited.put(group, inherit);
 	}
 
 	/**

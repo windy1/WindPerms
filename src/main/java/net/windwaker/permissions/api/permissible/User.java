@@ -41,6 +41,11 @@ public class User implements Permissible {
 	public String getName() {
 		return name;
 	}
+	
+	@Override
+	public String toString() {
+		return "PermissionsUser{name=" + name + ",group=" + group + ",canBuild=" + canBuild + "}";
+	}
 
 	/**
 	 * Sets the user's group

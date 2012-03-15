@@ -16,7 +16,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package net.windwaker.permissions;
+package net.windwaker.permissions.data;
 
 import net.windwaker.permissions.api.GroupManager;
 import net.windwaker.permissions.api.permissible.Group;
@@ -35,7 +35,7 @@ public class SimpleGroupManager implements GroupManager {
 	private final Configuration data = new Configuration(new File("plugins/Permissions/groups.yml"));
 	private final Set<Group> groups = new HashSet<Group>();
 	
-	protected SimpleGroupManager() {
+	public SimpleGroupManager() {
 		data.load();
 		Set<String> names = data.getKeys("groups");
 		for (String name :  names) {

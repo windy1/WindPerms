@@ -18,10 +18,18 @@
  */
 package net.windwaker.permissions;
 
+import net.windwaker.permissions.data.SimpleUserManager;
+import net.windwaker.permissions.data.SimpleGroupManager;
 import net.windwaker.permissions.api.GroupManager;
 import net.windwaker.permissions.api.Permissions;
 import net.windwaker.permissions.api.PermissionsPlugin;
 import net.windwaker.permissions.api.UserManager;
+
+import org.spout.api.Spout;
+import org.spout.api.command.CommandRegistrationsFactory;
+import org.spout.api.command.annotated.AnnotatedCommandRegistrationFactory;
+import org.spout.api.command.annotated.SimpleAnnotatedCommandExecutorFactory;
+import org.spout.api.command.annotated.SimpleInjector;
 import org.spout.api.plugin.CommonPlugin;
 
 /**
@@ -41,7 +49,18 @@ public class SimplePermissionsPlugin extends CommonPlugin implements Permissions
 	
 	@Override
 	public void onEnable() {
+		
+		// Set plugin of platform
 		Permissions.setPlugin(this);
+		
+		// Register events
+		Spout.getEventManager().registerEvents(new PermissionsHandler(), this);
+		
+		// Register commands
+		CommandRegistrationsFactory<Class<?>> commandRegFactory = new AnnotatedCommandRegistrationFactory(new SimpleInjector(), new SimpleAnnotatedCommandExecutorFactory());
+		getGame().getRootCommand().addSubCommands(this, GroupCommand.class, commandRegFactory);
+		
+		// Hello world!
 		logger.info("Permissions v" + getDescription().getVersion() + " enabled!");
 	}
 
