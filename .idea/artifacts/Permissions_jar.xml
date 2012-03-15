@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="Permissions:jar">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="Permissions.jar">
+      <element id="module-output" name="Permissions" />
+    </root>
+  </artifact>
+</component>

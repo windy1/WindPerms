@@ -1,0 +1,7 @@
+name: Permissions
+version: "dev-SNAPSHOT"
+description: Permissions is a plugin for the Spout server that provides Permissible player actions for other plugins.
+author: Windwaker
+website: http://github.com/WalkerCrouse/Permissions
+main: net.windwaker.permissions.SimplePermissionsPlugin
+platform: BOTH
