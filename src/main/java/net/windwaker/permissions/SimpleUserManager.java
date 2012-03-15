@@ -34,8 +34,12 @@ public class SimpleUserManager implements UserManager {
 	private static final Configuration data = new Configuration(new File("plugins/Permissions/users.yml"));
 	private final Set<User> users = new HashSet<User>();
 
-	public static void init() {
+	protected SimpleUserManager() {
 		data.load();
+		Set<String> names = data.getKeys("users");
+		for (String name : names) {
+			users.add(new User(name));
+		}
 	}
 
 	@Override

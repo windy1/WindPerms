@@ -29,20 +29,40 @@ public class Permissions {
 
 	}
 
+	/**
+	 * Sets the PermissionsPlugin of the Permissions platform.
+	 * 
+	 * @param plugin 
+	 */
 	public static void setPlugin(PermissionsPlugin plugin) {
 		if (instance == null) {
 			instance = plugin;
 		}
 	}
 
+	/**
+	 * Gets the PermissionsPlugin associated with Permissions.
+	 * 
+	 * @return PermissionsPlugin
+	 */
 	public static PermissionsPlugin getPlugin() {
 		return instance;
 	}
 
+	/**
+	 * Gets the GroupManager associated with Permissions.
+	 * 
+	 * @return GroupManager
+	 */
 	public static GroupManager getGroupManager() {
 		return instance.getGroupManager();
 	}
 
+	/**
+	 * Gets the UserManager associated with Permissions.
+	 * 
+	 * @return UserManager
+	 */
 	public static UserManager getUserManager() {
 		return instance.getUserManager();
 	}

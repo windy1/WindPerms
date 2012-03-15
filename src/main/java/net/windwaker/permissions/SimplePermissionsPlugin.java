@@ -42,8 +42,6 @@ public class SimplePermissionsPlugin extends CommonPlugin implements Permissions
 	@Override
 	public void onEnable() {
 		Permissions.setPlugin(this);
-		SimpleGroupManager.init();
-		SimpleUserManager.init();
 		logger.info("Permissions v" + getDescription().getVersion() + " enabled!");
 	}
 

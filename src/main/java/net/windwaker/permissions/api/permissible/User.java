@@ -37,11 +37,6 @@ public class User implements Permissible {
 		this.name = name;
 	}
 
-	/**
-	 * Gets the name of the user
-	 *
-	 * @return username
-	 */
 	@Override
 	public String getName() {
 		return name;

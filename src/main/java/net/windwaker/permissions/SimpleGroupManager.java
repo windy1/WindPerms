@@ -32,11 +32,15 @@ import java.util.Set;
  */
 public class SimpleGroupManager implements GroupManager {
 
-	private static final Configuration data = new Configuration(new File("plugins/Permissions/groups.yml"));
+	private final Configuration data = new Configuration(new File("plugins/Permissions/groups.yml"));
 	private final Set<Group> groups = new HashSet<Group>();
 	
-	public static void init() {
+	protected SimpleGroupManager() {
 		data.load();
+		Set<String> names = data.getKeys("groups");
+		for (String name :  names) {
+			groups.add(new Group(name));
+		}
 	}
 	
 	@Override

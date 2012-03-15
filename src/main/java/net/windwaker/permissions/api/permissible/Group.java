@@ -40,11 +40,6 @@ public class Group implements Permissible {
 		this.name = name;
 	}
 
-	/**
-	 * Gets the name of this group.
-	 *
-	 * @return
-	 */
 	@Override
 	public String getName() {
 		return name;
