@@ -29,7 +29,6 @@ import org.spout.api.command.CommandContext;
 import org.spout.api.command.CommandSource;
 import org.spout.api.command.annotated.Command;
 import org.spout.api.command.annotated.CommandPermissions;
-import org.spout.api.data.DataValue;
 import org.spout.api.exception.CommandException;
 
 /**
@@ -58,6 +57,10 @@ public class UserCommand {
 				userManager.removeUser(args.getString(1));
 				source.sendMessage(ChatColor.BRIGHT_GREEN + "Removed user " + args.getString(1));
 			}
+		}
+
+		if (args.length() == 3) {
+			throw new CommandException("Check your arguments count!");
 		}
 		
 		if (args.length() == 4) {
@@ -150,7 +153,7 @@ public class UserCommand {
 			throw new CommandException(username + " does not exist!");
 		}
 		
-		user.setMetadata(identifier, new DataValue(value));
+		//user.setMetadata(identifier, new DataValue(value));
 		source.sendMessage(ChatColor.BRIGHT_GREEN + username + ": Set " + identifier + " to " + value);
 	}
 }

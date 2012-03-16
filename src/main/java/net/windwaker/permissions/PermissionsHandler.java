@@ -28,7 +28,6 @@ import org.spout.api.event.EventHandler;
 import org.spout.api.event.Listener;
 import org.spout.api.event.Order;
 import org.spout.api.event.Result;
-import org.spout.api.event.block.BlockChangeEvent;
 import org.spout.api.event.server.data.RetrieveDataEvent;
 import org.spout.api.event.server.permissions.PermissionGetGroupsEvent;
 import org.spout.api.event.server.permissions.PermissionGroupEvent;
@@ -89,6 +88,7 @@ public class PermissionsHandler implements Listener {
 		}
 	}
 
+	/*
 	@EventHandler(order = Order.EARLIEST)
 	public void onDataCheck(RetrieveDataEvent event) {
 		String name = event.getSubject().getName();
@@ -102,8 +102,9 @@ public class PermissionsHandler implements Listener {
 		}
 		
 		String node = event.getNode();
+
 		if (subject.getMetadata(node) != null) {
 			event.setResult(subject.getMetadata(node));
 		}
-	}
+	}*/
 }

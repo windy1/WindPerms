@@ -19,8 +19,6 @@
 package net.windwaker.permissions.api.permissible;
 
 import java.util.Map;
-import org.spout.api.data.DataValue;
-import org.spout.api.util.StringMap;
 
 /**
  * @author Windwaker
@@ -76,7 +74,7 @@ public interface Permissible {
 	 *
 	 * @return all data
 	 */
-	public Map<String, DataValue> getMetadata();
+	//public Map<String, DataValue> getMetadata();
 	
 	/**
 	 * Sets a metadata value to the subject.
@@ -84,7 +82,7 @@ public interface Permissible {
 	 * @param unique identifier 
 	 * @param value
 	 */
-	public void setMetadata(String identifier, DataValue value);
+	//public void setMetadata(String identifier, DataValue value);
 	
 	/**
 	 * Gets a metadata value from the subject via a unique identifier.
@@ -92,6 +90,6 @@ public interface Permissible {
 	 * @param identifier
 	 * @return value
 	 */
-	public DataValue getMetadata(String identifier);
+	//public DataValue getMetadata(String identifier);
 
 }

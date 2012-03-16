@@ -21,7 +21,6 @@ package net.windwaker.permissions.data;
 import net.windwaker.permissions.api.GroupManager;
 import net.windwaker.permissions.api.permissible.Group;
 
-import org.spout.api.data.DataValue;
 import org.spout.api.util.config.Configuration;
 
 import java.io.File;
@@ -40,6 +39,7 @@ public class SimpleGroupManager implements GroupManager {
 
 	public void load() {
 		data.load();
+		//data.setPathSeperator("/");
 		Set<String> names = data.getKeys("groups");
 		for (String name :  names) {
 			groups.add(new Group(name));
@@ -63,10 +63,11 @@ public class SimpleGroupManager implements GroupManager {
 		}
 
 		// Save data
+		/*
 		Set<Map.Entry<String, DataValue>> meta = group.getMetadata().entrySet();
 		for (Map.Entry<String, DataValue> d : meta) {
 			data.setValue(path + ".metadata." + d.getKey(), d.getValue());
-		}
+		}*/
 
 		// Save misc values
 		data.setValue(path + ".default", group.isDefault());

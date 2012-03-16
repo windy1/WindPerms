@@ -20,7 +20,6 @@ package net.windwaker.permissions.data;
 
 import net.windwaker.permissions.api.UserManager;
 import net.windwaker.permissions.api.permissible.User;
-import org.spout.api.data.DataValue;
 import org.spout.api.util.config.Configuration;
 
 import java.io.File;
@@ -55,13 +54,15 @@ public class SimpleUserManager implements UserManager {
 		}
 
 		// Save data
+		/*
 		Set<Map.Entry<String, DataValue>> meta = user.getMetadata().entrySet();
 		for (Map.Entry<String, DataValue> d : meta) {
 			data.setValue(path + ".metadata." + d.getKey(), d.getValue());
-		}
+		}*/
 
 		// Save misc values
-		data.setValue(path + ".group", user.getGroup().getName());
+		String groupName = user.getGroup() != null ? user.getGroup().getName() : "";
+		data.setValue(path + ".group", groupName);
 		data.setValue(path + ".build", user.canBuild());
 		data.save();
 	}

@@ -27,7 +27,6 @@ import org.spout.api.command.CommandContext;
 import org.spout.api.command.CommandSource;
 import org.spout.api.command.annotated.Command;
 import org.spout.api.command.annotated.CommandPermissions;
-import org.spout.api.data.DataValue;
 import org.spout.api.exception.CommandException;
 
 /**
@@ -55,6 +54,10 @@ public class GroupCommand {
 				groupManager.removeGroup(args.getString(1));
 				source.sendMessage(ChatColor.BRIGHT_GREEN + "Removed group " + args.getString(1));
 			}
+		}
+
+		if (args.length() == 3) {
+			throw new CommandException("Check your argument count!");
 		}
 		
 		if (args.length() == 4) {
@@ -172,7 +175,7 @@ public class GroupCommand {
 			throw new CommandException(groupName + " doesn't exist!");
 		}
 		
-		group.setMetadata(tag, new DataValue(object));
+		//group.setMetadata(tag, new DataValue(object));
 		source.sendMessage(ChatColor.BRIGHT_GREEN + group.getName() + ": Set " + tag + " to " + object);
 	}
 }

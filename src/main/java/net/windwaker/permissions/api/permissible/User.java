@@ -23,7 +23,6 @@ import java.util.Map;
 
 import net.windwaker.permissions.api.Permissions;
 import net.windwaker.permissions.api.UserManager;
-import org.spout.api.data.DataValue;
 
 /**
  * @author Windwaker
@@ -32,9 +31,9 @@ public class User implements Permissible {
 
 	private final UserManager userManager = Permissions.getUserManager();
 	private final String name;
-	private Group group = Permissions.getGroupManager().getGroup("Guest");
+	private Group group;
 	private Map<String, Boolean> permissions = new HashMap<String, Boolean>();
-	private Map<String, DataValue> data = new HashMap<String, DataValue>();
+	//private Map<String, DataValue> data = new HashMap<String, DataValue>();
 	private boolean canBuild = false;
 	
 	public User(String name) {
@@ -101,6 +100,7 @@ public class User implements Permissible {
 		return canBuild;
 	}
 
+	/*
 	@Override
 	public Map<String, DataValue> getMetadata() {
 		return data;
@@ -115,5 +115,5 @@ public class User implements Permissible {
 	@Override
 	public DataValue getMetadata(String identifier) {
 		return data.get(identifier);
-	}
+	}*/
 }

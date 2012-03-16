@@ -19,13 +19,10 @@
 package net.windwaker.permissions.api.permissible;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 import net.windwaker.permissions.api.GroupManager;
 import net.windwaker.permissions.api.Permissions;
-import org.spout.api.data.DataValue;
 
 /**
  * @author Windwaker
@@ -38,7 +35,7 @@ public class Group implements Permissible {
 	private boolean canBuild = true;
 	private Map<Group, Boolean> inherited = new HashMap<Group, Boolean>();
 	private Map<String, Boolean> permissions = new HashMap<String, Boolean>();
-	private Map<String, DataValue> data = new HashMap<String, DataValue>();
+	//private Map<String, DataValue> data = new HashMap<String, DataValue>();
 
 	public Group(String name) {
 		this.name = name;
@@ -123,7 +120,7 @@ public class Group implements Permissible {
 		return canBuild;
 	}
 
-	@Override
+	/*@Override
 	public Map<String, DataValue> getMetadata() {
 		return data;
 	}
@@ -136,5 +133,5 @@ public class Group implements Permissible {
 	@Override
 	public DataValue getMetadata(String identifier) {
 		return data.get(identifier);
-	}
+	}*/
 }
