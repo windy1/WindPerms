@@ -38,12 +38,22 @@ public class GroupCommand {
 	
 	private final GroupManager groupManager = Permissions.getGroupManager();
 	
-	@Command(aliases = {"group", "gr"}, desc = "Modifies a group", usage = "<info|set> [inherit|default|perm|canBuild|data] <group> [bool:canBuild|bool:default|group|perm|identifier] [bool:inherit|bool:permState|object:data]", min = 2, max = 5)
+	@Command(aliases = {"group", "gr"}, desc = "Modifies a group", usage = "<info|set|add|remove> [inherit|default|perm|canBuild|data] <group> [bool:canBuild|bool:default|group|perm|identifier] [bool:inherit|bool:permState|object:data]", min = 2, max = 5)
 	@CommandPermissions("permissions.command.group")
 	public void group(CommandContext args, CommandSource source) throws CommandException {
 		if (args.length() == 2) {
 			if (args.getString(0).equalsIgnoreCase("info")) {					
 				printInfo(source, args.getString(1));
+			}
+			
+			if (args.getString(0).equalsIgnoreCase("add")) {
+				groupManager.addGroup(args.getString(1));
+				source.sendMessage(ChatColor.BRIGHT_GREEN + "Added group " + args.getString(1));
+			}
+			
+			if (args.getString(0).equalsIgnoreCase("remove")) {
+				groupManager.removeGroup(args.getString(1));
+				source.sendMessage(ChatColor.BRIGHT_GREEN + "Removed group " + args.getString(1));
 			}
 		}
 		

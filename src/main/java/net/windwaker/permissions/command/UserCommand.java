@@ -29,6 +29,7 @@ import org.spout.api.command.CommandContext;
 import org.spout.api.command.CommandSource;
 import org.spout.api.command.annotated.Command;
 import org.spout.api.command.annotated.CommandPermissions;
+import org.spout.api.data.DataValue;
 import org.spout.api.exception.CommandException;
 
 /**
@@ -40,12 +41,22 @@ public class UserCommand {
 	private final UserManager userManager = Permissions.getUserManager();
 	private final GroupManager groupManager = Permissions.getGroupManager();
 	
-	@Command(aliases = {"user", "us"}, desc = "Modify Permissions users.", usage = "<info|set> [group|perm|canBuild|data] <user> [group:groupName|perm:node|bool:canBuild|identifier] [bool|object]")
+	@Command(aliases = {"user", "us"}, desc = "Modify Permissions users.", usage = "<info|set|add|remove> [group|perm|canBuild|data] <user> [group:groupName|perm:node|bool:canBuild|identifier] [bool|object]", min = 2, max = 5)
 	@CommandPermissions("permissions.command.user")
 	public void user(CommandContext args, CommandSource source) throws CommandException {
 		if (args.length() == 2) {
 			if (args.getString(0).equalsIgnoreCase("info")) {
 				printInfo(source, args.getString(1));
+			}
+			
+			if (args.getString(0).equalsIgnoreCase("add")) {
+				userManager.addUser(args.getString(1));
+				source.sendMessage(ChatColor.BRIGHT_GREEN + "Added user " + args.getString(1));
+			}
+			
+			if (args.getString(0).equalsIgnoreCase("remove")) {
+				userManager.removeUser(args.getString(1));
+				source.sendMessage(ChatColor.BRIGHT_GREEN + "Removed user " + args.getString(1));
 			}
 		}
 		

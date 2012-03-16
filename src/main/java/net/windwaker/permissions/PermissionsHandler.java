@@ -28,6 +28,7 @@ import org.spout.api.event.EventHandler;
 import org.spout.api.event.Listener;
 import org.spout.api.event.Order;
 import org.spout.api.event.Result;
+import org.spout.api.event.server.data.RetrieveDataEvent;
 import org.spout.api.event.server.permissions.PermissionGetGroupsEvent;
 import org.spout.api.event.server.permissions.PermissionGroupEvent;
 import org.spout.api.event.server.permissions.PermissionNodeEvent;
@@ -48,7 +49,9 @@ public class PermissionsHandler implements Listener {
 		}
 		
 		String[] group = {user.getGroup().getName()};
-		event.setGroups(group);
+		if (group != null) {
+			event.setGroups(group);
+		}
 	}
 
 	@EventHandler(order = Order.EARLIEST)
@@ -82,6 +85,23 @@ public class PermissionsHandler implements Listener {
 			event.setResult(Result.ALLOW);
 		} else {
 			event.setResult(Result.DENY);
+		}
+	}
+
+	public void onDataCheck(RetrieveDataEvent event) {
+		String name = event.getSubject().getName();
+		Permissible subject = userManager.getUser(name);
+		if (subject == null) {
+			subject = groupManager.getGroup(name);
+		}
+		
+		if (subject == null) {
+			return;
+		}
+		
+		String node = event.getNode();
+		if (subject.getMetadata(node) != null) {
+			event.setResult(subject.getMetadata(node));
 		}
 	}
 }
