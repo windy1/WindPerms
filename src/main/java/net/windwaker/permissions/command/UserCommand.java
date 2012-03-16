@@ -96,7 +96,8 @@ public class UserCommand {
 		
 		source.sendMessage(ChatColor.BRIGHT_GREEN + "----------" + ChatColor.WHITE + "[ " + ChatColor.CYAN + user.getName() + ChatColor.WHITE + " ]" 
 		+ ChatColor.BRIGHT_GREEN + "----------");
-		source.sendMessage(ChatColor.BRIGHT_GREEN + "- Group: " + ChatColor.CYAN + user.getGroup().getName());
+		String groupName = user.getGroup() != null ? user.getGroup().getName() : "None";
+		source.sendMessage(ChatColor.BRIGHT_GREEN + "- Group: " + ChatColor.CYAN + groupName);
 		source.sendMessage(ChatColor.BRIGHT_GREEN + "- Can Build: " + ChatColor.CYAN + user.canBuild());
 	}
 	
