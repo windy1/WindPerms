@@ -88,6 +88,7 @@ public class PermissionsHandler implements Listener {
 		}
 	}
 
+	@EventHandler(order = Order.EARLIEST)
 	public void onDataCheck(RetrieveDataEvent event) {
 		String name = event.getSubject().getName();
 		Permissible subject = userManager.getUser(name);
