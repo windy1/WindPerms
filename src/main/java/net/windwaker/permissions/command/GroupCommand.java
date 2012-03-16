@@ -45,12 +45,12 @@ public class GroupCommand {
 			if (args.getString(0).equalsIgnoreCase("info")) {					
 				printInfo(source, args.getString(1));
 			}
-			
+
 			if (args.getString(0).equalsIgnoreCase("add")) {
 				groupManager.addGroup(args.getString(1));
 				source.sendMessage(ChatColor.BRIGHT_GREEN + "Added group " + args.getString(1));
 			}
-			
+
 			if (args.getString(0).equalsIgnoreCase("remove")) {
 				groupManager.removeGroup(args.getString(1));
 				source.sendMessage(ChatColor.BRIGHT_GREEN + "Removed group " + args.getString(1));
@@ -62,7 +62,7 @@ public class GroupCommand {
 				if (args.getString(1).equalsIgnoreCase("default")) {
 					setDefault(source, args.getString(2), args.getString(3));
 				}
-				
+
 				if (args.getString(1).equalsIgnoreCase("canbuild")) {
 					setCanBuild(source, args.getString(2), args.getString(3));
 				}

@@ -98,7 +98,11 @@ public class Group implements Permissible {
 
 	@Override
 	public boolean hasPermission(String node) {
-		return permissions.get(node);
+		if (permissions.containsKey(node)) {
+			return permissions.get(node);
+		}
+
+		return false;
 	}
 
 	@Override

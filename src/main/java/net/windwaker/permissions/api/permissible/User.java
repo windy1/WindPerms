@@ -20,6 +20,8 @@ package net.windwaker.permissions.api.permissible;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import net.windwaker.permissions.api.Permissions;
 import org.spout.api.data.DataValue;
 
 /**
@@ -28,7 +30,7 @@ import org.spout.api.data.DataValue;
 public class User implements Permissible {
 
 	private final String name;
-	private Group group;
+	private Group group = Permissions.getGroupManager().getGroup("Guest");
 	private Map<String, Boolean> permissions = new HashMap<String, Boolean>();
 	private Map<String, DataValue> data = new HashMap<String, DataValue>();
 	private boolean canBuild = false;
@@ -77,7 +79,11 @@ public class User implements Permissible {
 
 	@Override
 	public boolean hasPermission(String node) {
-		return permissions.get(node);
+		if (permissions.containsKey(node)) {
+			return permissions.get(node);
+		}
+
+		return false;
 	}
 
 	@Override
