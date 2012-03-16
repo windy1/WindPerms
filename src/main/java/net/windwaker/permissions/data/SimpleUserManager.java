@@ -82,6 +82,12 @@ public class SimpleUserManager implements UserManager {
 
 	@Override
 	public void removeUser(String username) {
+		User user = getUser(username);
+		if (user == null) {
+			return;
+		}
+
+		users.remove(user);
 		data.setValue("users." + username, null);
 		data.save();
 	}

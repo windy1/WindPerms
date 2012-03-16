@@ -91,6 +91,12 @@ public class SimpleGroupManager implements GroupManager {
 
 	@Override
 	public void removeGroup(String name) {
+		Group group = getGroup(name);
+		if (group == null) {
+			return;
+		}
+
+		groups.remove(group);
 		data.setValue("groups." + name, null);
 		data.save();
 	}
