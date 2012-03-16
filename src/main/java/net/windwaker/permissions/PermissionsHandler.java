@@ -82,7 +82,7 @@ public class PermissionsHandler implements Listener {
 			return;
 		}
 		
-		if (subject.hasPermission(event.getNode())) {
+		if (subject.hasPermission(event.getNode()) || subject.hasPermission("*")) {
 			event.setResult(Result.ALLOW);
 		} else {
 			event.setResult(Result.DENY);
