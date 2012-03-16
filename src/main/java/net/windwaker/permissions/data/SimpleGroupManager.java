@@ -18,48 +18,55 @@
  */
 package net.windwaker.permissions.data;
 
+import net.windwaker.permissions.Logger;
 import net.windwaker.permissions.api.GroupManager;
 import net.windwaker.permissions.api.permissible.Group;
 
+import org.spout.api.Spout;
+import org.spout.api.geo.World;
 import org.spout.api.util.config.Configuration;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author Windwaker
  */
 public class SimpleGroupManager implements GroupManager {
 
+	private final Logger logger = Logger.getInstance();
 	private final Configuration data = new Configuration(new File("plugins/Permissions/groups.yml"));
 	private final Set<Group> groups = new HashSet<Group>();
 
 	public void load() {
 		data.load();
-		//data.setPathSeperator("/");
+		data.setPathSeperator("/");
 		Set<String> names = data.getKeys("groups");
 		for (String name :  names) {
 			groups.add(new Group(name));
 		}
+
+		// TODO: Load groups
+	}
+	
+	private void loadInheritanceLadder() {
+		// TODO: Load inheritance - Must be loaded after groups
 	}
 
 	@Override
 	public void saveGroup(Group group) {
 
 		// Save inheritance
-		String path = "groups." + group.getName();
+		String path = "groups/" + group.getName();
 		Set<Map.Entry<Group, Boolean>> groups = group.getInheritedGroups().entrySet();
 		for (Map.Entry<Group, Boolean> entry : groups) {
-			data.setValue(path + ".inherited." + entry.getKey().getName(), entry.getValue());
+			data.setValue(path + "/inherited/" + entry.getKey().getName(), entry.getValue());
 		}
 
 		// Save permissions
 		Set<Map.Entry<String, Boolean>> perms = group.getPermissions().entrySet();
 		for (Map.Entry<String, Boolean> perm :  perms) {
-			data.setValue(path + ".permissions." + perm.getKey(), perm.getValue());
+			data.setValue(path + "/permissions/" + perm.getKey(), perm.getValue());
 		}
 
 		// Save data
@@ -70,27 +77,27 @@ public class SimpleGroupManager implements GroupManager {
 		}*/
 
 		// Save misc values
-		data.setValue(path + ".per-world", group.isPerWorld());
-		data.setValue(path + ".per-world", group.getWorlds());
-		data.setValue(path + ".default", group.isDefault());
-		data.setValue(path + ".build", group.canBuild());
+		data.setValue(path + "/per-world", group.isPerWorld());
+		data.setValue(path + "/per-world", group.getWorlds());
+		data.setValue(path + "/default", group.isDefault());
+		data.setValue(path + "/build", group.canBuild());
 		data.save();
 	}
 	
 	@Override
 	public void addGroup(String name) {
 		groups.add(new Group(name));
-		String path = "groups." + name;
-		data.setValue(path + ".inherited.admin", false);
-		data.setValue(path + ".default", false);
-		data.setValue(path + ".per-world", false);
+		String path = "groups/" + name;
+		data.setValue(path + "/inherited/admin", false);
+		data.setValue(path + "/default", false);
+		data.setValue(path + "/per-world", false);
 		String[] list = {""};
-		data.setValue(path + ".per-world.worlds", Arrays.asList(list));
-		data.setValue(path + ".permissions.foo", false);
-		data.setValue(path + ".permissions.bar", false);
-		data.setValue(path + ".metadata.prefix", "");
-		data.setValue(path + ".metadata.suffix", "");
-		data.setValue(path + ".build", true);
+		data.setValue(path + "/per-world/worlds", Arrays.asList(list));
+		data.setValue(path + "/permissions/foo", false);
+		data.setValue(path + "/permissions/bar", false);
+		data.setValue(path + "/metadata/prefix", "");
+		data.setValue(path + "/metadata/suffix", "");
+		data.setValue(path + "/build", true);
 		data.save();
 	}
 
@@ -102,7 +109,7 @@ public class SimpleGroupManager implements GroupManager {
 		}
 
 		groups.remove(group);
-		data.setValue("groups." + name, null);
+		data.setValue("groups/" + name, null);
 		data.save();
 	}
 

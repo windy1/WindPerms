@@ -18,10 +18,14 @@
  */
 package net.windwaker.permissions.data;
 
+import net.windwaker.permissions.Logger;
+import net.windwaker.permissions.api.GroupManager;
 import net.windwaker.permissions.api.UserManager;
+import net.windwaker.permissions.api.permissible.Group;
 import net.windwaker.permissions.api.permissible.User;
 import org.spout.api.util.config.Configuration;
 
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 import java.io.File;
 import java.util.HashSet;
 import java.util.Map;
@@ -32,25 +36,29 @@ import java.util.Set;
  */
 public class SimpleUserManager implements UserManager {
 
+	private final Logger logger = Logger.getInstance();
 	private static final Configuration data = new Configuration(new File("plugins/Permissions/users.yml"));
 	private final Set<User> users = new HashSet<User>();
 
-	public void load() {
+	public void load(GroupManager groupManager) {
 		data.load();
+		data.setPathSeperator("/");
 		Set<String> names = data.getKeys("users");
-		for (String name : names) {
+		for (String name :  names) {
 			users.add(new User(name));
 		}
+
+		// TODO: Load users
 	}
 
 	@Override
 	public void saveUser(User user) {
 
 		// Save permissions
-		String path = "users." + user.getName();
+		String path = "users/" + user.getName();
 		Set<Map.Entry<String, Boolean>> perms = user.getPermissions().entrySet();
 		for (Map.Entry<String, Boolean> perm : perms) {
-			data.setValue(path + ".permissions." + perm.getKey(), perm.getValue());
+			data.setValue(path + "/permissions/" + perm.getKey(), perm.getValue());
 		}
 
 		// Save data
@@ -62,21 +70,21 @@ public class SimpleUserManager implements UserManager {
 
 		// Save misc values
 		String groupName = user.getGroup() != null ? user.getGroup().getName() : "";
-		data.setValue(path + ".group", groupName);
-		data.setValue(path + ".build", user.canBuild());
+		data.setValue(path + "/group", groupName);
+		data.setValue(path + "/build", user.canBuild());
 		data.save();
 	}
 
 	@Override
 	public void addUser(String username) {
 		users.add(new User(username));
-		String path = "users." + username;
-		data.setValue(path + ".group", "default");
-		data.setValue(path + ".permissions.foo", false);
-		data.setValue(path + ".permissions.bar", false);
-		data.setValue(path + ".build", true);
-		data.setValue(path + ".metadata.prefix", "");
-		data.setValue(path + ".metadata.suffix", "");
+		String path = "users/" + username;
+		data.setValue(path + "/group", "default");
+		data.setValue(path + "/permissions/foo", false);
+		data.setValue(path + "/permissions/bar", false);
+		data.setValue(path + "/build", true);
+		data.setValue(path + "/metadata/prefix", "");
+		data.setValue(path + "/metadata/suffix", "");
 		data.save();
 	}
 
@@ -88,7 +96,7 @@ public class SimpleUserManager implements UserManager {
 		}
 
 		users.remove(user);
-		data.setValue("users." + username, null);
+		data.setValue("users/" + username, null);
 		data.save();
 	}
 
