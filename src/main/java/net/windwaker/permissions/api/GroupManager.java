@@ -57,4 +57,11 @@ public interface GroupManager {
 	 */
 	public Set<Group> getGroups();
 
+	/**
+	 * Saves a group from said name
+	 *
+	 * @param group
+	 */
+	public void saveGroup(Group group);
+
 }

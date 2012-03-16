@@ -21,10 +21,13 @@ package net.windwaker.permissions.data;
 import net.windwaker.permissions.api.GroupManager;
 import net.windwaker.permissions.api.permissible.Group;
 
+import org.spout.api.data.DataValue;
 import org.spout.api.util.config.Configuration;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -42,6 +45,34 @@ public class SimpleGroupManager implements GroupManager {
 			groups.add(new Group(name));
 		}
 	}
+
+	@Override
+	public void saveGroup(Group group) {
+
+		// Save inheritance
+		String path = "groups." + group.getName();
+		Set<Map.Entry<Group, Boolean>> groups = group.getInheritedGroups().entrySet();
+		for (Map.Entry<Group, Boolean> entry : groups) {
+			data.setValue(path + ".inherited." + entry.getKey().getName(), entry.getValue());
+		}
+
+		// Save permissions
+		Set<Map.Entry<String, Boolean>> perms = group.getPermissions().entrySet();
+		for (Map.Entry<String, Boolean> perm :  perms) {
+			data.setValue(path + ".permissions." + perm.getKey(), perm.getValue());
+		}
+
+		// Save data
+		Set<Map.Entry<String, DataValue>> meta = group.getMetadata().entrySet();
+		for (Map.Entry<String, DataValue> d : meta) {
+			data.setValue(path + ".metadata." + d.getKey(), d.getValue());
+		}
+
+		// Save misc values
+		data.setValue(path + ".default", group.isDefault());
+		data.setValue(path + ".build", group.canBuild());
+		data.save();
+	}
 	
 	@Override
 	public void addGroup(String name) {
@@ -51,6 +82,8 @@ public class SimpleGroupManager implements GroupManager {
 		data.setValue(path + ".default", false);
 		data.setValue(path + ".permissions.foo", false);
 		data.setValue(path + ".permissions.bar", false);
+		data.setValue(path + ".metadata.prefix", "");
+		data.setValue(path + ".metadata.suffix", "");
 		data.setValue(path + ".build", true);
 		data.save();
 	}

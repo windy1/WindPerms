@@ -20,6 +20,7 @@ package net.windwaker.permissions.api.permissible;
 
 import java.util.Map;
 import org.spout.api.data.DataValue;
+import org.spout.api.util.StringMap;
 
 /**
  * @author Windwaker
@@ -69,6 +70,13 @@ public interface Permissible {
 	 * @return true if subject can build.
 	 */
 	public boolean canBuild();
+
+	/**
+	 * Gets a mapping of all key-value data declarations.
+	 *
+	 * @return all data
+	 */
+	public Map<String, DataValue> getMetadata();
 	
 	/**
 	 * Sets a metadata value to the subject.

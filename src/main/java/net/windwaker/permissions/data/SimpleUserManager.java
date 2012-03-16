@@ -20,10 +20,12 @@ package net.windwaker.permissions.data;
 
 import net.windwaker.permissions.api.UserManager;
 import net.windwaker.permissions.api.permissible.User;
+import org.spout.api.data.DataValue;
 import org.spout.api.util.config.Configuration;
 
 import java.io.File;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -40,6 +42,28 @@ public class SimpleUserManager implements UserManager {
 		for (String name : names) {
 			users.add(new User(name));
 		}
+	}
+
+	@Override
+	public void saveUser(User user) {
+
+		// Save permissions
+		String path = "users." + user.getName();
+		Set<Map.Entry<String, Boolean>> perms = user.getPermissions().entrySet();
+		for (Map.Entry<String, Boolean> perm : perms) {
+			data.setValue(path + ".permissions." + perm.getKey(), perm.getValue());
+		}
+
+		// Save data
+		Set<Map.Entry<String, DataValue>> meta = user.getMetadata().entrySet();
+		for (Map.Entry<String, DataValue> d : meta) {
+			data.setValue(path + ".metadata." + d.getKey(), d.getValue());
+		}
+
+		// Save misc values
+		data.setValue(path + ".group", user.getGroup().getName());
+		data.setValue(path + ".build", user.canBuild());
+		data.save();
 	}
 
 	@Override

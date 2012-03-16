@@ -22,6 +22,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
+import net.windwaker.permissions.api.GroupManager;
+import net.windwaker.permissions.api.Permissions;
 import org.spout.api.data.DataValue;
 
 /**
@@ -29,6 +32,7 @@ import org.spout.api.data.DataValue;
  */
 public class Group implements Permissible {
 
+	private final GroupManager groupManager = Permissions.getGroupManager();
 	private final String name;
 	private boolean def = false;
 	private boolean canBuild = true;
@@ -66,6 +70,7 @@ public class Group implements Permissible {
 	 */
 	public void setInheritedGroup(Group group, boolean inherit) {
 		inherited.put(group, inherit);
+		groupManager.saveGroup(this);
 	}
 
 	/**
@@ -75,6 +80,7 @@ public class Group implements Permissible {
 	 */
 	public void setDefault(boolean def) {
 		this.def = def;
+		groupManager.saveGroup(this);
 	}
 
 	/**
@@ -94,6 +100,7 @@ public class Group implements Permissible {
 	@Override
 	public void setPermission(String node, boolean state) {
 		permissions.put(node, state);
+		groupManager.saveGroup(this);
 	}
 
 	@Override
@@ -108,11 +115,17 @@ public class Group implements Permissible {
 	@Override
 	public void setCanBuild(boolean canBuild) {
 		this.canBuild = canBuild;
+		groupManager.saveGroup(this);
 	}
 
 	@Override
 	public boolean canBuild() {
 		return canBuild;
+	}
+
+	@Override
+	public Map<String, DataValue> getMetadata() {
+		return data;
 	}
 
 	@Override

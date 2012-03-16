@@ -56,4 +56,11 @@ public interface UserManager {
 	 */
 	public Set<User> getUsers();
 
+	/**
+	 * Saves a user from said name
+	 *
+	 * @param user
+	 */
+	public void saveUser(User user);
+
 }
