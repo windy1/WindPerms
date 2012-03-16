@@ -28,7 +28,7 @@ import org.spout.api.event.EventHandler;
 import org.spout.api.event.Listener;
 import org.spout.api.event.Order;
 import org.spout.api.event.Result;
-import org.spout.api.event.server.data.RetrieveDataEvent;
+import org.spout.api.event.player.PlayerLoginEvent;
 import org.spout.api.event.server.permissions.PermissionGetGroupsEvent;
 import org.spout.api.event.server.permissions.PermissionGroupEvent;
 import org.spout.api.event.server.permissions.PermissionNodeEvent;
@@ -40,6 +40,7 @@ public class PermissionsHandler implements Listener {
 
 	private final UserManager userManager = Permissions.getUserManager();
 	private final GroupManager groupManager = Permissions.getGroupManager();
+	private final Logger logger = Logger.getInstance();
 	
 	@EventHandler(order = Order.EARLIEST)
 	public void onGroupsGet(PermissionGetGroupsEvent event) {
@@ -86,6 +87,20 @@ public class PermissionsHandler implements Listener {
 		} else {
 			event.setResult(Result.DENY);
 		}
+	}
+
+	@EventHandler
+	public void onPlayerLogin(PlayerLoginEvent event) {
+		String playerName = event.getPlayer().getName();
+		User user = userManager.getUser(playerName);
+		if (user != null) {
+			logger.info(playerName + " returned, found Permissions profile.");
+			return;
+		}
+
+		logger.info(playerName + " does not have a Permissions profile, creating...");
+		userManager.addUser(playerName);
+
 	}
 
 	/*
