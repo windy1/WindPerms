@@ -10,10 +10,7 @@ Permissions is not yet at a production level!
 
 API
 ---
-Hooking into Permissions requires nothing more than SpoutAPI! Simply use...
-```java
-subject.hasPermission(permissionNode);
-```
+Hooking into Permissions requires nothing more than SpoutAPI! Simply use ```subject.hasPermission(permissionNode);```
 
 Credits
 -------
