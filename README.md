@@ -2,23 +2,18 @@ About
 -----
 Permissions is a plugin for the Spout server that provides Permissible player actions for other plugins. This plugin uses Spout's native Permissions API and will require no bridge. This plugin itself provides very little functionality, but is more for giving players "permisison" to what a plugin dev want to restrict.
 
-Features
---------
-* Groups via the groups.yml file. More to come on that.
-* Specific user permissions and assignments via the users.yml. More to come on that.
-* World specific permissions. More to come on that.
-* Building restrictions.
-* Assignable prefixes and suffixes
-* Default groups
-* Group inheritence.
-* Commands
-* Things I'm forgetting or haven't thought about yet :D
-
 Permissions is [open source][GitHub] | [Report an issue][Issues]
 
 Installation
 ------------
 Permissions is not yet at a production level!
+
+API
+---
+Hooking into Permissions requires nothing more than SpoutAPI! Simply use...
+```java
+subject.hasPermission(permissionNode);
+```
 
 Credits
 -------
