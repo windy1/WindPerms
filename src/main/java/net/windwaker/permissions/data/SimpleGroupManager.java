@@ -24,10 +24,7 @@ import net.windwaker.permissions.api.permissible.Group;
 import org.spout.api.util.config.Configuration;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author Windwaker
@@ -70,6 +67,8 @@ public class SimpleGroupManager implements GroupManager {
 		}*/
 
 		// Save misc values
+		data.setValue(path + ".per-world", group.isPerWorld());
+		data.setValue(path + ".per-world", group.getWorlds());
 		data.setValue(path + ".default", group.isDefault());
 		data.setValue(path + ".build", group.canBuild());
 		data.save();
@@ -81,6 +80,9 @@ public class SimpleGroupManager implements GroupManager {
 		String path = "groups." + name;
 		data.setValue(path + ".inherited.admin", false);
 		data.setValue(path + ".default", false);
+		data.setValue(path + ".per-world", false);
+		String[] list = {""};
+		data.setValue(path + ".per-world.worlds", Arrays.asList(list));
 		data.setValue(path + ".permissions.foo", false);
 		data.setValue(path + ".permissions.bar", false);
 		data.setValue(path + ".metadata.prefix", "");

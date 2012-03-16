@@ -18,11 +18,14 @@
  */
 package net.windwaker.permissions.api.permissible;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import net.windwaker.permissions.api.GroupManager;
 import net.windwaker.permissions.api.Permissions;
+import org.spout.api.geo.World;
 
 /**
  * @author Windwaker
@@ -33,8 +36,10 @@ public class Group implements Permissible {
 	private final String name;
 	private boolean def = false;
 	private boolean canBuild = true;
+	private boolean perWorld = false;
 	private Map<Group, Boolean> inherited = new HashMap<Group, Boolean>();
 	private Map<String, Boolean> permissions = new HashMap<String, Boolean>();
+	private List<World> worlds = new ArrayList<World>();
 	//private Map<String, DataValue> data = new HashMap<String, DataValue>();
 
 	public Group(String name) {
@@ -87,6 +92,54 @@ public class Group implements Permissible {
 	 */
 	public boolean isDefault() {
 		return def;
+	}
+
+	/**
+	 * Whether or not the group is per-world or universal.
+	 *
+	 * @return true if per-world
+	 */
+	public boolean isPerWorld() {
+		return perWorld;
+	}
+
+	/**
+	 * Sets if the group is universal or per-world.
+	 *
+	 * @param perWorld
+	 */
+	public void setPerWorld(boolean perWorld) {
+		this.perWorld = perWorld;
+		groupManager.saveGroup(this);
+	}
+
+	/**
+	 * Gets the worlds associated with the group, does nothing if per-world is false.
+	 *
+	 * @return
+	 */
+	public List<World> getWorlds() {
+		return worlds;
+	}
+
+	/**
+	 * Adds a world to the groups worlds.
+	 *
+	 * @param world
+	 */
+	public void addWorld(World world) {
+		worlds.add(world);
+		groupManager.saveGroup(this);
+	}
+
+	/**
+	 * Removes a world from the groups world.
+	 *
+	 * @param world
+	 */
+	public void removeWorld(World world) {
+		worlds.remove(world);
+		groupManager.saveGroup(this);
 	}
 
 	@Override
