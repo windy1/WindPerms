@@ -19,6 +19,7 @@
 package net.windwaker.permissions;
 
 import net.windwaker.permissions.command.GroupCommand;
+import net.windwaker.permissions.command.PermissionsCommand;
 import net.windwaker.permissions.command.UserCommand;
 import net.windwaker.permissions.data.SimpleUserManager;
 import net.windwaker.permissions.data.SimpleGroupManager;
@@ -64,9 +65,10 @@ public class SimplePermissionsPlugin extends CommonPlugin implements Permissions
 		
 		// Register commands
 		CommandRegistrationsFactory<Class<?>> commandRegFactory = new AnnotatedCommandRegistrationFactory(new SimpleInjector(), new SimpleAnnotatedCommandExecutorFactory());
+		getGame().getRootCommand().addSubCommands(this, PermissionsCommand.class, commandRegFactory);
 		getGame().getRootCommand().addSubCommands(this, GroupCommand.class, commandRegFactory);
 		getGame().getRootCommand().addSubCommands(this, UserCommand.class, commandRegFactory);
-		
+
 		// Hello world!
 		logger.info("Permissions v" + getDescription().getVersion() + " enabled!");
 	}
