@@ -29,6 +29,8 @@ import org.spout.api.command.annotated.Command;
 import org.spout.api.command.annotated.CommandPermissions;
 import org.spout.api.exception.CommandException;
 
+import java.util.Map;
+
 /**
  * 
  * @author Windwaker
@@ -37,7 +39,7 @@ public class GroupCommand {
 	
 	private final GroupManager groupManager = Permissions.getGroupManager();
 	
-	@Command(aliases = {"group", "gr"}, desc = "Modifies a group", usage = "<info|set|add|remove> [inherit|default|perm|canBuild|data] <group> [bool:canBuild|bool:default|group|perm|identifier] [bool:inherit|bool:permState|object:data]", min = 2, max = 5)
+	@Command(aliases = {"group", "gr"}, desc = "Modifies a group", usage = "<info|set|add|remove|check> [inherit|default|perm|build|data] <group> [bool:build|bool:default|group|perm|identifier] [bool:inherit|bool:permState|object:data]", min = 2, max = 5)
 	@CommandPermissions("permissions.command.group")
 	public void group(CommandContext args, CommandSource source) throws CommandException {
 		if (args.length() == 2) {
@@ -66,8 +68,22 @@ public class GroupCommand {
 					setDefault(source, args.getString(2), args.getString(3));
 				}
 
-				if (args.getString(1).equalsIgnoreCase("canbuild")) {
+				if (args.getString(1).equalsIgnoreCase("build")) {
 					setCanBuild(source, args.getString(2), args.getString(3));
+				}
+			}
+			
+			if (args.getString(0).equalsIgnoreCase("check")) {
+				if (args.getString(1).equalsIgnoreCase("inherit")) {
+					checkInherit(source, args.getString(2), args.getString(3));
+				}
+
+				if (args.getString(1).equalsIgnoreCase("perm")) {
+					checkPermission(source, args.getString(2), args.getString(3));
+				}
+				
+				if (args.getString(1).equalsIgnoreCase("data")) {
+					checkData(source, args.getString(2), args.getString(3));
 				}
 			}
 		}
@@ -177,5 +193,44 @@ public class GroupCommand {
 		
 		//group.setMetadata(tag, new DataValue(object));
 		source.sendMessage(ChatColor.BRIGHT_GREEN + group.getName() + ": Set " + tag + " to " + object);
+	}
+	
+	private void checkInherit(CommandSource source, String groupName, String inheritedName) throws CommandException {
+		Group group = groupManager.getGroup(groupName);
+		if (group == null) {
+			throw new CommandException(groupName + " doesn't exist!");
+		}
+		
+		Group inherited = groupManager.getGroup(inheritedName);
+		if (inherited == null) {
+			throw new CommandException(groupName + " doesn't exist!");
+		}
+
+		Map<Group, Boolean> inheritance = group.getInheritedGroups();
+		if (inheritance.containsKey(inherited)) {
+			String does = inheritance.get(inherited) ? "does" : "does not";
+			source.sendMessage(ChatColor.BRIGHT_GREEN + "Group " + groupName + " " + does + " inherit " + inheritedName);
+		} else {
+			source.sendMessage(ChatColor.BRIGHT_GREEN + "Group " + inherited + " has not been assigned to group " + groupName);
+		}
+	}
+	
+	private void checkPermission(CommandSource source, String groupName, String node) throws CommandException {
+		Group group = groupManager.getGroup(groupName);
+		if (group == null) {
+			throw new CommandException(groupName + " doesn't exist!");
+		}
+		
+		String has = group.hasPermission(node) ? "has" : "does not have";
+		source.sendMessage(ChatColor.BRIGHT_GREEN + "Group " + groupName + " " + has + " permissions for " + node);
+	}
+	
+	private void checkData(CommandSource source, String groupName, String tag) throws CommandException {
+		Group group = groupManager.getGroup(groupName);
+		if (group == null) {
+			throw new CommandException(groupName + " doesn't exist!");
+		}
+		
+		// TODO: Implement data checking.
 	}
 }

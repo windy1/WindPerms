@@ -40,7 +40,7 @@ public class UserCommand {
 	private final UserManager userManager = Permissions.getUserManager();
 	private final GroupManager groupManager = Permissions.getGroupManager();
 	
-	@Command(aliases = {"user", "us"}, desc = "Modify Permissions users.", usage = "<info|set|add|remove> [group|perm|canBuild|data] <user> [group:groupName|perm:node|bool:canBuild|identifier] [bool|object]", min = 2, max = 5)
+	@Command(aliases = {"user", "us"}, desc = "Modify Permissions users.", usage = "<info|set|add|remove|check> [group|perm|build|data] <user> [group:groupName|perm:node|bool:build|identifier] [bool|object]", min = 2, max = 5)
 	@CommandPermissions("permissions.command.user")
 	public void user(CommandContext args, CommandSource source) throws CommandException {
 		if (args.length() == 2) {
@@ -69,8 +69,18 @@ public class UserCommand {
 					setGroup(source, args.getString(2), args.getString(3));
 				}
 				
-				if (args.getString(1).equalsIgnoreCase("canBuild")) {
+				if (args.getString(1).equalsIgnoreCase("build")) {
 					setCanBuild(source, args.getString(2), args.getString(3));
+				}
+
+				if (args.getString(1).equalsIgnoreCase("check")) {
+					if (args.getString(2).equalsIgnoreCase("perm")) {
+						checkPermission(source, args.getString(2), args.getString(3));
+					}
+
+					if (args.getString(2).equalsIgnoreCase("data")) {
+						checkData(source, args.getString(2), args.getString(3));
+					}
 				}
 			}
 		}
@@ -156,5 +166,24 @@ public class UserCommand {
 		
 		//user.setMetadata(identifier, new DataValue(value));
 		source.sendMessage(ChatColor.BRIGHT_GREEN + username + ": Set " + identifier + " to " + value);
+	}
+	
+	private void checkPermission(CommandSource source, String username, String node) throws CommandException {
+		User user = userManager.getUser(username);
+		if (user == null) {
+			throw new CommandException(username + " does not exist!");
+		}
+		
+		String has = user.hasPermission(node) ? "has" : "does not have";
+		source.sendMessage(ChatColor.BRIGHT_GREEN + "User " + username + " " + has + " permission for " + node);
+	}
+	
+	private void checkData(CommandSource source, String username, String tag) throws CommandException {
+		User user = userManager.getUser(username);
+		if (user == null) {
+			throw new CommandException(username + " does not exist!");
+		}
+
+		// TODO: Check data
 	}
 }
