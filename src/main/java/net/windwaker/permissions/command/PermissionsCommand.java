@@ -39,13 +39,19 @@ public class PermissionsCommand {
 	public void permissions(CommandContext args, CommandSource source) throws CommandException {
 		if (args.length() == 0) {
 			printInfo(source);
+			return;
 		}
 		
 		if (args.length() == 1) {
 			if (args.getString(0).equalsIgnoreCase("help")) {
 				printHelp(source);
+				return;
 			}
 		}
+
+		// If it reaches the end while parsing, send help.
+		printHelp(source);
+		throw new CommandException("Check your arguments!");
 	}
 	
 	private void printInfo(CommandSource source) {
@@ -54,7 +60,7 @@ public class PermissionsCommand {
 		source.sendMessage(ChatColor.BRIGHT_GREEN + "There are " + plugin.getUserManager().getUsers().size() + " unique users registered.");
 	}
 	
-	private void printHelp(CommandSource source) {
+	public static void printHelp(CommandSource source) {
 		source.sendMessage(ChatColor.BRIGHT_GREEN + "----------" + ChatColor.WHITE + " [" + ChatColor.CYAN + "Permissions" + ChatColor.WHITE + "] "
 		+ ChatColor.BRIGHT_GREEN + "----------");
 		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN + "/gr help" + ChatColor.BRIGHT_GREEN + " : View help for modifying groups.");

@@ -45,16 +45,19 @@ public class GroupCommand {
 		if (args.length() == 2) {
 			if (args.getString(0).equalsIgnoreCase("info")) {					
 				printInfo(source, args.getString(1));
+				return;
 			}
 
 			if (args.getString(0).equalsIgnoreCase("add")) {
 				groupManager.addGroup(args.getString(1));
 				source.sendMessage(ChatColor.BRIGHT_GREEN + "Added group " + args.getString(1));
+				return;
 			}
 
 			if (args.getString(0).equalsIgnoreCase("remove")) {
 				groupManager.removeGroup(args.getString(1));
 				source.sendMessage(ChatColor.BRIGHT_GREEN + "Removed group " + args.getString(1));
+				return;
 			}
 		}
 
@@ -66,24 +69,29 @@ public class GroupCommand {
 			if (args.getString(0).equalsIgnoreCase("set")) {
 				if (args.getString(1).equalsIgnoreCase("default")) {
 					setDefault(source, args.getString(2), args.getString(3));
+					return;
 				}
 
 				if (args.getString(1).equalsIgnoreCase("build")) {
 					setCanBuild(source, args.getString(2), args.getString(3));
+					return;
 				}
 			}
 			
 			if (args.getString(0).equalsIgnoreCase("check")) {
 				if (args.getString(1).equalsIgnoreCase("inherit")) {
 					checkInherit(source, args.getString(2), args.getString(3));
+					return;
 				}
 
 				if (args.getString(1).equalsIgnoreCase("perm")) {
 					checkPermission(source, args.getString(2), args.getString(3));
+					return;
 				}
 				
 				if (args.getString(1).equalsIgnoreCase("data")) {
 					checkData(source, args.getString(2), args.getString(3));
+					return;
 				}
 			}
 		}
@@ -92,17 +100,24 @@ public class GroupCommand {
 			if (args.getString(0).equalsIgnoreCase("set")) {
 				if (args.getString(1).equalsIgnoreCase("inherit")) {
 					setInherit(source, args.getString(2), args.getString(3), args.getString(4));
+					return;
 				}
 				
 				if (args.getString(1).equalsIgnoreCase("perm")) {
 					setPermission(source, args.getString(2), args.getString(3), args.getString(4));
+					return;
 				}
 				
 				if (args.getString(1).equalsIgnoreCase("data")) {
 					setData(source, args.getString(2), args.getString(3), args.getString(4));
+					return;
 				}
 			}
 		}
+
+		// If it reaches the end while parsing, send help.
+		PermissionsCommand.printHelp(source);
+		throw new CommandException("Check your arguments!");
 	}
 	
 	private void printInfo(CommandSource source, String name) throws CommandException {
