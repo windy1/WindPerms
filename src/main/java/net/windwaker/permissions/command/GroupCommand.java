@@ -39,9 +39,14 @@ public class GroupCommand {
 	
 	private final GroupManager groupManager = Permissions.getGroupManager();
 	
-	@Command(aliases = {"group", "gr"}, desc = "Modifies a group", usage = "<info|set|add|remove|check> [inherit|default|perm|build|data] <group> [bool:build|bool:default|group|perm|identifier] [bool:inherit|bool:permState|object:data]", min = 2, max = 5)
+	@Command(aliases = {"group", "gr"}, desc = "Modifies a group", usage = "<info|set|add|remove|check|help> [inherit|default|perm|build|data] [group] [bool:build|bool:default|group|perm|identifier] [bool:inherit|bool:permState|object:data]", min = 1, max = 5)
 	@CommandPermissions("permissions.command.group")
 	public void group(CommandContext args, CommandSource source) throws CommandException {
+		if (args.length() == 1 && args.getString(0).equalsIgnoreCase("help")) {
+			printHelp(source);
+			return;
+		}
+
 		if (args.length() == 2) {
 			if (args.getString(0).equalsIgnoreCase("info")) {					
 				printInfo(source, args.getString(1));
@@ -118,6 +123,19 @@ public class GroupCommand {
 		// If it reaches the end while parsing, send help.
 		PermissionsCommand.printHelp(source);
 		throw new CommandException("Check your arguments!");
+	}
+
+	private void printHelp(CommandSource source) {
+		source.sendMessage(ChatColor.BRIGHT_GREEN + "----------" + ChatColor.WHITE + " [" + ChatColor.CYAN + "Permissions - Groups" + ChatColor.WHITE + "] "
+		+ ChatColor.BRIGHT_GREEN + "----------");
+		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN + "/group help" + ChatColor.BRIGHT_GREEN + " : Shows this menu.");
+		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN + "/group info <user>" + ChatColor.BRIGHT_GREEN + " : Check a users info.");
+		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN
+		+ "/group set <inherit|default|perm|build|data> <group> <true|false|inheritedGroup|permissionNode|dataTag> [true|false|other]"
+		+ ChatColor.BRIGHT_GREEN + " : Set various flags for user.");
+		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN + "/group <add|remove> <group>" + ChatColor.WHITE + " : Add or remove a group.");
+		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN + "/group check <inherit|perm|data> <group> <inheritedGroup|permissionNode|dataTag>"
+		+ ChatColor.BRIGHT_GREEN + " : Check various flags.");
 	}
 	
 	private void printInfo(CommandSource source, String name) throws CommandException {

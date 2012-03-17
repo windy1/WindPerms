@@ -40,9 +40,14 @@ public class UserCommand {
 	private final UserManager userManager = Permissions.getUserManager();
 	private final GroupManager groupManager = Permissions.getGroupManager();
 	
-	@Command(aliases = {"user", "us"}, desc = "Modify Permissions users.", usage = "<info|set|add|remove|check> [group|perm|build|data] <user> [group:groupName|perm:node|bool:build|identifier] [bool|object]", min = 2, max = 5)
+	@Command(aliases = {"user", "us"}, desc = "Modify Permissions users.", usage = "<info|set|add|remove|check|help> [group|perm|build|data] [user] [group:groupName|perm:node|bool:build|identifier] [bool|object]", min = 1, max = 5)
 	@CommandPermissions("permissions.command.user")
 	public void user(CommandContext args, CommandSource source) throws CommandException {
+		if (args.length() == 1 && args.getString(0).equalsIgnoreCase("help")) {
+			printHelp(source);
+			return;
+		}
+
 		if (args.length() == 2) {
 			if (args.getString(0).equalsIgnoreCase("info")) {
 				printInfo(source, args.getString(1));
@@ -111,13 +116,27 @@ public class UserCommand {
 		throw new CommandException("Check your argyments!");
 	}
 	
+	private void printHelp(CommandSource source) {
+		source.sendMessage(ChatColor.BRIGHT_GREEN + "----------" + ChatColor.WHITE + " [" + ChatColor.CYAN + "Permissions - Users" + ChatColor.WHITE + "] "
+		+ ChatColor.BRIGHT_GREEN + "----------");
+		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN + "/user help" + ChatColor.BRIGHT_GREEN + " : Shows this menu.");
+		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN + "/user info <user>" + ChatColor.BRIGHT_GREEN + " : View a users information.");
+		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN
+		+ "/user set <group|perm|build|data> <user> <true|false|group|permissionNode|dataTag> [true|false|other]" + ChatColor.BRIGHT_GREEN
+		+ " : Set various flag for the user.");
+		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN + "/user <add|remove> <user>" + ChatColor.BRIGHT_GREEN + " : Add or remove a user.");
+		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN + "/user check <perm|data> <user> <permissionNode|dataTag>" + ChatColor.BRIGHT_GREEN
+		+ " : Checks various flags for user.");
+
+	}
+	
 	private void printInfo(CommandSource source, String username) throws CommandException {
 		User user = userManager.getUser(username);
 		if (user == null) {
 			throw new CommandException(username + " does not exist!");
 		}
 		
-		source.sendMessage(ChatColor.BRIGHT_GREEN + "----------" + ChatColor.WHITE + "[ " + ChatColor.CYAN + user.getName() + ChatColor.WHITE + " ]" 
+		source.sendMessage(ChatColor.BRIGHT_GREEN + "----------" + ChatColor.WHITE + " [" + ChatColor.CYAN + user.getName() + ChatColor.WHITE + "] "
 		+ ChatColor.BRIGHT_GREEN + "----------");
 		String groupName = user.getGroup() != null ? user.getGroup().getName() : "None";
 		source.sendMessage(ChatColor.BRIGHT_GREEN + "- Group: " + ChatColor.CYAN + groupName);
