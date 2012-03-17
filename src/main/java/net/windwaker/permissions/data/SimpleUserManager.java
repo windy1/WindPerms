@@ -52,13 +52,18 @@ public class SimpleUserManager implements UserManager {
 		for (String name :  names) {
 			String path = "users/" + name;
 			User user = new User(name);
-			user.setGroup(groupManager.getGroup(data.getString(path + "/group")));
 			user.setCanBuild(data.getBoolean(path + "/build"));
+			Group group = groupManager.getGroup(data.getString(path + "/group"));
+			if (group != null) {
+				user.setGroup(group);
+			}
 			
 			// Load permissions
+			// TODO: MemoryConfiguration.getKeys() seems to be broken - returns empty set every time :|
 			Set<String> nodes = data.getKeys(path + "/permissions");
 			for (String node : nodes) {
-				user.setPermission(node, data.getBoolean(path + "/permissions/" + node));
+				boolean value = data.getBoolean(path + "/permissions/" + node);
+				user.setPermission(node, value);
 			}
 			
 			users.add(user);

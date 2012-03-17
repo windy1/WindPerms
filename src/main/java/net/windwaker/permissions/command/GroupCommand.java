@@ -81,6 +81,14 @@ public class GroupCommand {
 					setCanBuild(source, args.getString(2), args.getString(3));
 					return;
 				}
+
+				if (args.getString(1).equalsIgnoreCase("inherit")) {
+					setInherit(source, args.getString(2), args.getString(3), "true");
+				}
+
+				if (args.getString(1).equalsIgnoreCase("perm")) {
+					setPermission(source, args.getString(2), args.getString(3), "true");
+				}
 			}
 			
 			if (args.getString(0).equalsIgnoreCase("check")) {

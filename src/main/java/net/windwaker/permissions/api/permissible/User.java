@@ -48,7 +48,8 @@ public class User implements Permissible {
 	
 	@Override
 	public String toString() {
-		return "PermissionsUser{name=" + name + ",group=" + group.getName() + ",canBuild=" + canBuild + "}";
+		String groupName = group != null ? group.getName() : "None";
+		return "PermissionsUser{name=" + name + ",group=" + groupName + ",canBuild=" + canBuild + "}";
 	}
 
 	/**
@@ -58,15 +59,7 @@ public class User implements Permissible {
 	 */
 	public void setGroup(Group group) {
 		this.group = group;
-		Set<Map.Entry<String, Boolean>> nodes = group.getPermissions().entrySet();
-		for (Map.Entry<String, Boolean> node : nodes) {
-			if (!permissions.containsKey(node)) {
-				continue;
-			}
-			
-			permissions.put(node.getKey(), node.getValue());
-		}
-
+		// TODO: Inherit permissions.
 		userManager.saveUser(this);
 	}
 

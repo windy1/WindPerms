@@ -82,6 +82,10 @@ public class UserCommand {
 					setCanBuild(source, args.getString(2), args.getString(3));
 					return;
 				}
+				
+				if (args.getString(1).equalsIgnoreCase("perm")) {
+					setPermission(source, args.getString(2), args.getString(3), "true");
+				}
 
 				if (args.getString(1).equalsIgnoreCase("check")) {
 					if (args.getString(2).equalsIgnoreCase("perm")) {
