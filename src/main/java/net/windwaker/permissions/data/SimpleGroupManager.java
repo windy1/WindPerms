@@ -48,7 +48,7 @@ public class SimpleGroupManager implements GroupManager {
 
 		logger.info("Loading group data...");
 		for (String name :  names) {
-			String path = "group/" + name;
+			String path = "groups/" + name;
 			Group group = new Group(name);
 			group.setDefault(data.getBoolean(path + "/default"));
 			group.setCanBuild(data.getBoolean(path + "/build"));
