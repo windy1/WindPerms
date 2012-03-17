@@ -44,11 +44,28 @@ public class SimpleUserManager implements UserManager {
 		data.load();
 		data.setPathSeperator("/");
 		Set<String> names = data.getKeys("users");
-		for (String name :  names) {
-			users.add(new User(name));
+		if (names.isEmpty()) {
+			return;
 		}
 
-		// TODO: Load users
+		logger.info("Loading user data...");
+		for (String name :  names) {
+			String path = "users/" + name;
+			User user = new User(name);
+			user.setGroup(groupManager.getGroup(data.getString(path + "/group")));
+			user.setCanBuild(data.getBoolean(path + "/build"));
+			
+			// Load permissions
+			Set<String> nodes = data.getKeys(path + "/permissions");
+			for (String node : nodes) {
+				user.setPermission(node, data.getBoolean(path + "/permissions/" + node));
+			}
+			
+			users.add(user);
+			System.out.println(user.toString());
+		}
+
+		logger.info("User data loaded. " + users.size() + " unique users loaded!");
 	}
 
 	@Override

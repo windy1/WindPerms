@@ -133,7 +133,7 @@ public class GroupCommand {
 		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN
 		+ "/group set <inherit|default|perm|build|data> <group> <true|false|inheritedGroup|permissionNode|dataTag> [true|false|other]"
 		+ ChatColor.BRIGHT_GREEN + " : Set various flags for user.");
-		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN + "/group <add|remove> <group>" + ChatColor.WHITE + " : Add or remove a group.");
+		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN + "/group <add|remove> <group>" + ChatColor.BRIGHT_GREEN + " : Add or remove a group.");
 		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN + "/group check <inherit|perm|data> <group> <inheritedGroup|permissionNode|dataTag>"
 		+ ChatColor.BRIGHT_GREEN + " : Check various flags.");
 	}

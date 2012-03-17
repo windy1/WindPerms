@@ -42,15 +42,63 @@ public class SimpleGroupManager implements GroupManager {
 		data.load();
 		data.setPathSeperator("/");
 		Set<String> names = data.getKeys("groups");
-		for (String name :  names) {
-			groups.add(new Group(name));
+		if (names.isEmpty()) {
+			return;
 		}
 
-		// TODO: Load groups
-	}
-	
-	private void loadInheritanceLadder() {
-		// TODO: Load inheritance - Must be loaded after groups
+		logger.info("Loading group data...");
+		for (String name :  names) {
+			String path = "group/" + name;
+			Group group = new Group(name);
+			group.setDefault(data.getBoolean(path + "/default"));
+			group.setCanBuild(data.getBoolean(path + "/build"));
+			group.setPerWorld(data.getBoolean(path + "/per-world"));
+			
+			// Load permissions
+			Set<String> nodes = data.getKeys(path + "/permissions");
+			for (String node : nodes) {
+				group.setPermission(node, data.getBoolean(path + "/permissions/" + node));
+			}
+			
+			// Load worlds
+			List<String> worldNames = data.getStringList(path + "/per-world/worlds");
+			if (worldNames != null) {
+				for (String worldName : worldNames) {
+					World world = Spout.getGame().getWorld(worldName);
+					if (world != null) {
+						continue;
+					}
+				
+					group.addWorld(world);
+				}
+			}
+
+			// TODO: Load data
+			
+			groups.add(group);
+			System.out.print(group.toString());
+		}
+		
+		// Load inheritance - All groups must be loaded before we can load inheritance ladder.
+		for (String name : names) {
+			String path = "groups/" + name;
+			Group group = getGroup(name);
+			if (group != null) {
+				continue;
+			}
+
+			Set<String> inheritedNames = data.getKeys(path + "/inherited");
+			for (String inheritedName : inheritedNames) {
+				Group inherited = getGroup(inheritedName);
+				if (inherited != null) {
+					continue;
+				}
+				
+				group.setInheritedGroup(inherited, data.getBoolean(path + "/inherited/" + inheritedName));
+			}
+		}
+
+		logger.info("Group data loaded. " + groups.size() + " unique groups loaded!");
 	}
 
 	@Override
