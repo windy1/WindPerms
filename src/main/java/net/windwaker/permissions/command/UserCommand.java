@@ -85,6 +85,7 @@ public class UserCommand {
 				
 				if (args.getString(1).equalsIgnoreCase("perm")) {
 					setPermission(source, args.getString(2), args.getString(3), "true");
+					return;
 				}
 
 				if (args.getString(1).equalsIgnoreCase("check")) {

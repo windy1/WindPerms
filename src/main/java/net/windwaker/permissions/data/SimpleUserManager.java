@@ -25,7 +25,6 @@ import net.windwaker.permissions.api.permissible.Group;
 import net.windwaker.permissions.api.permissible.User;
 import org.spout.api.util.config.Configuration;
 
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 import java.io.File;
 import java.util.HashSet;
 import java.util.Map;
@@ -47,6 +46,12 @@ public class SimpleUserManager implements UserManager {
 		if (names.isEmpty()) {
 			return;
 		}
+		
+		// debug
+		data.setValue("foo.bar", true);
+		data.setValue("foo.baz", true);
+		System.out.println(data.getKeys("foo"));
+		// debug
 
 		logger.info("Loading user data...");
 		for (String name :  names) {
@@ -59,11 +64,18 @@ public class SimpleUserManager implements UserManager {
 			}
 			
 			// Load permissions
-			// TODO: MemoryConfiguration.getKeys() seems to be broken - returns empty set every time :|
 			Set<String> nodes = data.getKeys(path + "/permissions");
+			
+			// debug
+			if (nodes.isEmpty()) {
+				System.out.println("No nodes found!");
+			}
+			// debug
+			
 			for (String node : nodes) {
 				boolean value = data.getBoolean(path + "/permissions/" + node);
 				user.setPermission(node, value);
+				System.out.println("PermissionNode{node=" + node + ",value=" + value + "}");
 			}
 			
 			users.add(user);

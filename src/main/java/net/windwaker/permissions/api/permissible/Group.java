@@ -69,7 +69,15 @@ public class Group implements Permissible {
 	 */
 	public void setInheritedGroup(Group group, boolean inherit) {
 		inherited.put(group, inherit);
-		// TODO: Inherit permissions
+		Set<Map.Entry<String, Boolean>> nodes = group.getPermissions().entrySet();
+		for (Map.Entry<String, Boolean> node : nodes) {
+			if (!permissions.containsKey(node)) {
+				continue;
+			}
+			
+			permissions.put(node.getKey(), node.getValue());
+		}
+		
 		groupManager.saveGroup(this);
 	}
 
