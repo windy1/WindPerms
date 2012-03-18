@@ -42,12 +42,9 @@ public class SimpleGroupManager implements GroupManager {
 		data.load();
 		data.setPathSeperator("/");
 		Set<String> names = data.getKeys("groups");
-		if (names.isEmpty()) {
-			return;
-		}
-
 		logger.info("Loading group data...");
-		for (String name :  names) {
+		for (String name : names) {
+			/* debug */ logger.info("Loading user " + name); /* debug */
 			String path = "groups/" + name;
 			Group group = new Group(name);
 			group.setDefault(data.getBoolean(path + "/default"));
@@ -57,44 +54,55 @@ public class SimpleGroupManager implements GroupManager {
 			// Load permissions
 			Set<String> nodes = data.getKeys(path + "/permissions");
 			for (String node : nodes) {
+				/* debug */ logger.info("Loading permission node " + node); /* debug */
 				group.setPermission(node, data.getBoolean(path + "/permissions/" + node));
 			}
 			
 			// Load worlds
-			List<String> worldNames = data.getStringList(path + "/per-world/worlds");
-			if (worldNames != null) {
-				for (String worldName : worldNames) {
-					World world = Spout.getGame().getWorld(worldName);
-					if (world != null) {
-						continue;
-					}
-				
-					group.addWorld(world);
+			Set<String> worldNames = data.getKeys(path + "/per-world/worlds");
+			for (String worldName : worldNames) {
+				/* debug */ logger.info("Loading world " + worldName); /* debug */
+				World world = Spout.getGame().getWorld(worldName);
+				if (world != null) {
+					continue;
 				}
-			}
 
-			// TODO: Load data
-			
-			groups.add(group);
-			System.out.print(group.toString());
+				/* debug */ logger.info("World " + worldName + " added!"); /* debug */
+				group.addWorld(world);
+			}
 		}
 		
-		// Load inheritance - All groups must be loaded before we can load inheritance ladder.
-		for (String name : names) {
-			String path = "groups/" + name;
-			Group group = getGroup(name);
-			if (group != null) {
-				continue;
-			}
-
+		// Load inheritance
+		/* debug */ logger.info("Loading inheritance..."); /* debug */
+		for (Group group : groups) {
+			String path = "groups/" + group.getName();
 			Set<String> inheritedNames = data.getKeys(path + "/inherited");
+			/* debug */ logger.info("Loading inheritance for group " + group.getName()); /* debug */
 			for (String inheritedName : inheritedNames) {
+				/* debug */ logger.info("Inheriting group " + inheritedName + " for " + group.getName());  /* debug */
 				Group inherited = getGroup(inheritedName);
 				if (inherited != null) {
 					continue;
 				}
-				
-				group.setInheritedGroup(inherited, data.getBoolean(path + "/inherited/" + inheritedName));
+
+				/* debug */ logger.info("Group " + inheritedName + " inherited for " + group.getName()); /* debug */
+				boolean inherit = data.getBoolean(path + "/inherited/" + inheritedName);
+				group.setInheritedGroup(inherited, inherit);
+				if (inherit) {
+					continue;
+				}
+
+				/* debug */ logger.info("Inheriting permissions from " + inheritedName); /* debug */
+				Set<Map.Entry<String, Boolean>> nodes = inherited.getPermissions().entrySet();
+				for (Map.Entry<String, Boolean> node : nodes) {
+					/* debug */ logger.info("Inheriting " + node.getKey()); /* debug */
+					if (!group.getPermissions().containsKey(node.getKey())) {
+						continue;
+					}
+					
+					/* debug */ logger.info("Inherited " + node.getKey()); /* debug */
+					group.setPermission(node.getKey(), node.getValue());
+				}
 			}
 		}
 

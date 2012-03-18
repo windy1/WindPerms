@@ -23,12 +23,12 @@ import net.windwaker.permissions.api.GroupManager;
 import net.windwaker.permissions.api.UserManager;
 import net.windwaker.permissions.api.permissible.Group;
 import net.windwaker.permissions.api.permissible.User;
-import org.spout.api.util.config.Configuration;
 
 import java.io.File;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import org.spout.api.util.config.Configuration;
 
 /**
  * @author Windwaker
@@ -40,49 +40,7 @@ public class SimpleUserManager implements UserManager {
 	private final Set<User> users = new HashSet<User>();
 
 	public void load(GroupManager groupManager) {
-		data.load();
-		data.setPathSeperator("/");
-		Set<String> names = data.getKeys("users");
-		if (names.isEmpty()) {
-			return;
-		}
-		
-		// debug
-		data.setValue("foo.bar", true);
-		data.setValue("foo.baz", true);
-		System.out.println(data.getKeys("foo"));
-		// debug
 
-		logger.info("Loading user data...");
-		for (String name :  names) {
-			String path = "users/" + name;
-			User user = new User(name);
-			user.setCanBuild(data.getBoolean(path + "/build"));
-			Group group = groupManager.getGroup(data.getString(path + "/group"));
-			if (group != null) {
-				user.setGroup(group);
-			}
-			
-			// Load permissions
-			Set<String> nodes = data.getKeys(path + "/permissions");
-			
-			// debug
-			if (nodes.isEmpty()) {
-				System.out.println("No nodes found!");
-			}
-			// debug
-			
-			for (String node : nodes) {
-				boolean value = data.getBoolean(path + "/permissions/" + node);
-				user.setPermission(node, value);
-				System.out.println("PermissionNode{node=" + node + ",value=" + value + "}");
-			}
-			
-			users.add(user);
-			System.out.println(user.toString());
-		}
-
-		logger.info("User data loaded. " + users.size() + " unique users loaded!");
 	}
 
 	@Override

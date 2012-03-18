@@ -20,12 +20,10 @@ package net.windwaker.permissions.api.permissible;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 import net.windwaker.permissions.api.Permissions;
 import net.windwaker.permissions.api.UserManager;
 
-import javax.management.monitor.StringMonitor;
 
 /**
  * @author Windwaker
@@ -61,15 +59,6 @@ public class User implements Permissible {
 	 */
 	public void setGroup(Group group) {
 		this.group = group;
-		Set<Map.Entry<String, Boolean>> nodes = group.getPermissions().entrySet();
-		for (Map.Entry<String, Boolean> node : nodes) {
-			if (!permissions.containsKey(node)) {
-				continue;
-			}
-			
-			permissions.put(node.getKey(), node.getValue());
-		}
-		
 		userManager.saveUser(this);
 	}
 
