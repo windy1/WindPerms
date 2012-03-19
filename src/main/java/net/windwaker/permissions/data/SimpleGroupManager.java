@@ -44,7 +44,7 @@ public class SimpleGroupManager implements GroupManager {
 		Set<String> names = data.getKeys("groups");
 		logger.info("Loading group data...");
 		for (String name : names) {
-			/* debug */ logger.info("Loading user " + name); /* debug */
+			/* debug */ logger.info("Loading group " + name); /* debug */
 			String path = "groups/" + name;
 			Group group = new Group(name);
 			group.setDefault(data.getBoolean(path + "/default"));
@@ -59,7 +59,7 @@ public class SimpleGroupManager implements GroupManager {
 			}
 			
 			// Load worlds
-			Set<String> worldNames = data.getKeys(path + "/per-world/worlds");
+			List<String> worldNames = data.getStringList(path + "/worlds");
 			for (String worldName : worldNames) {
 				/* debug */ logger.info("Loading world " + worldName); /* debug */
 				World world = Spout.getGame().getWorld(worldName);
@@ -70,6 +70,8 @@ public class SimpleGroupManager implements GroupManager {
 				/* debug */ logger.info("World " + worldName + " added!"); /* debug */
 				group.addWorld(world);
 			}
+
+			groups.add(group);
 		}
 		
 		// Load inheritance
@@ -107,6 +109,7 @@ public class SimpleGroupManager implements GroupManager {
 		}
 
 		logger.info("Group data loaded. " + groups.size() + " unique groups loaded!");
+		/* debug */ System.out.println(groups); /* debug */
 	}
 
 	@Override
@@ -114,8 +117,9 @@ public class SimpleGroupManager implements GroupManager {
 
 		// Save inheritance
 		String path = "groups/" + group.getName();
-		Set<Map.Entry<Group, Boolean>> groups = group.getInheritedGroups().entrySet();
-		for (Map.Entry<Group, Boolean> entry : groups) {
+		Map<Group, Boolean> groupMap = group.getInheritedGroups();
+		for (Map.Entry<Group, Boolean> entry : groupMap.entrySet()) {
+			/* debug */ logger.info("Saving: " + entry.getKey() + " : " + entry.getValue()); /* debug */
 			data.setValue(path + "/inherited/" + entry.getKey().getName(), entry.getValue());
 		}
 
@@ -147,8 +151,8 @@ public class SimpleGroupManager implements GroupManager {
 		data.setValue(path + "/inherited/admin", false);
 		data.setValue(path + "/default", false);
 		data.setValue(path + "/per-world", false);
-		String[] list = {""};
-		data.setValue(path + "/per-world/worlds", Arrays.asList(list));
+		String[] list = {"world"};
+		data.setValue(path + "/worlds", Arrays.asList(list));
 		data.setValue(path + "/permissions/foo", false);
 		data.setValue(path + "/permissions/bar", false);
 		data.setValue(path + "/metadata/prefix", "");
@@ -172,7 +176,7 @@ public class SimpleGroupManager implements GroupManager {
 	@Override
 	public Group getGroup(String name) {
 		for (Group group : groups) {
-			if (group.getName().equals(name)) {
+			if (group.getName().equalsIgnoreCase(name)) {
 				return group;
 			}
 		}
