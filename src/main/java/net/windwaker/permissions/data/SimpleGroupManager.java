@@ -42,7 +42,10 @@ public class SimpleGroupManager implements GroupManager {
 		data.load();
 		data.setPathSeperator("/");
 		Set<String> names = data.getKeys("groups");
-		logger.info("Loading group data...");
+		if (!names.isEmpty()) {
+			logger.info("Loading group data...");
+		}
+
 		for (String name : names) {
 			/* debug */ logger.info("Loading group " + name); /* debug */
 			String path = "groups/" + name;
@@ -72,6 +75,11 @@ public class SimpleGroupManager implements GroupManager {
 			}
 
 			groups.add(group);
+			// debug
+			System.out.println(group.getPermissions().entrySet());
+			System.out.println(group.getWorlds());
+			// debug
+
 		}
 		
 		// Load inheritance
@@ -108,8 +116,10 @@ public class SimpleGroupManager implements GroupManager {
 			}
 		}
 
-		logger.info("Group data loaded. " + groups.size() + " unique groups loaded!");
-		/* debug */ System.out.println(groups); /* debug */
+		if (!names.isEmpty()) {
+			logger.info("Group data loaded. " + groups.size() + " unique groups loaded!");
+			/* debug */ System.out.println(groups); /* debug */
+		}
 	}
 
 	@Override

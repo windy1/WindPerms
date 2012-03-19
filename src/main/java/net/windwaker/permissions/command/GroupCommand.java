@@ -30,6 +30,7 @@ import org.spout.api.command.annotated.CommandPermissions;
 import org.spout.api.exception.CommandException;
 
 import java.util.Map;
+import java.util.Set;
 
 /**
  * 
@@ -42,9 +43,11 @@ public class GroupCommand {
 	@Command(aliases = {"group", "gr"}, desc = "Modifies a group", usage = "<info|set|add|remove|check|help> [inherit|default|perm|build|data] [group] [bool:build|bool:default|group|perm|identifier] [bool:inherit|bool:permState|object:data]", min = 1, max = 5)
 	@CommandPermissions("permissions.command.group")
 	public void group(CommandContext args, CommandSource source) throws CommandException {
-		if (args.length() == 1 && args.getString(0).equalsIgnoreCase("help")) {
-			printHelp(source);
-			return;
+		if (args.length() == 1) {
+			if (args.getString(0).equalsIgnoreCase("help")) {
+				printHelp(source);
+				return;
+			}
 		}
 
 		if (args.length() == 2) {

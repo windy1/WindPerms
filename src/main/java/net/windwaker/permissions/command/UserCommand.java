@@ -31,6 +31,8 @@ import org.spout.api.command.annotated.Command;
 import org.spout.api.command.annotated.CommandPermissions;
 import org.spout.api.exception.CommandException;
 
+import java.util.Set;
+
 /**
  * 
  * @author Windwaker
@@ -43,9 +45,11 @@ public class UserCommand {
 	@Command(aliases = {"user", "us"}, desc = "Modify Permissions users.", usage = "<info|set|add|remove|check|help> [group|perm|build|data] [user] [group:groupName|perm:node|bool:build|identifier] [bool|object]", min = 1, max = 5)
 	@CommandPermissions("permissions.command.user")
 	public void user(CommandContext args, CommandSource source) throws CommandException {
-		if (args.length() == 1 && args.getString(0).equalsIgnoreCase("help")) {
-			printHelp(source);
-			return;
+		if (args.length() == 1) {
+			if (args.getString(0).equalsIgnoreCase("help")) {
+				printHelp(source);
+				return;
+			}
 		}
 
 		if (args.length() == 2) {

@@ -19,7 +19,9 @@
 package net.windwaker.permissions.data;
 
 import net.windwaker.permissions.Logger;
+import net.windwaker.permissions.SimplePermissionsPlugin;
 import net.windwaker.permissions.api.GroupManager;
+import net.windwaker.permissions.api.Permissions;
 import net.windwaker.permissions.api.UserManager;
 import net.windwaker.permissions.api.permissible.Group;
 import net.windwaker.permissions.api.permissible.User;
@@ -30,6 +32,8 @@ import java.util.Map;
 import java.util.Set;
 import org.spout.api.util.config.Configuration;
 
+import javax.management.monitor.StringMonitor;
+
 /**
  * @author Windwaker
  */
@@ -39,8 +43,61 @@ public class SimpleUserManager implements UserManager {
 	private static final Configuration data = new Configuration(new File("plugins/Permissions/users.yml"));
 	private final Set<User> users = new HashSet<User>();
 
-	public void load(GroupManager groupManager) {
+	public void load() {
+		GroupManager groupManager = Permissions.getGroupManager();
+		data.load();
+		data.setPathSeperator("/");
+		Set<String> names = data.getKeys("users");
+		if (!names.isEmpty()) {
+			logger.info("Loading user data...");
+		}
 
+		for (String name : names) {
+			/* debug */ logger.info("Loading user " + name); /* debug */
+			String path = "users/" + name;
+			User user = new User(name);
+			user.setCanBuild(data.getBoolean(path + "/build"));
+			Group group = groupManager.getGroup(data.getString(path + "/group"));
+			if (group != null) {
+				/* debug */ logger.info("Group is not null!"); /* debug */
+				// TODO: For some reason, the group is being set to ' ' every startup...
+				user.setGroup(group);
+			}
+			
+			// Load permissions
+			Set<String> nodes = data.getKeys(path + "/permissions");
+			for (String node : nodes) {
+				/* debug */ logger.info("Loading permission node " + node); /* debug */
+				user.setPermission(node, data.getBoolean(path + "/permissions/" + node));
+			}
+
+			if (group != null) {
+				Set<Map.Entry<String, Boolean>> ns = group.getPermissions().entrySet();
+				for (Map.Entry<String, Boolean> n : ns) {
+					/* debug */ System.out.println(n); /* debug */
+					if (!user.getPermissions().containsKey(n.getKey())) {
+						continue;
+					}
+				
+					/* debug */ logger.info("User does not have inherited node " + n.getKey()); /* debug */
+					user.setPermission(n.getKey(), n.getValue());
+				}
+			} else {
+				/* debug */ logger.info("Group is null!"); /* debug */
+			}
+
+			/* debug */ logger.info("User " + name + " loaded!"); /* debug */
+			users.add(user);
+			// debug
+			System.out.println(user.getPermissions().entrySet());
+			System.out.println(user.getGroup());
+			// debug
+		}
+		
+		if (!names.isEmpty()) {
+			logger.info("User data loaded. " + users.size() + " unique users loaded!");
+			/* debug */ System.out.println(users); /* debug */
+		}
 	}
 
 	@Override
