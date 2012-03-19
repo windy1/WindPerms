@@ -34,9 +34,9 @@ public class Group implements Permissible {
 	private boolean def = false;
 	private boolean canBuild = true;
 	private boolean perWorld = false;
-	private Map<Group, Boolean> inherited = new HashMap<Group, Boolean>();
-	private Map<String, Boolean> permissions = new HashMap<String, Boolean>();
-	private List<World> worlds = new ArrayList<World>();
+	private final Map<Group, Boolean> inherited = new HashMap<Group, Boolean>();
+	private final Map<String, Boolean> permissions = new HashMap<String, Boolean>();
+	private final List<World> worlds = new ArrayList<World>();
 	//private Map<String, DataValue> data = new HashMap<String, DataValue>();
 
 	public Group(String name) {

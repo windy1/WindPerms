@@ -19,7 +19,6 @@
 package net.windwaker.permissions.data;
 
 import net.windwaker.permissions.Logger;
-import net.windwaker.permissions.SimplePermissionsPlugin;
 import net.windwaker.permissions.api.GroupManager;
 import net.windwaker.permissions.api.Permissions;
 import net.windwaker.permissions.api.UserManager;
@@ -31,8 +30,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import org.spout.api.util.config.Configuration;
-
-import javax.management.monitor.StringMonitor;
 
 /**
  * @author Windwaker

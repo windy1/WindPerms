@@ -33,7 +33,7 @@ public class User implements Permissible {
 	private final UserManager userManager = Permissions.getUserManager();
 	private final String name;
 	private Group group;
-	private Map<String, Boolean> permissions = new HashMap<String, Boolean>();
+	private final Map<String, Boolean> permissions = new HashMap<String, Boolean>();
 	//private Map<String, DataValue> data = new HashMap<String, DataValue>();
 	private boolean canBuild = false;
 	
