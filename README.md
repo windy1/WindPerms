@@ -1,5 +1,5 @@
-About
------
+Permissions
+-----------
 Permissions is a plugin for the Spout server that provides Permissible player actions for other plugins. This plugin uses Spout's native Permissions API and will require no bridge. This plugin itself provides very little functionality, but is more for giving players "permisison" to what a plugin dev want to restrict.
 
 Permissions is [open source][GitHub] | [Report an issue][Issues]
