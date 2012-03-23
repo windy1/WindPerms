@@ -43,7 +43,7 @@ public class SimpleUserManager implements UserManager {
 	public void load() {
 		GroupManager groupManager = Permissions.getGroupManager();
 		data.load();
-		data.setPathSeperator("/");
+		data.setPathSeparator("/");
 		Set<String> names = data.getKeys("users");
 		if (!names.isEmpty()) {
 			logger.info("Loading user data...");
@@ -53,6 +53,7 @@ public class SimpleUserManager implements UserManager {
 			/* debug */ logger.info("Loading user " + name); /* debug */
 			String path = "users/" + name;
 			User user = new User(name);
+			user.setAutosave(false);
 			user.setCanBuild(data.getBoolean(path + "/build"));
 			Group group = groupManager.getGroup(data.getString(path + "/group"));
 			if (group != null) {
@@ -84,6 +85,7 @@ public class SimpleUserManager implements UserManager {
 			}
 
 			/* debug */ logger.info("User " + name + " loaded!"); /* debug */
+			user.setAutosave(true);
 			users.add(user);
 			// debug
 			System.out.println(user.getPermissions().entrySet());

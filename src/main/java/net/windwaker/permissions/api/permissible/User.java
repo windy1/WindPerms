@@ -36,6 +36,7 @@ public class User implements Permissible {
 	private final Map<String, Boolean> permissions = new HashMap<String, Boolean>();
 	//private Map<String, DataValue> data = new HashMap<String, DataValue>();
 	private boolean canBuild = false;
+	private boolean autosave = true;
 	
 	public User(String name) {
 		this.name = name;
@@ -59,7 +60,9 @@ public class User implements Permissible {
 	 */
 	public void setGroup(Group group) {
 		this.group = group;
-		userManager.saveUser(this);
+		if (autosave) {
+			userManager.saveUser(this);
+		}
 	}
 
 	/**
@@ -71,6 +74,24 @@ public class User implements Permissible {
 		return group;
 	}
 
+	/**
+	 * Whether or not the user is a default group
+	 *
+	 * @return true if default
+	 */
+	public boolean isAutosave() {
+		return autosave;
+	}
+
+	/**
+	 * Whether or not the user is per-world or universal.
+	 *
+	 * @return true if per-world
+	 */
+	public void setAutosave(boolean autosave) {
+		this.autosave = autosave;
+	}
+
 	@Override
 	public Map<String, Boolean> getPermissions() {
 		return permissions;
@@ -79,7 +100,9 @@ public class User implements Permissible {
 	@Override
 	public void setPermission(String node, boolean state) {
 		permissions.put(node, state);
-		userManager.saveUser(this);
+		if (autosave) {
+			userManager.saveUser(this);
+		}
 	}
 
 	@Override
@@ -94,7 +117,9 @@ public class User implements Permissible {
 	@Override
 	public void setCanBuild(boolean canBuild) {
 		this.canBuild = canBuild;
-		userManager.saveUser(this);
+		if (autosave) {
+			userManager.saveUser(this);
+		}
 	}
 
 	@Override

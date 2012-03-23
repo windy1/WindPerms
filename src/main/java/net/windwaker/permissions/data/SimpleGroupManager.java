@@ -40,7 +40,7 @@ public class SimpleGroupManager implements GroupManager {
 
 	public void load() {
 		data.load();
-		data.setPathSeperator("/");
+		data.setPathSeparator("/");
 		Set<String> names = data.getKeys("groups");
 		if (!names.isEmpty()) {
 			logger.info("Loading group data...");
@@ -50,6 +50,7 @@ public class SimpleGroupManager implements GroupManager {
 			/* debug */ logger.info("Loading group " + name); /* debug */
 			String path = "groups/" + name;
 			Group group = new Group(name);
+			group.setAutosave(false);
 			group.setDefault(data.getBoolean(path + "/default"));
 			group.setCanBuild(data.getBoolean(path + "/build"));
 			group.setPerWorld(data.getBoolean(path + "/per-world"));
@@ -74,6 +75,7 @@ public class SimpleGroupManager implements GroupManager {
 				group.addWorld(world);
 			}
 
+			group.setAutosave(true);
 			groups.add(group);
 			// debug
 			System.out.println(group.getPermissions().entrySet());

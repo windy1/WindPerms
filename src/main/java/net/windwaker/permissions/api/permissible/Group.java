@@ -31,6 +31,7 @@ public class Group implements Permissible {
 
 	private final GroupManager groupManager = Permissions.getGroupManager();
 	private final String name;
+	private boolean autosave = true;
 	private boolean def = false;
 	private boolean canBuild = true;
 	private boolean perWorld = false;
@@ -69,7 +70,9 @@ public class Group implements Permissible {
 	 */
 	public void setInheritedGroup(Group group, boolean inherit) {
 		inherited.put(group, inherit);
-		groupManager.saveGroup(this);
+		if (autosave) {
+			groupManager.saveGroup(this);
+		}
 	}
 
 	/**
@@ -79,7 +82,9 @@ public class Group implements Permissible {
 	 */
 	public void setDefault(boolean def) {
 		this.def = def;
-		groupManager.saveGroup(this);
+		if (autosave) {
+			groupManager.saveGroup(this);
+		}
 	}
 
 	/**
@@ -107,7 +112,9 @@ public class Group implements Permissible {
 	 */
 	public void setPerWorld(boolean perWorld) {
 		this.perWorld = perWorld;
-		groupManager.saveGroup(this);
+		if (autosave) {
+			groupManager.saveGroup(this);
+		}
 	}
 
 	/**
@@ -126,7 +133,9 @@ public class Group implements Permissible {
 	 */
 	public void addWorld(World world) {
 		worlds.add(world);
-		groupManager.saveGroup(this);
+		if (autosave) {
+			groupManager.saveGroup(this);
+		}
 	}
 
 	/**
@@ -136,7 +145,27 @@ public class Group implements Permissible {
 	 */
 	public void removeWorld(World world) {
 		worlds.remove(world);
-		groupManager.saveGroup(this);
+		if (autosave) {
+			groupManager.saveGroup(this);
+		}
+	}
+
+	/**
+	 * Whether or not changes save to disk automatically.
+	 *
+	 * @return true if autosave is on.
+	 */
+	public boolean isAutosave() {
+		return autosave;
+	}
+
+	/**
+	 * Sets whether or not changes should save to disk automatically.
+	 *
+	 * @param autosave
+	 */
+	public void setAutosave(boolean autosave) {
+		this.autosave = autosave;
 	}
 
 	@Override
@@ -147,7 +176,9 @@ public class Group implements Permissible {
 	@Override
 	public void setPermission(String node, boolean state) {
 		permissions.put(node, state);
-		groupManager.saveGroup(this);
+		if (autosave) {
+			groupManager.saveGroup(this);
+		}
 	}
 
 	@Override
@@ -162,7 +193,9 @@ public class Group implements Permissible {
 	@Override
 	public void setCanBuild(boolean canBuild) {
 		this.canBuild = canBuild;
-		groupManager.saveGroup(this);
+		if (autosave) {
+			groupManager.saveGroup(this);
+		}
 	}
 
 	@Override
