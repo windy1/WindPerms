@@ -60,7 +60,6 @@
             </resource>
             <resource>
                 <directory>.</directory>
-                <filtering>true</filtering>
                 <includes>
                     <include>LICENSE.txt</include>
                     <include>README.md</include>
