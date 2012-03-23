@@ -20,6 +20,7 @@ package net.windwaker.permissions.api.permissible;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import net.windwaker.permissions.api.Permissions;
 import net.windwaker.permissions.api.UserManager;
@@ -34,7 +35,6 @@ public class User implements Permissible {
 	private final String name;
 	private Group group;
 	private final Map<String, Boolean> permissions = new HashMap<String, Boolean>();
-	//private Map<String, DataValue> data = new HashMap<String, DataValue>();
 	private boolean canBuild = false;
 	private boolean autosave = true;
 	
@@ -60,6 +60,15 @@ public class User implements Permissible {
 	 */
 	public void setGroup(Group group) {
 		this.group = group;
+
+		// Load inherited permissions.
+		Set<Map.Entry<String, Boolean>> nodes = group.getPermissions().entrySet();
+		for (Map.Entry<String, Boolean> node : nodes) {
+			if (!permissions.containsKey(node.getKey())) {
+				permissions.put(node.getKey(), node.getValue());
+			}
+		}
+		
 		if (autosave) {
 			userManager.saveUser(this);
 		}
@@ -126,21 +135,4 @@ public class User implements Permissible {
 	public boolean canBuild() {
 		return canBuild;
 	}
-
-	/*
-	@Override
-	public Map<String, DataValue> getMetadata() {
-		return data;
-	}
-
-	@Override
-	public void setMetadata(String identifier, DataValue value) {
-		data.put(identifier, value);
-		userManager.saveUser(this);
-	}
-
-	@Override
-	public DataValue getMetadata(String identifier) {
-		return data.get(identifier);
-	}*/
 }

@@ -49,78 +49,62 @@ public class SimpleUserManager implements UserManager {
 			logger.info("Loading user data...");
 		}
 
+		// Load users
 		for (String name : names) {
-			/* debug */ logger.info("Loading user " + name); /* debug */
+
+			// Create new user
 			String path = "users/" + name;
 			User user = new User(name);
+			
+			// Turn off autosaving for the user while loading - data will not save to disk.
 			user.setAutosave(false);
+			
+			// Set build
 			user.setCanBuild(data.getBoolean(path + "/build"));
+
+			// Load permissions
+			loadPermissions(user);
+
+			// Load group
 			Group group = groupManager.getGroup(data.getString(path + "/group"));
 			if (group != null) {
-				/* debug */ logger.info("Group is not null!"); /* debug */
-				// TODO: For some reason, the group is being set to ' ' every startup...
 				user.setGroup(group);
 			}
-			
-			// Load permissions
-			Set<String> nodes = data.getKeys(path + "/permissions");
-			for (String node : nodes) {
-				/* debug */ logger.info("Loading permission node " + node); /* debug */
-				user.setPermission(node, data.getBoolean(path + "/permissions/" + node));
-			}
 
-			if (group != null) {
-				Set<Map.Entry<String, Boolean>> ns = group.getPermissions().entrySet();
-				for (Map.Entry<String, Boolean> n : ns) {
-					/* debug */ System.out.println(n); /* debug */
-					if (!user.getPermissions().containsKey(n.getKey())) {
-						continue;
-					}
-				
-					/* debug */ logger.info("User does not have inherited node " + n.getKey()); /* debug */
-					user.setPermission(n.getKey(), n.getValue());
-				}
-			} else {
-				/* debug */ logger.info("Group is null!"); /* debug */
-			}
-
-			/* debug */ logger.info("User " + name + " loaded!"); /* debug */
+			// Turn autosave back on and add user.
 			user.setAutosave(true);
 			users.add(user);
-			// debug
-			System.out.println(user.getPermissions().entrySet());
-			System.out.println(user.getGroup());
-			// debug
 		}
 		
 		if (!names.isEmpty()) {
 			logger.info("User data loaded. " + users.size() + " unique users loaded!");
-			/* debug */ System.out.println(users); /* debug */
+		}
+	}
+	
+	private void loadPermissions(User user) {
+		String path = "users/" + user.getName();
+		Set<String> nodes = data.getKeys(path + "/permissions");
+		for (String node : nodes) {
+			user.setPermission(node, data.getBoolean(path + "/permissions/" + node));
 		}
 	}
 
 	@Override
 	public void saveUser(User user) {
-
-		// Save permissions
+		String path = "users/" + user.getName();
+		savePermissions(user);
+		String groupName = user.getGroup() != null ? user.getGroup().getName() : "";
+		data.setValue(path + "/group", groupName);
+		data.setValue(path + "/build", user.canBuild());
+		data.save();
+	}
+	
+	private void savePermissions(User user) {
 		String path = "users/" + user.getName();
 		Set<Map.Entry<String, Boolean>> perms = user.getPermissions().entrySet();
 		for (Map.Entry<String, Boolean> perm : perms) {
 			data.setValue(path + "/permissions/" + perm.getKey(), perm.getValue());
 		}
-
-		// Save data
-		/*
-		Set<Map.Entry<String, DataValue>> meta = user.getMetadata().entrySet();
-		for (Map.Entry<String, DataValue> d : meta) {
-			data.setValue(path + ".metadata." + d.getKey(), d.getValue());
-		}*/
-
-		// Save misc values
-		String groupName = user.getGroup() != null ? user.getGroup().getName() : "";
-		data.setValue(path + "/group", groupName);
-		data.setValue(path + "/build", user.canBuild());
-		data.save();
 	}
 
 	@Override

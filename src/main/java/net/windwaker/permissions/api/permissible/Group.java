@@ -38,7 +38,6 @@ public class Group implements Permissible {
 	private final Map<Group, Boolean> inherited = new HashMap<Group, Boolean>();
 	private final Map<String, Boolean> permissions = new HashMap<String, Boolean>();
 	private final List<World> worlds = new ArrayList<World>();
-	//private Map<String, DataValue> data = new HashMap<String, DataValue>();
 
 	public Group(String name) {
 		this.name = name;
@@ -70,7 +69,16 @@ public class Group implements Permissible {
 	 */
 	public void setInheritedGroup(Group group, boolean inherit) {
 		inherited.put(group, inherit);
-		if (autosave) {
+
+		// Load inherited permissions
+		Set<Map.Entry<String, Boolean>> nodes = group.getPermissions().entrySet();
+		for (Map.Entry<String, Boolean> node : nodes) {
+			if (!permissions.containsKey(node.getKey()) && inherit) {
+				permissions.put(node.getKey(), node.getValue());
+			}
+		}
+		
+		if (autosave) {                              
 			groupManager.saveGroup(this);
 		}
 	}
@@ -202,19 +210,4 @@ public class Group implements Permissible {
 	public boolean canBuild() {
 		return canBuild;
 	}
-
-	/*@Override
-	public Map<String, DataValue> getMetadata() {
-		return data;
-	}
-
-	@Override
-	public void setMetadata(String identifier, DataValue value) {
-		data.put(identifier, value);
-	}
-
-	@Override
-	public DataValue getMetadata(String identifier) {
-		return data.get(identifier);
-	}*/
 }

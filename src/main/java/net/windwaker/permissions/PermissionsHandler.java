@@ -102,24 +102,4 @@ public class PermissionsHandler implements Listener {
 		userManager.addUser(playerName);
 
 	}
-
-	/*
-	@EventHandler(order = Order.EARLIEST)
-	public void onDataCheck(RetrieveDataEvent event) {
-		String name = event.getSubject().getName();
-		Permissible subject = userManager.getUser(name);
-		if (subject == null) {
-			subject = groupManager.getGroup(name);
-		}
-		
-		if (subject == null) {
-			return;
-		}
-		
-		String node = event.getNode();
-
-		if (subject.getMetadata(node) != null) {
-			event.setResult(subject.getMetadata(node));
-		}
-	}*/
 }

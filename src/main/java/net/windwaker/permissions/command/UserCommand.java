@@ -42,7 +42,7 @@ public class UserCommand {
 	private final UserManager userManager = Permissions.getUserManager();
 	private final GroupManager groupManager = Permissions.getGroupManager();
 	
-	@Command(aliases = {"user", "us"}, desc = "Modify Permissions users.", usage = "<info|set|add|remove|check|help> [group|perm|build|data] [user] [group:groupName|perm:node|bool:build|identifier] [bool|object]", min = 1, max = 5)
+	@Command(aliases = {"user", "us"}, desc = "Modify Permissions users.", usage = "<info|set|add|remove|check|help> [group|perm|build] [user] [group:groupName|perm:node|bool:build|identifier] [bool]", min = 1, max = 5)
 	@CommandPermissions("permissions.command.user")
 	public void user(CommandContext args, CommandSource source) throws CommandException {
 		if (args.length() == 1) {
@@ -97,11 +97,6 @@ public class UserCommand {
 						checkPermission(source, args.getString(2), args.getString(3));
 						return;
 					}
-
-					if (args.getString(2).equalsIgnoreCase("data")) {
-						checkData(source, args.getString(2), args.getString(3));
-						return;
-					}
 				}
 			}
 		}
@@ -112,17 +107,12 @@ public class UserCommand {
 					setPermission(source, args.getString(2), args.getString(3), args.getString(4));
 					return;
 				}
-				
-				if (args.getString(1).equalsIgnoreCase("data")) {
-					setData(source, args.getString(2), args.getString(3), args.getString(4));
-					return;
-				}
 			}
 		}
 
 		// If it reaches the end while parsing, send help.
 		PermissionsCommand.printHelp(source);
-		throw new CommandException("Check your argyments!");
+		throw new CommandException("Check your arguments!");
 	}
 	
 	private void printHelp(CommandSource source) {
@@ -131,10 +121,10 @@ public class UserCommand {
 		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN + "/user help" + ChatColor.BRIGHT_GREEN + " : Shows this menu.");
 		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN + "/user info <user>" + ChatColor.BRIGHT_GREEN + " : View a users information.");
 		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN
-		+ "/user set <group|perm|build|data> <user> <true|false|group|permissionNode|dataTag> [true|false|other]" + ChatColor.BRIGHT_GREEN
+		+ "/user set <group|perm|build> <user> <true|false|group|permissionNode> [true|false|other]" + ChatColor.BRIGHT_GREEN
 		+ " : Set various flag for the user.");
 		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN + "/user <add|remove> <user>" + ChatColor.BRIGHT_GREEN + " : Add or remove a user.");
-		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN + "/user check <perm|data> <user> <permissionNode|dataTag>" + ChatColor.BRIGHT_GREEN
+		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN + "/user check <perm> <user> <permissionNode>" + ChatColor.BRIGHT_GREEN
 		+ " : Checks various flags for user.");
 
 	}
@@ -199,16 +189,6 @@ public class UserCommand {
 		source.sendMessage(ChatColor.BRIGHT_GREEN + user.getName() + " " + can + " build now!");
 	}
 	
-	private void setData(CommandSource source, String username, String identifier, String value) throws CommandException {
-		User user = userManager.getUser(username);
-		if (user == null) {
-			throw new CommandException(username + " does not exist!");
-		}
-		
-		//user.setMetadata(identifier, new DataValue(value));
-		source.sendMessage(ChatColor.BRIGHT_GREEN + username + ": Set " + identifier + " to " + value);
-	}
-	
 	private void checkPermission(CommandSource source, String username, String node) throws CommandException {
 		User user = userManager.getUser(username);
 		if (user == null) {
@@ -217,14 +197,5 @@ public class UserCommand {
 		
 		String has = user.hasPermission(node) ? "has" : "does not have";
 		source.sendMessage(ChatColor.BRIGHT_GREEN + "User " + username + " " + has + " permission for " + node);
-	}
-	
-	private void checkData(CommandSource source, String username, String tag) throws CommandException {
-		User user = userManager.getUser(username);
-		if (user == null) {
-			throw new CommandException(username + " does not exist!");
-		}
-
-		// TODO: Check data
 	}
 }

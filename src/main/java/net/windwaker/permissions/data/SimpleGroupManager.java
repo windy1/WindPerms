@@ -46,114 +46,96 @@ public class SimpleGroupManager implements GroupManager {
 			logger.info("Loading group data...");
 		}
 
+		// Load groups
 		for (String name : names) {
-			/* debug */ logger.info("Loading group " + name); /* debug */
+
+			// Create new group
 			String path = "groups/" + name;
 			Group group = new Group(name);
+
+			// Turn off autosave for loading.
 			group.setAutosave(false);
+
+			// Set some values.
 			group.setDefault(data.getBoolean(path + "/default"));
 			group.setCanBuild(data.getBoolean(path + "/build"));
 			group.setPerWorld(data.getBoolean(path + "/per-world"));
-			
-			// Load permissions
-			Set<String> nodes = data.getKeys(path + "/permissions");
-			for (String node : nodes) {
-				/* debug */ logger.info("Loading permission node " + node); /* debug */
-				group.setPermission(node, data.getBoolean(path + "/permissions/" + node));
-			}
-			
-			// Load worlds
-			List<String> worldNames = data.getStringList(path + "/worlds");
-			for (String worldName : worldNames) {
-				/* debug */ logger.info("Loading world " + worldName); /* debug */
-				World world = Spout.getGame().getWorld(worldName);
-				if (world != null) {
-					continue;
-				}
 
-				/* debug */ logger.info("World " + worldName + " added!"); /* debug */
-				group.addWorld(world);
-			}
+			// Load permissions and worlds
+			loadPermissions(group);
+			loadWorlds(group);
 
+			// Turn autosave back on and add the group.
 			group.setAutosave(true);
 			groups.add(group);
-			// debug
-			System.out.println(group.getPermissions().entrySet());
-			System.out.println(group.getWorlds());
-			// debug
-
 		}
 		
-		// Load inheritance
-		/* debug */ logger.info("Loading inheritance..."); /* debug */
+		// Load inheritance - must be loaded after all other groups are loaded.
 		for (Group group : groups) {
-			String path = "groups/" + group.getName();
-			Set<String> inheritedNames = data.getKeys(path + "/inherited");
-			/* debug */ logger.info("Loading inheritance for group " + group.getName()); /* debug */
-			for (String inheritedName : inheritedNames) {
-				/* debug */ logger.info("Inheriting group " + inheritedName + " for " + group.getName());  /* debug */
-				Group inherited = getGroup(inheritedName);
-				if (inherited != null) {
-					continue;
-				}
-
-				/* debug */ logger.info("Group " + inheritedName + " inherited for " + group.getName()); /* debug */
-				boolean inherit = data.getBoolean(path + "/inherited/" + inheritedName);
-				group.setInheritedGroup(inherited, inherit);
-				if (inherit) {
-					continue;
-				}
-
-				/* debug */ logger.info("Inheriting permissions from " + inheritedName); /* debug */
-				Set<Map.Entry<String, Boolean>> nodes = inherited.getPermissions().entrySet();
-				for (Map.Entry<String, Boolean> node : nodes) {
-					/* debug */ logger.info("Inheriting " + node.getKey()); /* debug */
-					if (!group.getPermissions().containsKey(node.getKey())) {
-						continue;
-					}
-					
-					/* debug */ logger.info("Inherited " + node.getKey()); /* debug */
-					group.setPermission(node.getKey(), node.getValue());
-				}
-			}
+			loadInheritance(group);
 		}
 
 		if (!names.isEmpty()) {
 			logger.info("Group data loaded. " + groups.size() + " unique groups loaded!");
-			/* debug */ System.out.println(groups); /* debug */
+		}
+	}
+	
+	private void loadPermissions(Group group) {
+		String path = "groups/" + group.getName();
+		Set<String> nodes = data.getKeys(path + "/permissions");
+		for (String node : nodes) {
+			group.setPermission(node, data.getBoolean(path + "/permissions/" + node));
+		}
+	}
+	
+	private void loadWorlds(Group group) {
+		String path = "groups/" + group.getName();
+		List<String> worldNames = data.getStringList(path + "/worlds");
+		for (String worldName : worldNames) {
+			World world = Spout.getGame().getWorld(worldName);
+			if (world != null) {
+				group.addWorld(world);
+			}
+		}
+	}
+	
+	private void loadInheritance(Group group) {
+		String path = "groups/" + group.getName();
+		Set<String> inheritedNames = data.getKeys(path + "/inherited");
+		for (String inheritedName : inheritedNames) {
+			Group inherited = getGroup(inheritedName);
+			if (inherited != null) {
+				group.setInheritedGroup(inherited, data.getBoolean(path + "/inherited/" + inheritedName));
+			}
 		}
 	}
 
 	@Override
 	public void saveGroup(Group group) {
-
-		// Save inheritance
 		String path = "groups/" + group.getName();
-		Map<Group, Boolean> groupMap = group.getInheritedGroups();
-		for (Map.Entry<Group, Boolean> entry : groupMap.entrySet()) {
-			/* debug */ logger.info("Saving: " + entry.getKey() + " : " + entry.getValue()); /* debug */
-			data.setValue(path + "/inherited/" + entry.getKey().getName(), entry.getValue());
-		}
-
-		// Save permissions
-		Set<Map.Entry<String, Boolean>> perms = group.getPermissions().entrySet();
-		for (Map.Entry<String, Boolean> perm :  perms) {
-			data.setValue(path + "/permissions/" + perm.getKey(), perm.getValue());
-		}
-
-		// Save data
-		/*
-		Set<Map.Entry<String, DataValue>> meta = group.getMetadata().entrySet();
-		for (Map.Entry<String, DataValue> d : meta) {
-			data.setValue(path + ".metadata." + d.getKey(), d.getValue());
-		}*/
-
-		// Save misc values
+		saveInheritance(group);
+		savePermissions(group);
 		data.setValue(path + "/per-world", group.isPerWorld());
 		data.setValue(path + "/per-world", group.getWorlds());
 		data.setValue(path + "/default", group.isDefault());
 		data.setValue(path + "/build", group.canBuild());
 		data.save();
+	}
+	
+	private void saveInheritance(Group group) {
+		String path = "groups/" + group.getName();
+		Map<Group, Boolean> groupMap = group.getInheritedGroups();
+		for (Map.Entry<Group, Boolean> entry : groupMap.entrySet()) {
+			data.setValue(path + "/inherited/" + entry.getKey().getName(), entry.getValue());
+		}
+	}
+	
+	private void savePermissions(Group group) {
+		String path = "groups/" + group.getName();
+		Set<Map.Entry<String, Boolean>> perms = group.getPermissions().entrySet();
+		for (Map.Entry<String, Boolean> perm :  perms) {
+			data.setValue(path + "/permissions/" + perm.getKey(), perm.getValue());
+		}
 	}
 	
 	@Override

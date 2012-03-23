@@ -69,27 +69,4 @@ public interface Permissible {
 	 */
 	public boolean canBuild();
 
-	/**
-	 * Gets a mapping of all key-value data declarations.
-	 *
-	 * @return all data
-	 */
-	//public Map<String, DataValue> getMetadata();
-	
-	/**
-	 * Sets a metadata value to the subject.
-	 * 
-	 * @param unique identifier 
-	 * @param value
-	 */
-	//public void setMetadata(String identifier, DataValue value);
-	
-	/**
-	 * Gets a metadata value from the subject via a unique identifier.
-	 * 
-	 * @param identifier
-	 * @return value
-	 */
-	//public DataValue getMetadata(String identifier);
-
 }
