@@ -21,6 +21,7 @@ package net.windwaker.permissions;
 import net.windwaker.permissions.api.GroupManager;
 import net.windwaker.permissions.api.Permissions;
 import net.windwaker.permissions.api.UserManager;
+import net.windwaker.permissions.api.permissible.Group;
 import net.windwaker.permissions.api.permissible.Permissible;
 import net.windwaker.permissions.api.permissible.User;
 
@@ -49,10 +50,13 @@ public class PermissionsHandler implements Listener {
 			return;
 		}
 		
-		String[] group = {user.getGroup().getName()};
-		if (group != null) {
-			event.setGroups(group);
+		Group group = user.getGroup();
+		if (group == null) {
+			return;
 		}
+		
+		String[] name = {group.getName()};
+		event.setGroups(name);
 	}
 
 	@EventHandler(order = Order.EARLIEST)
@@ -62,8 +66,13 @@ public class PermissionsHandler implements Listener {
 			return;
 		}
 		
+		Group group = user.getGroup();
+		if (group == null) {
+			return;
+		}
+
 		String name = event.getGroup();
-		if (user.getGroup().getName().equalsIgnoreCase(name)) {
+		if (group.getName().equalsIgnoreCase(name)) {
 			event.setResult(true);
 		} else {
 			event.setResult(false);
