@@ -98,7 +98,7 @@ public class PermissionsHandler implements Listener {
 		}
 	}
 
-	@EventHandler
+	@EventHandler(order = Order.EARLIEST)
 	public void onPlayerLogin(PlayerLoginEvent event) {
 		String playerName = event.getPlayer().getName();
 		User user = userManager.getUser(playerName);

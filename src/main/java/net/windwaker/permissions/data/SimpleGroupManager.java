@@ -147,8 +147,8 @@ public class SimpleGroupManager implements GroupManager {
 		data.setValue(path + "/per-world", false);
 		String[] list = {"world"};
 		data.setValue(path + "/worlds", Arrays.asList(list));
-		data.setValue(path + "/permissions/foo", false);
-		data.setValue(path + "/permissions/bar", false);
+		data.setValue(path + "/permissions/foo.bar", false);
+		data.setValue(path + "/permissions/baz.qux", false);
 		data.setValue(path + "/metadata/prefix", "");
 		data.setValue(path + "/metadata/suffix", "");
 		data.setValue(path + "/build", true);

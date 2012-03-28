@@ -18,26 +18,41 @@
  */
 package net.windwaker.permissions.api.permissible;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * Represents a permissible entity.
+ *
  * @author Windwaker
  */
-public interface Permissible {
+public abstract class Permissible {
+	protected final String name;
+	protected final Map<String, Boolean> permissionNodes = new HashMap<String, Boolean>();
+	protected boolean canBuild = true;
+	protected boolean autosave = true;
 
+	public Permissible(String name) {
+		this.name = name;
+	}
+	
 	/**
 	 * Gets the name of this Permissable
 	 *
 	 * @return name of subject
 	 */
-	public String getName();
+	public String getName() {
+		return name;
+	}
 
 	/**
 	 * Gets all permissions of subject, including any inherited.
 	 *
 	 * @return all permissions
 	 */
-	public Map<String, Boolean> getPermissions();
+	public Map<String, Boolean> getPermissions() {
+		return permissionNodes;
+	} 
 
 	/**
 	 * Sets a permissions state for the subject
@@ -45,7 +60,12 @@ public interface Permissible {
 	 * @param node
 	 * @param state
 	 */
-	public void setPermission(String node, boolean state);
+	public void setPermission(String node, boolean state) {
+		permissionNodes.put(node, state);
+		if (autosave) {
+			save();
+		}
+	}
 
 	/**
 	 * Whether or not the subject has permissions for said node.
@@ -53,20 +73,59 @@ public interface Permissible {
 	 * @param node
 	 * @return true if permission
 	 */
-	public boolean hasPermission(String node);
+	public boolean hasPermission(String node) {
+		if (permissionNodes.containsKey(node)) {
+			return permissionNodes.get(node);
+		}
+
+		return false;
+	}
 
 	/**
 	 * Sets if the subject can build
 	 *
 	 * @param canBuild
 	 */
-	public void setCanBuild(boolean canBuild);
+	public void setCanBuild(boolean canBuild) {
+		this.canBuild = canBuild;
+		if (autosave) {
+			save();
+		}
+	}
 
 	/**
 	 * Whether or not the subject can build.
 	 *
 	 * @return true if subject can build.
 	 */
-	public boolean canBuild();
+	public boolean canBuild() {
+		return canBuild;
+	}
 
+	/**
+	 * Sets whether or not the entity should save to disk automatically.
+	 *
+	 * @param autosave
+	 */
+	public void setAutosave(boolean autosave) {
+		this.autosave = autosave;
+		if (autosave) {
+			save();
+		}
+	}
+
+	/**
+	 * Whether or not the entity autosaves.
+	 *
+	 * @param autosave
+	 * @return true if autosaves.
+	 */
+	public boolean isAutosave(boolean autosave) {
+		return autosave;
+	}
+
+	/**
+	 * Saves the group to disk.
+	 */
+	public abstract void save();
 }

@@ -25,22 +25,19 @@ import net.windwaker.permissions.api.Permissions;
 import org.spout.api.geo.World;
 
 /**
+ * Represents a group of users.
+ *
  * @author Windwaker
  */
-public class Group implements Permissible {
-
+public class Group extends Permissible {
 	private final GroupManager groupManager = Permissions.getGroupManager();
-	private final String name;
-	private boolean autosave = true;
 	private boolean def = false;
-	private boolean canBuild = true;
 	private boolean perWorld = false;
 	private final Map<Group, Boolean> inherited = new HashMap<Group, Boolean>();
-	private final Map<String, Boolean> permissions = new HashMap<String, Boolean>();
 	private final List<World> worlds = new ArrayList<World>();
 
 	public Group(String name) {
-		this.name = name;
+		super(name);
 	}
 
 	@Override
@@ -68,18 +65,13 @@ public class Group implements Permissible {
 	 * @param group
 	 */
 	public void setInheritedGroup(Group group, boolean inherit) {
+		// Set the group and inherit permissions
 		inherited.put(group, inherit);
-
-		// Load inherited permissions
 		Set<Map.Entry<String, Boolean>> nodes = group.getPermissions().entrySet();
 		for (Map.Entry<String, Boolean> node : nodes) {
-			if (!permissions.containsKey(node.getKey()) && inherit) {
-				permissions.put(node.getKey(), node.getValue());
+			if (!permissionNodes.containsKey(node.getKey()) && inherit) {
+				permissionNodes.put(node.getKey(), node.getValue());
 			}
-		}
-		
-		if (autosave) {                              
-			groupManager.saveGroup(this);
 		}
 	}
 
@@ -90,9 +82,6 @@ public class Group implements Permissible {
 	 */
 	public void setDefault(boolean def) {
 		this.def = def;
-		if (autosave) {
-			groupManager.saveGroup(this);
-		}
 	}
 
 	/**
@@ -120,9 +109,6 @@ public class Group implements Permissible {
 	 */
 	public void setPerWorld(boolean perWorld) {
 		this.perWorld = perWorld;
-		if (autosave) {
-			groupManager.saveGroup(this);
-		}
 	}
 
 	/**
@@ -141,9 +127,6 @@ public class Group implements Permissible {
 	 */
 	public void addWorld(World world) {
 		worlds.add(world);
-		if (autosave) {
-			groupManager.saveGroup(this);
-		}
 	}
 
 	/**
@@ -153,61 +136,10 @@ public class Group implements Permissible {
 	 */
 	public void removeWorld(World world) {
 		worlds.remove(world);
-		if (autosave) {
-			groupManager.saveGroup(this);
-		}
-	}
-
-	/**
-	 * Whether or not changes save to disk automatically.
-	 *
-	 * @return true if autosave is on.
-	 */
-	public boolean isAutosave() {
-		return autosave;
-	}
-
-	/**
-	 * Sets whether or not changes should save to disk automatically.
-	 *
-	 * @param autosave
-	 */
-	public void setAutosave(boolean autosave) {
-		this.autosave = autosave;
 	}
 
 	@Override
-	public Map<String, Boolean> getPermissions() {
-		return permissions;
-	}
-
-	@Override
-	public void setPermission(String node, boolean state) {
-		permissions.put(node, state);
-		if (autosave) {
-			groupManager.saveGroup(this);
-		}
-	}
-
-	@Override
-	public boolean hasPermission(String node) {
-		if (permissions.containsKey(node)) {
-			return permissions.get(node);
-		}
-
-		return false;
-	}
-
-	@Override
-	public void setCanBuild(boolean canBuild) {
-		this.canBuild = canBuild;
-		if (autosave) {
-			groupManager.saveGroup(this);
-		}
-	}
-
-	@Override
-	public boolean canBuild() {
-		return canBuild;
+	public void save() {
+		groupManager.saveGroup(this);
 	}
 }

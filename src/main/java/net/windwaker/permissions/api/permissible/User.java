@@ -18,28 +18,23 @@
  */
 package net.windwaker.permissions.api.permissible;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
 import net.windwaker.permissions.api.Permissions;
 import net.windwaker.permissions.api.UserManager;
 
-
 /**
+ * Represents a user entity.
+ *
  * @author Windwaker
  */
-public class User implements Permissible {
-
+public class User extends Permissible {
 	private final UserManager userManager = Permissions.getUserManager();
-	private final String name;
 	private Group group;
-	private final Map<String, Boolean> permissions = new HashMap<String, Boolean>();
-	private boolean canBuild = false;
-	private boolean autosave = true;
-	
+
 	public User(String name) {
-		this.name = name;
+		super(name);
 	}
 
 	@Override
@@ -59,18 +54,14 @@ public class User implements Permissible {
 	 * @param group
 	 */
 	public void setGroup(Group group) {
-		this.group = group;
 
-		// Load inherited permissions.
+		// Set the group and inherit permission nodes.
+		this.group = group;
 		Set<Map.Entry<String, Boolean>> nodes = group.getPermissions().entrySet();
 		for (Map.Entry<String, Boolean> node : nodes) {
-			if (!permissions.containsKey(node.getKey())) {
-				permissions.put(node.getKey(), node.getValue());
+			if (!permissionNodes.containsKey(node.getKey())) {
+				permissionNodes.put(node.getKey(), node.getValue());
 			}
-		}
-		
-		if (autosave) {
-			userManager.saveUser(this);
 		}
 	}
 
@@ -83,56 +74,8 @@ public class User implements Permissible {
 		return group;
 	}
 
-	/**
-	 * Whether or not the user is a default group
-	 *
-	 * @return true if default
-	 */
-	public boolean isAutosave() {
-		return autosave;
-	}
-
-	/**
-	 * Whether or not the user is per-world or universal.
-	 *
-	 * @return true if per-world
-	 */
-	public void setAutosave(boolean autosave) {
-		this.autosave = autosave;
-	}
-
 	@Override
-	public Map<String, Boolean> getPermissions() {
-		return permissions;
-	}
-
-	@Override
-	public void setPermission(String node, boolean state) {
-		permissions.put(node, state);
-		if (autosave) {
-			userManager.saveUser(this);
-		}
-	}
-
-	@Override
-	public boolean hasPermission(String node) {
-		if (permissions.containsKey(node)) {
-			return permissions.get(node);
-		}
-
-		return false;
-	}
-
-	@Override
-	public void setCanBuild(boolean canBuild) {
-		this.canBuild = canBuild;
-		if (autosave) {
-			userManager.saveUser(this);
-		}
-	}
-
-	@Override
-	public boolean canBuild() {
-		return canBuild;
+	public void save() {
+		userManager.saveUser(this);
 	}
 }

@@ -36,7 +36,6 @@ import org.spout.api.command.annotated.SimpleInjector;
 import org.spout.api.plugin.CommonPlugin;
 
 /**
- *
  * @author Windwaker
  */
 public class SimplePermissionsPlugin extends CommonPlugin implements PermissionsPlugin {

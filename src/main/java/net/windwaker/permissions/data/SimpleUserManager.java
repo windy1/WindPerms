@@ -112,8 +112,8 @@ public class SimpleUserManager implements UserManager {
 		users.add(new User(username));
 		String path = "users/" + username;
 		data.setValue(path + "/group", "default");
-		data.setValue(path + "/permissions/foo", false);
-		data.setValue(path + "/permissions/bar", false);
+		data.setValue(path + "/permissions/foo.bar", false);
+		data.setValue(path + "/permissions/baz.qux", false);
 		data.setValue(path + "/build", true);
 		data.setValue(path + "/metadata/prefix", "");
 		data.setValue(path + "/metadata/suffix", "");
