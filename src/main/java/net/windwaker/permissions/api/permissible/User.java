@@ -37,17 +37,6 @@ public class User extends Permissible {
 		super(name);
 	}
 
-	@Override
-	public String getName() {
-		return name;
-	}
-	
-	@Override
-	public String toString() {
-		String groupName = group != null ? group.getName() : "None";
-		return "PermissionsUser{name=" + name + ",group=" + groupName + ",canBuild=" + canBuild + "}";
-	}
-
 	/**
 	 * Sets the user's group
 	 *
@@ -77,5 +66,11 @@ public class User extends Permissible {
 	@Override
 	public void save() {
 		userManager.saveUser(this);
+	}
+
+	@Override
+	public String toString() {
+		String groupName = group != null ? group.getName() : "None";
+		return "PermissionsUser{name=" + name + ",group=" + groupName + ",canBuild=" + canBuild + "}";
 	}
 }

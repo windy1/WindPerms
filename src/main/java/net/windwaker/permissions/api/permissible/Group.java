@@ -40,16 +40,6 @@ public class Group extends Permissible {
 		super(name);
 	}
 
-	@Override
-	public String getName() {
-		return name;
-	}
-
-	@Override
-	public String toString() {
-		return "PermissionsGroup{name=" + name + ",default=" + def + ",canBuild=" + canBuild + "}";
-	}
-
 	/**
 	 * Gets any inherited groups.
 	 *
@@ -141,5 +131,10 @@ public class Group extends Permissible {
 	@Override
 	public void save() {
 		groupManager.saveGroup(this);
+	}
+
+	@Override
+	public String toString() {
+		return "PermissionsGroup{name=" + name + ",default=" + def + ",canBuild=" + canBuild + "}";
 	}
 }

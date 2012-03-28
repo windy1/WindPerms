@@ -57,7 +57,7 @@ public class SimpleUserManager implements UserManager {
 			User user = new User(name);
 			
 			// Turn off autosaving for the user while loading - data will not save to disk.
-			user.setAutosave(false);
+			user.setAutoSave(false);
 			
 			// Set build
 			user.setCanBuild(data.getBoolean(path + "/build"));
@@ -72,7 +72,7 @@ public class SimpleUserManager implements UserManager {
 			}
 
 			// Turn autosave back on and add user.
-			user.setAutosave(true);
+			user.setAutoSave(true);
 			users.add(user);
 		}
 		

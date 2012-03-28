@@ -30,14 +30,14 @@ public abstract class Permissible {
 	protected final String name;
 	protected final Map<String, Boolean> permissionNodes = new HashMap<String, Boolean>();
 	protected boolean canBuild = true;
-	protected boolean autosave = true;
+	protected boolean autoSave = true;
 
 	public Permissible(String name) {
 		this.name = name;
 	}
 	
 	/**
-	 * Gets the name of this Permissable
+	 * Gets the name of this Permissible
 	 *
 	 * @return name of subject
 	 */
@@ -62,7 +62,7 @@ public abstract class Permissible {
 	 */
 	public void setPermission(String node, boolean state) {
 		permissionNodes.put(node, state);
-		if (autosave) {
+		if (autoSave) {
 			save();
 		}
 	}
@@ -88,7 +88,7 @@ public abstract class Permissible {
 	 */
 	public void setCanBuild(boolean canBuild) {
 		this.canBuild = canBuild;
-		if (autosave) {
+		if (autoSave) {
 			save();
 		}
 	}
@@ -105,27 +105,24 @@ public abstract class Permissible {
 	/**
 	 * Sets whether or not the entity should save to disk automatically.
 	 *
-	 * @param autosave
+	 * @param autoSave
 	 */
-	public void setAutosave(boolean autosave) {
-		this.autosave = autosave;
-		if (autosave) {
-			save();
-		}
+	public void setAutoSave(boolean autoSave) {
+		this.autoSave = autoSave;
 	}
 
 	/**
-	 * Whether or not the entity autosaves.
+	 * Whether or not the entity auto-saves.
 	 *
-	 * @param autosave
-	 * @return true if autosaves.
+	 * @param autoSave
+	 * @return true if auto-saves.
 	 */
-	public boolean isAutosave(boolean autosave) {
-		return autosave;
+	public boolean isAutoSave(boolean autoSave) {
+		return autoSave;
 	}
 
 	/**
-	 * Saves the group to disk.
+	 * Saves the entity to disk.
 	 */
 	public abstract void save();
 }

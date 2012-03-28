@@ -54,7 +54,7 @@ public class SimpleGroupManager implements GroupManager {
 			Group group = new Group(name);
 
 			// Turn off autosave for loading.
-			group.setAutosave(false);
+			group.setAutoSave(false);
 
 			// Set some values.
 			group.setDefault(data.getBoolean(path + "/default"));
@@ -66,7 +66,7 @@ public class SimpleGroupManager implements GroupManager {
 			loadWorlds(group);
 
 			// Turn autosave back on and add the group.
-			group.setAutosave(true);
+			group.setAutoSave(true);
 			groups.add(group);
 		}
 		
