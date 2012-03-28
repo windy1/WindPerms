@@ -41,15 +41,6 @@ public class Permissions {
 	}
 
 	/**
-	 * Gets the PermissionsPlugin associated with Permissions.
-	 * 
-	 * @return PermissionsPlugin
-	 */
-	public static PermissionsPlugin getPlugin() {
-		return instance;
-	}
-
-	/**
 	 * Gets the GroupManager associated with Permissions.
 	 * 
 	 * @return GroupManager
