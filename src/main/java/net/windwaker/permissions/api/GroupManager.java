@@ -23,6 +23,7 @@ import net.windwaker.permissions.api.permissible.Group;
 import java.util.Set;
 
 /**
+ * Utility class for group management.
  *
  * @author Windwaker
  */

@@ -16,41 +16,66 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package net.windwaker.permissions;
+package net.windwaker.permissions.api;
 
 import org.spout.api.Spout;
 
 import java.util.logging.Level;
 
 /**
- * A logger specific to the Permissions plugin.
+ * A logger specific to the Permissions platform.
  *
  * @author Windwaker
  */
 public class Logger {
-	
 	private static final Logger instance = new Logger();
 	
 	private Logger() {
 		
 	}
-	
+
+	/**
+	 * Gets the private instance of the logger.
+	 *
+	 * @return logger
+	 */
 	public static Logger getInstance() {
 		return instance;
 	}
-	
+
+	/**
+	 * Logs a message to the console with given level.
+	 *
+	 * @param level
+	 * @param obj
+	 */
 	public void log(Level level, Object obj) {
 		Spout.getLogger().log(level, "[Permissions] " + obj.toString());
 	}
-	
+
+	/**
+	 * Logs a message to the console with "INFO" level.
+	 *
+	 * @param obj
+	 */
 	public void info(Object obj) {
 		log(Level.INFO, obj);
 	}
-	
+
+	/**
+	 * Logs a message to the console with "WARNING" level.
+	 *
+	 * @param obj
+	 */
 	public void warning(Object obj) {
 		log(Level.WARNING, obj);
 	}
-	
+
+	/**
+	 * Logs a message to the console with "SEVERE" level.
+	 *
+	 * @param obj
+	 */
 	public void severe(Object obj) {
 		log(Level.SEVERE, obj);
 	}

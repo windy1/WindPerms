@@ -23,6 +23,8 @@ import net.windwaker.permissions.api.permissible.User;
 import java.util.Set;
 
 /**
+ * Utility class for user management.
+ *
  * @author Windwaker
  */
 public interface UserManager {

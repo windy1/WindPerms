@@ -32,12 +32,7 @@ import org.spout.api.exception.CommandException;
 import java.util.Map;
 import java.util.Set;
 
-/**
- * 
- * @author Windwaker
- */
 public class GroupCommand {
-	
 	private final GroupManager groupManager = Permissions.getGroupManager();
 	
 	@Command(aliases = {"group", "gr"}, desc = "Modifies a group", usage = "<info|set|add|remove|check|help> [inherit|default|perm|build] [group] [bool:build|bool:default|group|perm|identifier] [bool:inherit|bool:permState]", min = 1, max = 5)

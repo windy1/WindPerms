@@ -33,12 +33,7 @@ import org.spout.api.exception.CommandException;
 
 import java.util.Set;
 
-/**
- * 
- * @author Windwaker
- */
 public class UserCommand {
-	
 	private final UserManager userManager = Permissions.getUserManager();
 	private final GroupManager groupManager = Permissions.getGroupManager();
 	

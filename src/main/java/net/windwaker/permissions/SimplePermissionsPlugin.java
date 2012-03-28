@@ -18,15 +18,12 @@
  */
 package net.windwaker.permissions;
 
+import net.windwaker.permissions.api.*;
 import net.windwaker.permissions.command.GroupCommand;
 import net.windwaker.permissions.command.PermissionsCommand;
 import net.windwaker.permissions.command.UserCommand;
 import net.windwaker.permissions.data.SimpleUserManager;
 import net.windwaker.permissions.data.SimpleGroupManager;
-import net.windwaker.permissions.api.GroupManager;
-import net.windwaker.permissions.api.Permissions;
-import net.windwaker.permissions.api.PermissionsPlugin;
-import net.windwaker.permissions.api.UserManager;
 
 import org.spout.api.Spout;
 import org.spout.api.command.CommandRegistrationsFactory;
@@ -35,11 +32,7 @@ import org.spout.api.command.annotated.SimpleAnnotatedCommandExecutorFactory;
 import org.spout.api.command.annotated.SimpleInjector;
 import org.spout.api.plugin.CommonPlugin;
 
-/**
- * @author Windwaker
- */
 public class SimplePermissionsPlugin extends CommonPlugin implements PermissionsPlugin {
-
 	private static SimplePermissionsPlugin instance;
 	private final SimpleGroupManager groupManager = new SimpleGroupManager();
 	private final SimpleUserManager userManager = new SimpleUserManager();

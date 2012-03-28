@@ -19,6 +19,8 @@
 package net.windwaker.permissions.api;
 
 /**
+ * Represents a plugin to populate the Permissions platform.
+ *
  * @author Windwaker
  */
 public interface PermissionsPlugin {

@@ -17,12 +17,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 package net.windwaker.permissions.api;
+
 /**
+ * Represents the Permissions platform.
  *
  * @author Windwaker
  */
 public class Permissions {
-
 	private static PermissionsPlugin instance = null;
 
 	private Permissions() {

@@ -18,7 +18,7 @@
  */
 package net.windwaker.permissions.data;
 
-import net.windwaker.permissions.Logger;
+import net.windwaker.permissions.api.Logger;
 import net.windwaker.permissions.api.GroupManager;
 import net.windwaker.permissions.api.permissible.Group;
 
@@ -29,11 +29,7 @@ import org.spout.api.util.config.Configuration;
 import java.io.File;
 import java.util.*;
 
-/**
- * @author Windwaker
- */
 public class SimpleGroupManager implements GroupManager {
-
 	private final Logger logger = Logger.getInstance();
 	private final Configuration data = new Configuration(new File("plugins/Permissions/groups.yml"));
 	private final Set<Group> groups = new HashSet<Group>();
