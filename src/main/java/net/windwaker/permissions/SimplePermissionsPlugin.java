@@ -30,13 +30,12 @@ import org.spout.api.command.CommandRegistrationsFactory;
 import org.spout.api.command.annotated.AnnotatedCommandRegistrationFactory;
 import org.spout.api.command.annotated.SimpleAnnotatedCommandExecutorFactory;
 import org.spout.api.command.annotated.SimpleInjector;
-import org.spout.api.plugin.CommonPlugin;
 
-public class SimplePermissionsPlugin extends CommonPlugin implements PermissionsPlugin {
+public class SimplePermissionsPlugin extends PermissionsPlugin {
 	private static SimplePermissionsPlugin instance;
 	private final SimpleGroupManager groupManager = new SimpleGroupManager();
 	private final SimpleUserManager userManager = new SimpleUserManager();
-	private final Logger logger = Logger.getInstance();
+	private final PermissionsLogger logger = PermissionsLogger.getInstance();
 
 	public SimplePermissionsPlugin() {
 		instance = this;

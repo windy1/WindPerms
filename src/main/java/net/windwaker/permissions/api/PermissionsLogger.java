@@ -27,10 +27,10 @@ import java.util.logging.Level;
  *
  * @author Windwaker
  */
-public class Logger {
-	private static final Logger instance = new Logger();
+public class PermissionsLogger {
+	private static final PermissionsLogger instance = new PermissionsLogger();
 	
-	private Logger() {
+	private PermissionsLogger() {
 		
 	}
 
@@ -39,7 +39,7 @@ public class Logger {
 	 *
 	 * @return logger
 	 */
-	public static Logger getInstance() {
+	public static PermissionsLogger getInstance() {
 		return instance;
 	}
 

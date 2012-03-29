@@ -18,7 +18,7 @@
  */
 package net.windwaker.permissions.data;
 
-import net.windwaker.permissions.api.Logger;
+import net.windwaker.permissions.api.PermissionsLogger;
 import net.windwaker.permissions.api.GroupManager;
 import net.windwaker.permissions.api.Permissions;
 import net.windwaker.permissions.api.UserManager;
@@ -32,7 +32,7 @@ import java.util.Set;
 import org.spout.api.util.config.Configuration;
 
 public class SimpleUserManager implements UserManager {
-	private final Logger logger = Logger.getInstance();
+	private final PermissionsLogger logger = PermissionsLogger.getInstance();
 	private static final Configuration data = new Configuration(new File("plugins/Permissions/users.yml"));
 	private final Set<User> users = new HashSet<User>();
 

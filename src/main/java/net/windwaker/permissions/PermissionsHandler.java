@@ -19,7 +19,7 @@
 package net.windwaker.permissions;
 
 import net.windwaker.permissions.api.GroupManager;
-import net.windwaker.permissions.api.Logger;
+import net.windwaker.permissions.api.PermissionsLogger;
 import net.windwaker.permissions.api.Permissions;
 import net.windwaker.permissions.api.UserManager;
 import net.windwaker.permissions.api.permissible.Group;
@@ -38,7 +38,7 @@ import org.spout.api.event.server.permissions.PermissionNodeEvent;
 public class PermissionsHandler implements Listener {
 	private final UserManager userManager = Permissions.getUserManager();
 	private final GroupManager groupManager = Permissions.getGroupManager();
-	private final Logger logger = Logger.getInstance();
+	private final PermissionsLogger logger = PermissionsLogger.getInstance();
 	
 	@EventHandler(order = Order.EARLIEST)
 	public void onGroupsGet(PermissionGetGroupsEvent event) {

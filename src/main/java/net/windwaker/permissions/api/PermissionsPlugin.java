@@ -18,25 +18,25 @@
  */
 package net.windwaker.permissions.api;
 
+import org.spout.api.plugin.CommonPlugin;
+
 /**
  * Represents a plugin to populate the Permissions platform.
  *
  * @author Windwaker
  */
-public interface PermissionsPlugin {
-
+public abstract class PermissionsPlugin extends CommonPlugin {
 	/**
 	 * Gets the plugin's GroupManager
 	 *
 	 * @return the GroupManager
 	 */
-	public GroupManager getGroupManager();
+	public abstract GroupManager getGroupManager();
 
 	/**
 	 * Gets the plugin's UserManager.
 	 *
 	 * @return the UserManager
 	 */
-	public UserManager getUserManager();
-
+	public abstract UserManager getUserManager();
 }

@@ -43,7 +43,6 @@ public class User extends Permissible {
 	 * @param group
 	 */
 	public void setGroup(Group group) {
-
 		// Set the group and inherit permission nodes.
 		this.group = group;
 		Set<Map.Entry<String, Boolean>> nodes = group.getPermissions().entrySet();
