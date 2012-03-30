@@ -32,7 +32,7 @@ import java.util.Set;
 import org.spout.api.util.config.Configuration;
 
 public class FlatFileUserManager implements UserManager {
-	private final PermissionsLogger logger = PermissionsLogger.getInstance();
+	private final PermissionsLogger logger = Permissions.getLogger();
 	private static final Configuration data = new Configuration(new File("plugins/Permissions/users.yml"));
 	private final Set<User> users = new HashSet<User>();
 
@@ -55,9 +55,6 @@ public class FlatFileUserManager implements UserManager {
 			
 			// Turn off autosaving for the user while loading - data will not save to disk.
 			user.setAutoSave(false);
-			
-			// Set build
-			user.setCanBuild(data.getBoolean(path + "/build"));
 
 			// Load permissions
 			loadPermissions(user);
@@ -92,7 +89,6 @@ public class FlatFileUserManager implements UserManager {
 		savePermissions(user);
 		String groupName = user.getGroup() != null ? user.getGroup().getName() : "";
 		data.setValue(path + "/group", groupName);
-		data.setValue(path + "/build", user.canBuild());
 		data.save();
 	}
 	

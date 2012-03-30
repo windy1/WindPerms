@@ -75,11 +75,6 @@ public class UserCommand {
 					return;
 				}
 				
-				if (args.getString(1).equalsIgnoreCase("build")) {
-					setCanBuild(source, args.getString(2), args.getString(3));
-					return;
-				}
-				
 				if (args.getString(1).equalsIgnoreCase("perm")) {
 					setPermission(source, args.getString(2), args.getString(3), "true");
 					return;
@@ -132,7 +127,6 @@ public class UserCommand {
 		+ ChatColor.BRIGHT_GREEN + "----------");
 		String groupName = user.getGroup() != null ? user.getGroup().getName() : "None";
 		source.sendMessage(ChatColor.BRIGHT_GREEN + "- Group: " + ChatColor.CYAN + groupName);
-		source.sendMessage(ChatColor.BRIGHT_GREEN + "- Can Build: " + ChatColor.CYAN + user.canBuild());
 	}
 	
 	private void setGroup(CommandSource source, String username, String groupName) throws CommandException {
@@ -164,22 +158,6 @@ public class UserCommand {
 		user.setPermission(node, state);
 		String has = state ? "has" : "does not have";
 		source.sendMessage(ChatColor.BRIGHT_GREEN + user.getName() + " now " + has + " permission for " + node);
-	}
-	
-	private void setCanBuild(CommandSource source, String username, String bool) throws CommandException {
-		User user = userManager.getUser(username);
-		if (user == null) {
-			throw new CommandException(username + " does not exist!");
-		}
-		
-		boolean canBuild = false;
-		if (bool.equalsIgnoreCase("true")) {
-			canBuild = true;
-		}
-		
-		user.setCanBuild(canBuild);
-		String can = canBuild ? "can" : "cannot";
-		source.sendMessage(ChatColor.BRIGHT_GREEN + user.getName() + " " + can + " build now!");
 	}
 	
 	private void checkPermission(CommandSource source, String username, String node) throws CommandException {

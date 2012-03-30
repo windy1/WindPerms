@@ -39,7 +39,7 @@ public class SimplePermissionsPlugin extends PermissionsPlugin {
 	private static SimplePermissionsPlugin instance;
 	private GroupManager groupManager;
 	private UserManager userManager;
-	private final PermissionsLogger logger = PermissionsLogger.getInstance();
+	private final PermissionsLogger logger = Permissions.getLogger();
 
 	public SimplePermissionsPlugin() {
 		instance = this;

@@ -30,7 +30,7 @@ import java.sql.Statement;
 
 public class SQLConnection {
 	private static final SQLConnection instance = new SQLConnection();
-	private static final PermissionsLogger logger = PermissionsLogger.getInstance();
+	private static final PermissionsLogger logger = Permissions.getLogger();
 	
 	private SQLConnection() {
 

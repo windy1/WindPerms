@@ -38,7 +38,7 @@ import org.spout.api.event.server.permissions.PermissionNodeEvent;
 public class PermissionsHandler implements Listener {
 	private final UserManager userManager = Permissions.getUserManager();
 	private final GroupManager groupManager = Permissions.getGroupManager();
-	private final PermissionsLogger logger = PermissionsLogger.getInstance();
+	private final PermissionsLogger logger = Permissions.getLogger();
 	
 	@EventHandler(order = Order.EARLIEST)
 	public void onGroupsGet(PermissionGetGroupsEvent event) {

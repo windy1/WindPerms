@@ -18,6 +18,7 @@
  */
 package net.windwaker.permissions.data.file;
 
+import net.windwaker.permissions.api.Permissions;
 import net.windwaker.permissions.api.PermissionsLogger;
 import net.windwaker.permissions.api.GroupManager;
 import net.windwaker.permissions.api.permissible.Group;
@@ -30,7 +31,7 @@ import java.io.File;
 import java.util.*;
 
 public class FlatFileGroupManager implements GroupManager {
-	private final PermissionsLogger logger = PermissionsLogger.getInstance();
+	private final PermissionsLogger logger = Permissions.getLogger();
 	private final Configuration data = new Configuration(new File("plugins/Permissions/groups.yml"));
 	private final Set<Group> groups = new HashSet<Group>();
 
@@ -55,7 +56,6 @@ public class FlatFileGroupManager implements GroupManager {
 
 			// Set some values.
 			group.setDefault(data.getBoolean(path + "/default"));
-			group.setCanBuild(data.getBoolean(path + "/build"));
 			group.setPerWorld(data.getBoolean(path + "/per-world"));
 
 			// Load permissions and worlds
@@ -115,7 +115,6 @@ public class FlatFileGroupManager implements GroupManager {
 		data.setValue(path + "/per-world", group.isPerWorld());
 		data.setValue(path + "/per-world", group.getWorlds());
 		data.setValue(path + "/default", group.isDefault());
-		data.setValue(path + "/build", group.canBuild());
 		data.save();
 	}
 	

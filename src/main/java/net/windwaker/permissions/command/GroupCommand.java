@@ -74,11 +74,6 @@ public class GroupCommand {
 					return;
 				}
 
-				if (args.getString(1).equalsIgnoreCase("build")) {
-					setCanBuild(source, args.getString(2), args.getString(3));
-					return;
-				}
-
 				if (args.getString(1).equalsIgnoreCase("inherit")) {
 					setInherit(source, args.getString(2), args.getString(3), "true");
 					return;
@@ -144,7 +139,6 @@ public class GroupCommand {
 		source.sendMessage(ChatColor.BRIGHT_GREEN + "----------" + ChatColor.WHITE + " [" + ChatColor.CYAN + group.getName() + ChatColor.WHITE 
 		+ "] " + ChatColor.BRIGHT_GREEN + "----------");
 		source.sendMessage(ChatColor.BRIGHT_GREEN + "- Default: " + ChatColor.CYAN + group.isDefault());
-		source.sendMessage(ChatColor.BRIGHT_GREEN + "- Can Build: " + ChatColor.CYAN + group.canBuild());
 	}
 	
 	private void setInherit(CommandSource source, String groupName, String inheritedName, String bool) throws CommandException {
@@ -197,22 +191,6 @@ public class GroupCommand {
 		group.setPermission(node, state);
 		String has = state ? "has" : "does not have";
 		source.sendMessage(ChatColor.BRIGHT_GREEN + group.getName() + " now " + has + " permissions for " + node);
-	}
-	
-	private void setCanBuild(CommandSource source, String groupName, String bool) throws CommandException {
-		Group group = groupManager.getGroup(groupName);
-		if (group == null) {
-			throw new CommandException(groupName + " doesn't exist!");
-		}
-		
-		boolean canBuild = false;
-		if (bool.equalsIgnoreCase("true")) {
-			canBuild = true;
-		}
-		
-		group.setCanBuild(canBuild);
-		String can = canBuild ? "can" : "cannot";
-		source.sendMessage(ChatColor.BRIGHT_GREEN + group.getName() + " " + can + " build now");
 	}
 	
 	private void checkInherit(CommandSource source, String groupName, String inheritedName) throws CommandException {
