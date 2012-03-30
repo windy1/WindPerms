@@ -26,6 +26,7 @@ import net.windwaker.permissions.data.Settings;
 import net.windwaker.permissions.data.file.FlatFileGroupManager;
 import net.windwaker.permissions.data.file.FlatFileUserManager;
 
+import net.windwaker.permissions.data.sql.SQLConnection;
 import net.windwaker.permissions.data.sql.SQLGroupManager;
 import net.windwaker.permissions.data.sql.SQLUserManager;
 import org.spout.api.Spout;
@@ -36,7 +37,6 @@ import org.spout.api.command.annotated.SimpleInjector;
 
 public class SimplePermissionsPlugin extends PermissionsPlugin {
 	private static SimplePermissionsPlugin instance;
-	private final Settings settings = new Settings();
 	private GroupManager groupManager;
 	private UserManager userManager;
 	private final PermissionsLogger logger = PermissionsLogger.getInstance();
@@ -52,13 +52,14 @@ public class SimplePermissionsPlugin extends PermissionsPlugin {
 		Permissions.setPlugin(this);
 
 		// Load data
-		settings.load();
-		switch (settings.getDataManagement()) {
+		Settings.init();
+		switch (Settings.getDataManagement()) {
 			case FLAT_FILE:
 				groupManager = new FlatFileGroupManager();
 				userManager = new FlatFileUserManager();
 				break;
 			case SQL:
+				SQLConnection.init();
 				groupManager = new SQLGroupManager();
 				userManager = new SQLUserManager();
 				break;

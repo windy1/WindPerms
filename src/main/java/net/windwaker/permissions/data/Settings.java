@@ -29,20 +29,29 @@ import org.spout.api.util.config.Configuration;
 import org.spout.api.util.config.ConfigurationNode;
 
 import java.io.File;
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Settings {
-	private final Configuration data = new Configuration(new File("plugins/Permissions/settings.yml"));
-	private final ConfigurationNode dataManagement = new ConfigurationNode("data-management", "flat-file");
+	private static final Configuration data = new Configuration(new File("plugins/Permissions/settings.yml"));
+	private static final ConfigurationNode dataManagement = new ConfigurationNode("data-management", "flat-file");
+	public static final ConfigurationNode SQL_PROTOCOL = new ConfigurationNode("sql.protocol", "mysql");
+	public static final ConfigurationNode SQL_URI = new ConfigurationNode("sql.host", "localhost");
+	public static final ConfigurationNode SQL_USERNAME = new ConfigurationNode("sql.username", "root");
+	public static final ConfigurationNode SQL_PASSWORD = new ConfigurationNode("sql.password", "minecraft");
+
+	private Settings() {
+
+	}
 	
-	public void load() {
+	public static void init() {
 		data.load();
-		data.addNode(dataManagement);
+		data.addNodes(dataManagement, SQL_PROTOCOL, SQL_URI, SQL_USERNAME, SQL_PASSWORD);
 		data.save();
 	}
 	
-	public DataManagement getDataManagement() {
+	public static DataManagement getDataManagement() {
 		return DataManagement.getByNode(dataManagement.getString());
 	}
 
