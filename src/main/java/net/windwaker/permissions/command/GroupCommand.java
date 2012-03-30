@@ -30,7 +30,6 @@ import org.spout.api.command.annotated.CommandPermissions;
 import org.spout.api.exception.CommandException;
 
 import java.util.Map;
-import java.util.Set;
 
 public class GroupCommand {
 	private final GroupManager groupManager = Permissions.getGroupManager();
