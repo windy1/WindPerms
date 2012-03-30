@@ -28,6 +28,10 @@ import java.util.Set;
  * @author Windwaker
  */
 public interface UserManager {
+	/**
+	 * Loads all user data.
+	 */
+	public void load();
 
 	/**
 	 * Adds a user
@@ -44,6 +48,13 @@ public interface UserManager {
 	public void removeUser(String username);
 
 	/**
+	 * Saves a user from said name
+	 *
+	 * @param user
+	 */
+	public void saveUser(User user);
+
+	/**
 	 * Gets a user from said name
 	 *
 	 * @param name
@@ -57,12 +68,4 @@ public interface UserManager {
 	 * @return all users.
 	 */
 	public Set<User> getUsers();
-
-	/**
-	 * Saves a user from said name
-	 *
-	 * @param user
-	 */
-	public void saveUser(User user);
-
 }

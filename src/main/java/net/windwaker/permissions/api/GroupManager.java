@@ -28,6 +28,10 @@ import java.util.Set;
  * @author Windwaker
  */
 public interface GroupManager {
+	/**
+	 * Loads all group data
+	 */
+	public void load();
 
 	/**
 	 * Adds a group
@@ -44,6 +48,13 @@ public interface GroupManager {
 	public void removeGroup(String name);
 
 	/**
+	 * Saves a group from said name
+	 *
+	 * @param group
+	 */
+	public void saveGroup(Group group);
+
+	/**
 	 * Gets a group from said name
 	 *
 	 * @param name
@@ -57,12 +68,4 @@ public interface GroupManager {
 	 * @return all groups.
 	 */
 	public Set<Group> getGroups();
-
-	/**
-	 * Saves a group from said name
-	 *
-	 * @param group
-	 */
-	public void saveGroup(Group group);
-
 }

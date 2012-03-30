@@ -22,9 +22,12 @@ import net.windwaker.permissions.api.*;
 import net.windwaker.permissions.command.GroupCommand;
 import net.windwaker.permissions.command.PermissionsCommand;
 import net.windwaker.permissions.command.UserCommand;
-import net.windwaker.permissions.data.SimpleUserManager;
-import net.windwaker.permissions.data.SimpleGroupManager;
+import net.windwaker.permissions.data.Settings;
+import net.windwaker.permissions.data.file.FlatFileGroupManager;
+import net.windwaker.permissions.data.file.FlatFileUserManager;
 
+import net.windwaker.permissions.data.sql.SQLGroupManager;
+import net.windwaker.permissions.data.sql.SQLUserManager;
 import org.spout.api.Spout;
 import org.spout.api.command.CommandRegistrationsFactory;
 import org.spout.api.command.annotated.AnnotatedCommandRegistrationFactory;
@@ -33,8 +36,9 @@ import org.spout.api.command.annotated.SimpleInjector;
 
 public class SimplePermissionsPlugin extends PermissionsPlugin {
 	private static SimplePermissionsPlugin instance;
-	private final SimpleGroupManager groupManager = new SimpleGroupManager();
-	private final SimpleUserManager userManager = new SimpleUserManager();
+	private final Settings settings = new Settings();
+	private GroupManager groupManager;
+	private UserManager userManager;
 	private final PermissionsLogger logger = PermissionsLogger.getInstance();
 
 	public SimplePermissionsPlugin() {
@@ -48,6 +52,18 @@ public class SimplePermissionsPlugin extends PermissionsPlugin {
 		Permissions.setPlugin(this);
 
 		// Load data
+		settings.load();
+		switch (settings.getDataManagement()) {
+			case FLAT_FILE:
+				groupManager = new FlatFileGroupManager();
+				userManager = new FlatFileUserManager();
+				break;
+			case SQL:
+				groupManager = new SQLGroupManager();
+				userManager = new SQLUserManager();
+				break;
+		}
+		
 		groupManager.load();
 		userManager.load();
 	}

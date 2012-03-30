@@ -16,7 +16,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package net.windwaker.permissions.data;
+package net.windwaker.permissions.data.file;
 
 import net.windwaker.permissions.api.PermissionsLogger;
 import net.windwaker.permissions.api.GroupManager;
@@ -29,11 +29,12 @@ import org.spout.api.util.config.Configuration;
 import java.io.File;
 import java.util.*;
 
-public class SimpleGroupManager implements GroupManager {
+public class FlatFileGroupManager implements GroupManager {
 	private final PermissionsLogger logger = PermissionsLogger.getInstance();
 	private final Configuration data = new Configuration(new File("plugins/Permissions/groups.yml"));
 	private final Set<Group> groups = new HashSet<Group>();
 
+	@Override
 	public void load() {
 		data.load();
 		data.setPathSeparator("/");
