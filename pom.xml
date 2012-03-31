@@ -18,15 +18,15 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <permissions.build>Unknown</permissions.build>
-        <permissionsapi.version>dev-SNAPSHOT</permissionsapi.version>
+        <spoutapi.version>dev-SNAPSHOT</spoutapi.version>
     </properties>
 
     <!-- Dependencies -->
     <dependencies>
         <dependency>
-            <groupId>net.windwaker</groupId>
-            <artifactId>permissionsapi</artifactId>
-            <version>${permissionsapi.version}</version>
+            <groupId>org.spout</groupId>
+            <artifactId>spoutapi</artifactId>
+            <version>${spoutapi.version}</version>
         </dependency>
     </dependencies>
 

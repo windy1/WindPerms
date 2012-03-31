@@ -16,47 +16,27 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package net.windwaker.permissions.data.sql;
+package net.windwaker.permissions.api;
 
-import net.windwaker.permissions.api.GroupManager;
-import net.windwaker.permissions.api.permissible.Group;
+import org.spout.api.plugin.CommonPlugin;
 
-import java.util.Set;
+/**
+ * Represents a plugin to populate the Permissions platform.
+ *
+ * @author Windwaker
+ */
+public abstract class PermissionsPlugin extends CommonPlugin {
+	/**
+	 * Gets the plugin's GroupManager
+	 *
+	 * @return the GroupManager
+	 */
+	public abstract GroupManager getGroupManager();
 
-public class SQLGroupManager implements GroupManager {
-
-	@Override
-	public void load() {
-	}
-	
-	private void loadPermissions(Group group) {
-	}
-	
-	private void loadWorlds(Group group) {
-	}
-	
-	private void loadData(Group group) {
-	}
-
-	@Override
-	public void addGroup(String name) {
-	}
-
-	@Override
-	public void removeGroup(String name) {
-	}
-
-	@Override
-	public Group getGroup(String name) {
-		return null;
-	}
-
-	@Override
-	public Set<Group> getGroups() {
-		return null;
-	}
-
-	@Override
-	public void saveGroup(Group group) {
-	}
+	/**
+	 * Gets the plugin's UserManager.
+	 *
+	 * @return the UserManager
+	 */
+	public abstract UserManager getUserManager();
 }

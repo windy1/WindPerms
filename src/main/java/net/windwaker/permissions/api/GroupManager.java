@@ -16,47 +16,56 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package net.windwaker.permissions.data.sql;
+package net.windwaker.permissions.api;
 
-import net.windwaker.permissions.api.GroupManager;
 import net.windwaker.permissions.api.permissible.Group;
 
 import java.util.Set;
 
-public class SQLGroupManager implements GroupManager {
+/**
+ * Utility class for group management.
+ *
+ * @author Windwaker
+ */
+public interface GroupManager {
+	/**
+	 * Loads all group data
+	 */
+	public void load();
 
-	@Override
-	public void load() {
-	}
-	
-	private void loadPermissions(Group group) {
-	}
-	
-	private void loadWorlds(Group group) {
-	}
-	
-	private void loadData(Group group) {
-	}
+	/**
+	 * Adds a group
+	 *
+	 * @param name
+	 */
+	public void addGroup(String name);
 
-	@Override
-	public void addGroup(String name) {
-	}
+	/**
+	 * Removes a group
+	 *
+	 * @param name
+	 */
+	public void removeGroup(String name);
 
-	@Override
-	public void removeGroup(String name) {
-	}
+	/**
+	 * Saves a group from said name
+	 *
+	 * @param group
+	 */
+	public void saveGroup(Group group);
 
-	@Override
-	public Group getGroup(String name) {
-		return null;
-	}
+	/**
+	 * Gets a group from said name
+	 *
+	 * @param name
+	 * @return group
+	 */
+	public Group getGroup(String name);
 
-	@Override
-	public Set<Group> getGroups() {
-		return null;
-	}
-
-	@Override
-	public void saveGroup(Group group) {
-	}
+	/**
+	 * Gets all defined groups.
+	 *
+	 * @return all groups.
+	 */
+	public Set<Group> getGroups();
 }

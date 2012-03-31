@@ -16,47 +16,56 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package net.windwaker.permissions.data.sql;
+package net.windwaker.permissions.api;
 
-import net.windwaker.permissions.api.GroupManager;
-import net.windwaker.permissions.api.permissible.Group;
+import net.windwaker.permissions.api.permissible.User;
 
 import java.util.Set;
 
-public class SQLGroupManager implements GroupManager {
+/**
+ * Utility class for user management.
+ *
+ * @author Windwaker
+ */
+public interface UserManager {
+	/**
+	 * Loads all user data.
+	 */
+	public void load();
 
-	@Override
-	public void load() {
-	}
-	
-	private void loadPermissions(Group group) {
-	}
-	
-	private void loadWorlds(Group group) {
-	}
-	
-	private void loadData(Group group) {
-	}
+	/**
+	 * Adds a user
+	 *
+	 * @param username
+	 */
+	public void addUser(String username);
 
-	@Override
-	public void addGroup(String name) {
-	}
+	/**
+	 * Removes a user
+	 *
+	 * @param username
+	 */
+	public void removeUser(String username);
 
-	@Override
-	public void removeGroup(String name) {
-	}
+	/**
+	 * Saves a user from said name
+	 *
+	 * @param user
+	 */
+	public void saveUser(User user);
 
-	@Override
-	public Group getGroup(String name) {
-		return null;
-	}
+	/**
+	 * Gets a user from said name
+	 *
+	 * @param name
+	 * @return user
+	 */
+	public User getUser(String name);
 
-	@Override
-	public Set<Group> getGroups() {
-		return null;
-	}
-
-	@Override
-	public void saveGroup(Group group) {
-	}
+	/**
+	 * Gets all defined users.
+	 *
+	 * @return all users.
+	 */
+	public Set<User> getUsers();
 }
