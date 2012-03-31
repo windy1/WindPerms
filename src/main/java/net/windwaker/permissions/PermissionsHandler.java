@@ -80,11 +80,7 @@ public class PermissionsHandler implements Listener {
 	@EventHandler(order = Order.EARLIEST)
 	public void onNodeCheck(PermissionNodeEvent event) {
 		String name = event.getSubject().getName();
-		Permissible subject = userManager.getUser(name);
-		if (subject == null) {
-			subject = groupManager.getGroup(name);
-		}
-		
+		Permissible subject = groupManager.getGroup(name) != null ? groupManager.getGroup(name) : userManager.getUser(name);
 		if (subject == null) {
 			return;
 		}
@@ -99,11 +95,7 @@ public class PermissionsHandler implements Listener {
 	@EventHandler(order = Order.EARLIEST)
 	public void onDataGet(RetrieveDataEvent event) {
 		String name = event.getSubject().getName();
-		Permissible subject = groupManager.getGroup(name);
-		if (subject == null) {
-			subject = userManager.getUser(name);
-		}
-
+		Permissible subject = groupManager.getGroup(name) != null ? groupManager.getGroup(name) : userManager.getUser(name);
 		if (subject == null) {
 			return;
 		}
