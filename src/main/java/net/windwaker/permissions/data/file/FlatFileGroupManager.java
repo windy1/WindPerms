@@ -24,6 +24,7 @@ import net.windwaker.permissions.api.GroupManager;
 import net.windwaker.permissions.api.permissible.Group;
 
 import org.spout.api.Spout;
+import org.spout.api.data.DataValue;
 import org.spout.api.geo.World;
 import org.spout.api.util.config.Configuration;
 
@@ -58,9 +59,10 @@ public class FlatFileGroupManager implements GroupManager {
 			group.setDefault(data.getBoolean(path + "/default"));
 			group.setPerWorld(data.getBoolean(path + "/per-world"));
 
-			// Load permissions and worlds
+			// Load permissions, data, and worlds
 			loadPermissions(group);
 			loadWorlds(group);
+			loadData(group);
 
 			// Turn autosave back on and add the group.
 			group.setAutoSave(true);
@@ -96,6 +98,14 @@ public class FlatFileGroupManager implements GroupManager {
 		}
 	}
 	
+	private void loadData(Group group) {
+		String path = "groups/" + group.getName();
+		Set<String> nodes = data.getKeys(path + "/metadata");
+		for (String node : nodes) {
+			group.setMetadata(node, data.getValue(path + "/metadata/" + node));
+		}
+	}
+	
 	private void loadInheritance(Group group) {
 		String path = "groups/" + group.getName();
 		Set<String> inheritedNames = data.getKeys(path + "/inherited");
@@ -112,6 +122,7 @@ public class FlatFileGroupManager implements GroupManager {
 		String path = "groups/" + group.getName();
 		saveInheritance(group);
 		savePermissions(group);
+		saveData(group);
 		data.setValue(path + "/per-world", group.isPerWorld());
 		data.setValue(path + "/per-world", group.getWorlds());
 		data.setValue(path + "/default", group.isDefault());
@@ -134,6 +145,14 @@ public class FlatFileGroupManager implements GroupManager {
 		}
 	}
 	
+	private void saveData(Group group) {
+		String path = "groups/" + group.getName();
+		Set<Map.Entry<String, DataValue>> values = group.getMetadataMap().entrySet();
+		for (Map.Entry<String, DataValue> value : values) {
+			data.setValue(path + "/metadata/" + value.getKey(), value.getValue());
+		}
+	}
+	
 	@Override
 	public void addGroup(String name) {
 		groups.add(new Group(name));
@@ -145,9 +164,9 @@ public class FlatFileGroupManager implements GroupManager {
 		data.setValue(path + "/worlds", Arrays.asList(list));
 		data.setValue(path + "/permissions/foo.bar", false);
 		data.setValue(path + "/permissions/baz.qux", false);
+		data.setValue(path + "/metadata/build", true);
 		data.setValue(path + "/metadata/prefix", "");
 		data.setValue(path + "/metadata/suffix", "");
-		data.setValue(path + "/build", true);
 		data.save();
 	}
 

@@ -29,6 +29,8 @@ import java.io.File;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
+import org.spout.api.data.DataValue;
 import org.spout.api.util.config.Configuration;
 
 public class FlatFileUserManager implements UserManager {
@@ -56,8 +58,9 @@ public class FlatFileUserManager implements UserManager {
 			// Turn off autosaving for the user while loading - data will not save to disk.
 			user.setAutoSave(false);
 
-			// Load permissions
+			// Load permissions and data
 			loadPermissions(user);
+			loadData(user);
 
 			// Load group
 			Group group = groupManager.getGroup(data.getString(path + "/group"));
@@ -82,11 +85,20 @@ public class FlatFileUserManager implements UserManager {
 			user.setPermission(node, data.getBoolean(path + "/permissions/" + node));
 		}
 	}
+	
+	private void loadData(User user) {
+		String path = "users/" + user.getName();
+		Set<String> nodes = data.getKeys(path + "/metadata");
+		for (String node : nodes) {
+			user.setMetadata(node, data.getValue(path + "/metadata/" + node));
+		}
+	}
 
 	@Override
 	public void saveUser(User user) {
 		String path = "users/" + user.getName();
 		savePermissions(user);
+		saveData(user);
 		String groupName = user.getGroup() != null ? user.getGroup().getName() : "";
 		data.setValue(path + "/group", groupName);
 		data.save();
@@ -99,6 +111,14 @@ public class FlatFileUserManager implements UserManager {
 			data.setValue(path + "/permissions/" + perm.getKey(), perm.getValue());
 		}
 	}
+	
+	private void saveData(User user) {
+		String path = "users/" + user.getName();
+		Set<Map.Entry<String, DataValue>> values = user.getMetadataMap().entrySet();
+		for (Map.Entry<String, DataValue> value : values) {
+			data.setValue(path + "/metadata/" + value.getKey(), value.getValue());
+		}
+	}
 
 	@Override
 	public void addUser(String username) {
@@ -107,7 +127,6 @@ public class FlatFileUserManager implements UserManager {
 		data.setValue(path + "/group", "default");
 		data.setValue(path + "/permissions/foo.bar", false);
 		data.setValue(path + "/permissions/baz.qux", false);
-		data.setValue(path + "/build", true);
 		data.setValue(path + "/metadata/prefix", "");
 		data.setValue(path + "/metadata/suffix", "");
 		data.save();
