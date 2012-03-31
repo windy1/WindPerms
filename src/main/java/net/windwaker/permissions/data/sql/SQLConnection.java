@@ -24,13 +24,12 @@ import net.windwaker.permissions.api.PermissionsLogger;
 import net.windwaker.permissions.data.Settings;
 import org.spout.api.Spout;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.Statement;
+import java.sql.*;
 
 public class SQLConnection {
 	private static final SQLConnection instance = new SQLConnection();
 	private static final PermissionsLogger logger = Permissions.getLogger();
+	private static Statement statement;
 	
 	private SQLConnection() {
 
@@ -56,10 +55,14 @@ public class SQLConnection {
 
 			// Connect
 			Connection connection = DriverManager.getConnection(uri);
-			Statement statement = connection.createStatement();
+			statement = connection.createStatement();
 			logger.info("Connected to SQL database at " + host);
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			logger.severe("Failed to connect to SQL database: " + e.getMessage());
+			logger.severe("Shutting down...");
+			Spout.getGame().getPluginManager().disablePlugin(SimplePermissionsPlugin.getInstance());
+		} catch (Exception ee) {
+			logger.severe("Failed to find SQL driver: " + ee.getMessage());
 			logger.severe("Shutting down...");
 			Spout.getGame().getPluginManager().disablePlugin(SimplePermissionsPlugin.getInstance());
 		}
@@ -79,5 +82,57 @@ public class SQLConnection {
 		}
 
 		return null;
+	}
+	
+	public ResultSet query(String query) {
+		try {
+			return statement.executeQuery(query);
+		} catch (SQLException e) {
+			logger.severe("An error occurred while trying to execute a query on the SQL database: " + e.getMessage());
+		}
+		
+		return null;
+	}
+	
+	public void update(String update) {
+		try {
+			statement.executeUpdate(update);
+		} catch (SQLException e) {
+			logger.severe("An error occurred while trying to execute an update on the SQL database: " + e.getMessage());
+		}
+	}
+
+	public ResultSet get(String scope, String table, boolean distinct) {
+		return query("SELECT " + (distinct ? "DISTINCT " : "") + scope + " FROM " + table);
+	}
+	
+	public ResultSet get(String scope, String table) {
+		return get(scope, table, false);
+	}
+
+	public ResultSet get(String scope, String table, String column, String expected, boolean distinct) {
+		return query("SELECT " + (distinct ? "DISTINCT " : "") + scope + " FROM " + table + " WHERE " + column + "='" + expected + "'");
+	}
+	
+	public ResultSet get(String scope, String table, String column, String expected) {
+		return get(scope, table, column, expected, false);
+	}
+
+	public void add(String table, String[] columns, String[] values) {
+		StringBuilder columnNames = new StringBuilder("(");
+		for (String column : columns) {
+			columnNames.append(column + ", ");
+		}
+		
+		StringBuilder valueNames = new StringBuilder("(");
+		for (String value : values) {
+			valueNames.append(value + ", ");
+		}
+		
+		update("INSERT INTO " + table + columnNames + " VALUES " + valueNames);
+	}
+
+	public void set(String table, String column, String value, String otherColumn, String expected) {
+		update("UPDATE " + table + " SET " + column + "='" + value + "' WHERE " + otherColumn + "='" + expected + "'");
 	}
 }

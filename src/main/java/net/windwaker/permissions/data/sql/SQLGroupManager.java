@@ -19,14 +19,27 @@
 package net.windwaker.permissions.data.sql;
 
 import net.windwaker.permissions.api.GroupManager;
+import net.windwaker.permissions.api.Permissions;
+import net.windwaker.permissions.api.PermissionsLogger;
 import net.windwaker.permissions.api.permissible.Group;
 
+import java.sql.ResultSet;
+import java.util.HashSet;
 import java.util.Set;
 
 public class SQLGroupManager implements GroupManager {
 
 	@Override
 	public void load() {
+	}
+	
+	private void loadPermissions(Group group) {
+	}
+	
+	private void loadWorlds(Group group) {
+	}
+	
+	private void loadData(Group group) {
 	}
 
 	@Override
