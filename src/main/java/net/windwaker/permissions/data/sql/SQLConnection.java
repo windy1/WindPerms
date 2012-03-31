@@ -123,12 +123,14 @@ public class SQLConnection {
 		for (String column : columns) {
 			columnNames.append(column + ", ");
 		}
-		
+
+		columnNames.append(")");
 		StringBuilder valueNames = new StringBuilder("(");
 		for (String value : values) {
 			valueNames.append(value + ", ");
 		}
-		
+
+		valueNames.append(")");
 		update("INSERT INTO " + table + columnNames + " VALUES " + valueNames);
 	}
 
