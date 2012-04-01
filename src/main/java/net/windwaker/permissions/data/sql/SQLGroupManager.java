@@ -24,9 +24,11 @@ import net.windwaker.permissions.api.permissible.Group;
 import java.util.Set;
 
 public class SQLGroupManager implements GroupManager {
+	private final SQLConnection connection = SQLConnection.getConnection();
 
 	@Override
 	public void load() {
+		connection.update("INSERT INTO permissions_groups (name, default, per_world) VALUES (admin, false, false)");
 	}
 	
 	private void loadPermissions(Group group) {

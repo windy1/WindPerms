@@ -52,12 +52,12 @@ public class SQLConnection {
 			// Fetch the database info from our configuration.
 			String username = Settings.SQL_USERNAME.getString();
 			String password = Settings.SQL_PASSWORD.getString();
-			String uri = "jdbc:" + protocol + "://" + Settings.SQL_URI.getString() + "/database?user=" + username + "&password=" + password;
+			String server = Settings.SQL_URI.getString();
 
 			// Connect
-			Connection connection = DriverManager.getConnection(uri);
+			Connection connection = DriverManager.getConnection("jdbc:" + protocol + "://" + server, username, password);
 			statement = connection.createStatement();
-			logger.info("Connected to SQL database at " + host);
+			logger.info("Connection established with SQL database at " + host);
 		} catch (SQLException e) {
 			logger.severe("Failed to connect to SQL database: " + e.getMessage());
 			logger.severe("Shutting down...");

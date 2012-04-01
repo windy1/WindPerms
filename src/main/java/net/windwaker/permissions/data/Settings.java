@@ -36,7 +36,7 @@ import java.util.Map;
 public class Settings {
 	private static final Settings settings = new Settings();
 	private static final Configuration data = new Configuration(new File("plugins/Permissions/settings.yml"));
-	private static final ConfigurationNode dataManagement = new ConfigurationNode("data-management", "flat-file");
+	private static final ConfigurationNode dataManagement = new ConfigurationNode("data-management", "sql");
 	public static final ConfigurationNode SQL_PROTOCOL = new ConfigurationNode("sql.protocol", "mysql");
 	public static final ConfigurationNode SQL_URI = new ConfigurationNode("sql.host", "localhost");
 	public static final ConfigurationNode SQL_USERNAME = new ConfigurationNode("sql.username", "root");
