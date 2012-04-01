@@ -54,7 +54,7 @@ public class SimplePermissionsPlugin extends PermissionsPlugin {
 		// Load data
 		Settings.init();
 		/* debug */ SQLConnection.init(); /* debug */
-		switch (Settings.getDataManagement()) {
+		switch (Settings.getInstance().getDataManagement()) {
 			case FLAT_FILE:
 				groupManager = new FlatFileGroupManager();
 				userManager = new FlatFileUserManager();

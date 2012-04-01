@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Settings {
+	private static final Settings settings = new Settings();
 	private static final Configuration data = new Configuration(new File("plugins/Permissions/settings.yml"));
 	private static final ConfigurationNode dataManagement = new ConfigurationNode("data-management", "flat-file");
 	public static final ConfigurationNode SQL_PROTOCOL = new ConfigurationNode("sql.protocol", "mysql");
@@ -38,13 +39,17 @@ public class Settings {
 
 	}
 	
+	public static Settings getInstance() {
+		return settings;
+	}
+	
 	public static void init() {
 		data.load();
 		data.addNodes(dataManagement, SQL_PROTOCOL, SQL_URI, SQL_USERNAME, SQL_PASSWORD);
 		data.save();
 	}
 	
-	public static DataManagement getDataManagement() {
+	public DataManagement getDataManagement() {
 		return DataManagement.getByNode(dataManagement.getString());
 	}
 
