@@ -21,7 +21,7 @@ package net.windwaker.permissions;
 import net.windwaker.permissions.api.*;
 import net.windwaker.permissions.api.GroupManager;
 import net.windwaker.permissions.api.UserManager;
-import net.windwaker.permissions.api.util.PermissionsLogger;
+import net.windwaker.permissions.api.PermissionsLogger;
 import net.windwaker.permissions.command.GroupCommand;
 import net.windwaker.permissions.command.PermissionsCommand;
 import net.windwaker.permissions.command.UserCommand;

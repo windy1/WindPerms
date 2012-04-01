@@ -18,8 +18,6 @@
  */
 package net.windwaker.permissions.api;
 
-import net.windwaker.permissions.api.util.PermissionsLogger;
-
 /**
  * Represents the Permissions platform.
  *
