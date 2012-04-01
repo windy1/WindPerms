@@ -19,9 +19,9 @@
 package net.windwaker.permissions.command;
 
 import net.windwaker.permissions.api.GroupManager;
+import net.windwaker.permissions.api.UserManager;
 import net.windwaker.permissions.api.Permissions;
 
-import net.windwaker.permissions.api.UserManager;
 import net.windwaker.permissions.api.permissible.Group;
 import net.windwaker.permissions.api.permissible.User;
 import org.spout.api.ChatColor;

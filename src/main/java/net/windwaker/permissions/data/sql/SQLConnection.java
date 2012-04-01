@@ -20,7 +20,7 @@ package net.windwaker.permissions.data.sql;
 
 import net.windwaker.permissions.SimplePermissionsPlugin;
 import net.windwaker.permissions.api.Permissions;
-import net.windwaker.permissions.api.PermissionsLogger;
+import net.windwaker.permissions.api.util.PermissionsLogger;
 import net.windwaker.permissions.data.Settings;
 import org.spout.api.Spout;
 

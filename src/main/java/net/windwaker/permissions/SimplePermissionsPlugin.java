@@ -19,6 +19,9 @@
 package net.windwaker.permissions;
 
 import net.windwaker.permissions.api.*;
+import net.windwaker.permissions.api.GroupManager;
+import net.windwaker.permissions.api.UserManager;
+import net.windwaker.permissions.api.util.PermissionsLogger;
 import net.windwaker.permissions.command.GroupCommand;
 import net.windwaker.permissions.command.PermissionsCommand;
 import net.windwaker.permissions.command.UserCommand;
@@ -37,6 +40,7 @@ import org.spout.api.command.annotated.SimpleInjector;
 
 public class SimplePermissionsPlugin extends PermissionsPlugin {
 	private static SimplePermissionsPlugin instance;
+	private static final Settings settings = Settings.getInstance();
 	private GroupManager groupManager;
 	private UserManager userManager;
 	private final PermissionsLogger logger = Permissions.getLogger();
@@ -54,7 +58,7 @@ public class SimplePermissionsPlugin extends PermissionsPlugin {
 		// Load data
 		Settings.init();
 		/* debug */ SQLConnection.init(); /* debug */
-		switch (Settings.getInstance().getDataManagement()) {
+		switch (settings.getDataManagement()) {
 			case FLAT_FILE:
 				groupManager = new FlatFileGroupManager();
 				userManager = new FlatFileUserManager();

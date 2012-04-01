@@ -18,9 +18,9 @@
  */
 package net.windwaker.permissions.data.file;
 
-import net.windwaker.permissions.api.Permissions;
-import net.windwaker.permissions.api.PermissionsLogger;
 import net.windwaker.permissions.api.GroupManager;
+import net.windwaker.permissions.api.Permissions;
+import net.windwaker.permissions.api.util.PermissionsLogger;
 import net.windwaker.permissions.api.permissible.Group;
 
 import org.spout.api.Spout;
