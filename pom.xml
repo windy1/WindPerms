@@ -19,6 +19,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <permissions.build>Unknown</permissions.build>
         <spoutapi.version>dev-SNAPSHOT</spoutapi.version>
+        <windsql.version>dev-SNAPSHOT</windsql.version>
     </properties>
 
     <!-- Dependencies -->
@@ -27,6 +28,11 @@
             <groupId>org.spout</groupId>
             <artifactId>spoutapi</artifactId>
             <version>${spoutapi.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>net.windwaker</groupId>
+            <artifactId>windsql</artifactId>
+            <version>${windsql.version}</version>
         </dependency>
     </dependencies>
 

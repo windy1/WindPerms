@@ -26,17 +26,16 @@ import net.windwaker.permissions.command.GroupCommand;
 import net.windwaker.permissions.command.PermissionsCommand;
 import net.windwaker.permissions.command.UserCommand;
 import net.windwaker.permissions.data.Settings;
-import net.windwaker.permissions.data.file.FlatFileGroupManager;
-import net.windwaker.permissions.data.file.FlatFileUserManager;
 
-import net.windwaker.permissions.data.sql.SQLConnection;
-import net.windwaker.permissions.data.sql.SQLGroupManager;
-import net.windwaker.permissions.data.sql.SQLUserManager;
+import net.windwaker.sql.Connection;
 import org.spout.api.Spout;
 import org.spout.api.command.CommandRegistrationsFactory;
 import org.spout.api.command.annotated.AnnotatedCommandRegistrationFactory;
 import org.spout.api.command.annotated.SimpleAnnotatedCommandExecutorFactory;
 import org.spout.api.command.annotated.SimpleInjector;
+import org.spout.api.plugin.PluginManager;
+
+import java.sql.SQLException;
 
 public class SimplePermissionsPlugin extends PermissionsPlugin {
 	private static SimplePermissionsPlugin instance;
@@ -57,6 +56,10 @@ public class SimplePermissionsPlugin extends PermissionsPlugin {
 
 		// Load data
 		Settings.init();
+		if (Settings.DATA_MANAGEMENT.getString().equalsIgnoreCase("sql")) {
+			connectToDatabase();
+		}
+		
 		groupManager = settings.createGroupManager();
 		groupManager.load();
 
@@ -78,6 +81,46 @@ public class SimplePermissionsPlugin extends PermissionsPlugin {
 
 		// Hello world!
 		logger.info("Permissions v" + getDescription().getVersion() + " enabled!");
+	}
+	
+	public void connectToDatabase() {
+		String host = null;
+		String protocol = null;
+		PluginManager pluginManager = Spout.getGame().getPluginManager();
+		try {
+
+			// Create connection
+			host = Settings.SQL_HOST.getString();
+			protocol = Settings.SQL_PROTOCOL.getString();
+			Connection connection = new Connection(host, protocol);
+			
+			// Connect
+			String user = Settings.SQL_USERNAME.getString();
+			String password = Settings.SQL_PASSWORD.getString();
+			logger.info("Connecting to " + host + "...");
+			connection.connect(user, password);
+			logger.info("Established connection with " + host + "!");
+
+		} catch (SQLException e) {
+			logger.severe("Failed to connect to SQL database: " + e.getMessage());
+			logger.severe("Shutting down...");
+			pluginManager.disablePlugin(this);
+
+		} catch (ClassNotFoundException e) {
+			logger.severe("Failed to find valid " + protocol + " JDBC driver: " + e.getMessage());
+			logger.severe("Shutting down...");
+			pluginManager.disablePlugin(this);
+
+		} catch (InstantiationException e) {
+			logger.severe("Failed to find valid " + protocol + " JDBC driver: " + e.getMessage());
+			logger.severe("Shutting down...");
+			pluginManager.disablePlugin(this);
+		
+		} catch (IllegalAccessException e) {
+			logger.severe("Access is denied to JDBC driver: " + e.getMessage());
+			logger.severe("Shutting down...");
+			pluginManager.disablePlugin(this);
+		}
 	}
 
 	@Override

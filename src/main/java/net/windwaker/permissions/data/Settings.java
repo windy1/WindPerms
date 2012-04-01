@@ -22,46 +22,38 @@ import net.windwaker.permissions.api.GroupManager;
 import net.windwaker.permissions.api.UserManager;
 import net.windwaker.permissions.data.file.FlatFileGroupManager;
 import net.windwaker.permissions.data.file.FlatFileUserManager;
-import net.windwaker.permissions.data.sql.SQLConnection;
 import net.windwaker.permissions.data.sql.SQLGroupManager;
 import net.windwaker.permissions.data.sql.SQLUserManager;
 import org.spout.api.util.config.Configuration;
 import org.spout.api.util.config.ConfigurationNode;
 
 import java.io.File;
-import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.Map;
 
 public class Settings {
 	private static final Settings settings = new Settings();
 	private static final Configuration data = new Configuration(new File("plugins/Permissions/settings.yml"));
-	private static final ConfigurationNode dataManagement = new ConfigurationNode("data-management", "sql");
+	public static final ConfigurationNode DATA_MANAGEMENT = new ConfigurationNode("data-management", "sql");
 	public static final ConfigurationNode SQL_PROTOCOL = new ConfigurationNode("sql.protocol", "mysql");
-	public static final ConfigurationNode SQL_URI = new ConfigurationNode("sql.host", "localhost");
-	public static final ConfigurationNode SQL_USERNAME = new ConfigurationNode("sql.username", "root");
-	public static final ConfigurationNode SQL_PASSWORD = new ConfigurationNode("sql.password", "minecraft");
+	public static final ConfigurationNode SQL_HOST = new ConfigurationNode("sql.host", "184.168.194.134");
+	public static final ConfigurationNode SQL_USERNAME = new ConfigurationNode("sql.username", "w1ndwaker");
+	public static final ConfigurationNode SQL_PASSWORD = new ConfigurationNode("sql.password", "WalkerCrouse!1");
 
 	private Settings() {
 
 	}
-	
+
 	public static Settings getInstance() {
 		return settings;
 	}
 	
 	public static void init() {
 		data.load();
-		data.addNodes(dataManagement, SQL_PROTOCOL, SQL_URI, SQL_USERNAME, SQL_PASSWORD);
-		if (dataManagement.getString().equalsIgnoreCase("sql")) {
-			SQLConnection.init();
-		}
-
+		data.addNodes(DATA_MANAGEMENT, SQL_PROTOCOL, SQL_HOST, SQL_USERNAME, SQL_PASSWORD);
 		data.save();
 	}
 	
 	public GroupManager createGroupManager() {
-		String data = dataManagement.getString();
+		String data = DATA_MANAGEMENT.getString();
 		if (data.equalsIgnoreCase("flat-file")) {
 			return new FlatFileGroupManager();
 		}
@@ -74,7 +66,7 @@ public class Settings {
 	}
 	
 	public UserManager createUserManager() {
-		String data = dataManagement.getString();
+		String data = DATA_MANAGEMENT.getString();
 		if (data.equalsIgnoreCase("flat-file")) {
 			return new FlatFileUserManager();
 		}
