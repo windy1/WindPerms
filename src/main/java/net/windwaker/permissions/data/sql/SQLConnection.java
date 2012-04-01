@@ -132,7 +132,7 @@ public class SQLConnection {
 		}
 
 		valueNames.append(")");
-		update("INSERT INTO " + table + columnNames + " VALUES " + valueNames);
+		update("INSERT INTO " + table + " " + columnNames + " VALUES " + valueNames);
 	}
 
 	public void set(String table, String column, String value, String otherColumn, String expected) {
