@@ -47,6 +47,7 @@ public class SQLConnection {
 			logger.info("Attempting to connect to SQL database at " + host + "...");
 			String protocol = Settings.SQL_PROTOCOL.getString();
 			Class.forName(getDriver(protocol)).newInstance();
+            logger.info("Found SQL driver. Protocol: " + protocol);
 
 			// Fetch the database info from our configuration.
 			String username = Settings.SQL_USERNAME.getString();
