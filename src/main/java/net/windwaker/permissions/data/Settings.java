@@ -18,6 +18,13 @@
  */
 package net.windwaker.permissions.data;
 
+import net.windwaker.permissions.api.GroupManager;
+import net.windwaker.permissions.api.UserManager;
+import net.windwaker.permissions.data.file.FlatFileGroupManager;
+import net.windwaker.permissions.data.file.FlatFileUserManager;
+import net.windwaker.permissions.data.sql.SQLConnection;
+import net.windwaker.permissions.data.sql.SQLGroupManager;
+import net.windwaker.permissions.data.sql.SQLUserManager;
 import org.spout.api.util.config.Configuration;
 import org.spout.api.util.config.ConfigurationNode;
 
@@ -46,36 +53,36 @@ public class Settings {
 	public static void init() {
 		data.load();
 		data.addNodes(dataManagement, SQL_PROTOCOL, SQL_URI, SQL_USERNAME, SQL_PASSWORD);
+		if (dataManagement.getString().equalsIgnoreCase("sql")) {
+			SQLConnection.init();
+		}
+
 		data.save();
 	}
 	
-	public DataManagement getDataManagement() {
-		return DataManagement.getByNode(dataManagement.getString());
-	}
+	public GroupManager createGroupManager() {
+		String data = dataManagement.getString();
+		if (data.equalsIgnoreCase("flat-file")) {
+			return new FlatFileGroupManager();
+		}
+		
+		if (data.equalsIgnoreCase("sql")) {
+			return new SQLGroupManager();
+		}
 
-	public enum DataManagement {
-		FLAT_FILE("flat-file"),
-		SQL("sql");
-		
-		private final String node;
-		private static final Map<String, DataManagement> nodes = new HashMap<String, DataManagement>();
-		
-		private DataManagement(String node) {
-			this.node = node;
+		return new FlatFileGroupManager();
+	}
+	
+	public UserManager createUserManager() {
+		String data = dataManagement.getString();
+		if (data.equalsIgnoreCase("flat-file")) {
+			return new FlatFileUserManager();
 		}
-		
-		public String getNode() {
-			return node;
+
+		if (data.equalsIgnoreCase("sql")) {
+			return new SQLUserManager();
 		}
-		
-		public static DataManagement getByNode(String node) {
-			return nodes.get(node);
-		}
-		
-		static {
-			for (DataManagement data : DataManagement.values()) {
-				nodes.put(data.getNode(), data);
-			}
-		}
+
+		return new FlatFileUserManager();
 	}
 }
