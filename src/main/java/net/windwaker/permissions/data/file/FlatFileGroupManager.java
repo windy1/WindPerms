@@ -25,73 +25,78 @@ import net.windwaker.permissions.api.permissible.Group;
 
 import org.spout.api.Spout;
 import org.spout.api.data.DataValue;
+import org.spout.api.exception.ConfigurationException;
 import org.spout.api.geo.World;
-import org.spout.api.util.config.Configuration;
+import org.spout.api.util.config.yaml.YamlConfiguration;
 
 import java.io.File;
 import java.util.*;
 
 public class FlatFileGroupManager implements GroupManager {
 	private final PermissionsLogger logger = Permissions.getLogger();
-	private final Configuration data = new Configuration(new File("plugins/Permissions/groups.yml"));
+	private final YamlConfiguration data = new YamlConfiguration(new File("plugins/Permissions/groups.yml"));
 	private final Set<Group> groups = new HashSet<Group>();
 
 	@Override
 	public void load() {
-		data.load();
-		data.setPathSeparator("/");
-		Set<String> names = data.getKeys("groups");
-		if (!names.isEmpty()) {
-			logger.info("Loading group data...");
-		}
+		try {
+			data.load();
+			data.setPathSeparator("/");
+			Set<String> names = data.getNode("groups").getKeys(false);
+			if (!names.isEmpty()) {
+				logger.info("Loading group data...");
+			}
 
-		// Load groups
-		for (String name : names) {
+			// Load groups
+			for (String name : names) {
 
-			// Create new group
-			String path = "groups/" + name;
-			Group group = new Group(name);
+				// Create new group
+				String path = "groups/" + name;
+				Group group = new Group(name);
 
-			// Turn off autosave for loading.
-			group.setAutoSave(false);
+				// Turn off autosave for loading.
+				group.setAutoSave(false);
 
-			// Set some values.
-			group.setDefault(data.getBoolean(path + "/default"));
-			group.setPerWorld(data.getBoolean(path + "/per-world"));
+				// Set some values.
+				group.setDefault(data.getNode(path + "/default").getBoolean());
+				group.setPerWorld(data.getNode(path + "/per-world").getBoolean());
 
-			// Load permissions, data, and worlds
-			loadPermissions(group);
-			loadWorlds(group);
-			loadData(group);
+				// Load permissions, data, and worlds
+				loadPermissions(group);
+				loadWorlds(group);
+				loadData(group);
 
-			// Turn autosave back on and add the group.
-			group.setAutoSave(true);
-			groups.add(group);
-		}
+				// Turn autosave back on and add the group.
+				group.setAutoSave(true);
+				groups.add(group);
+			}
 		
-		// Load inheritance - must be loaded after all other groups are loaded.
-		for (Group group : groups) {
-			loadInheritance(group);
-		}
+			// Load inheritance - must be loaded after all other groups are loaded.
+			for (Group group : groups) {
+				loadInheritance(group);
+			}
 
-		if (!names.isEmpty()) {
-			logger.info("Group data loaded. " + groups.size() + " unique groups loaded!");
+			if (!names.isEmpty()) {
+				logger.info("Group data loaded. " + groups.size() + " unique groups loaded!");
+			}
+		} catch (ConfigurationException e) {
+			logger.severe("Failed to load group data: " + e.getMessage());
 		}
 	}
 	
 	private void loadPermissions(Group group) {
 		String path = "groups/" + group.getName();
-		Set<String> nodes = data.getKeys(path + "/permissions");
+		Set<String> nodes = data.getNode(path + "/permissions").getKeys(false);
 		for (String node : nodes) {
-			group.setPermission(node, data.getBoolean(path + "/permissions/" + node));
+			group.setPermission(node, data.getNode(path + "/permissions/" + node).getBoolean());
 		}
 	}
 	
 	private void loadWorlds(Group group) {
 		String path = "groups/" + group.getName();
-		List<String> worldNames = data.getStringList(path + "/worlds");
+		List<String> worldNames = data.getNode(path + "/worlds").getStringList();
 		for (String worldName : worldNames) {
-			World world = Spout.getGame().getWorld(worldName);
+			World world = Spout.getEngine().getWorld(worldName);
 			if (world != null) {
 				group.addWorld(world);
 			}
@@ -100,40 +105,44 @@ public class FlatFileGroupManager implements GroupManager {
 	
 	private void loadData(Group group) {
 		String path = "groups/" + group.getName();
-		Set<String> nodes = data.getKeys(path + "/metadata");
+		Set<String> nodes = data.getNode(path + "/metadata").getKeys(false);
 		for (String node : nodes) {
-			group.setMetadata(node, data.getValue(path + "/metadata/" + node));
+			group.setMetadata(node, data.getNode(path + "/metadata/" + node).getValue());
 		}
 	}
 	
 	private void loadInheritance(Group group) {
 		String path = "groups/" + group.getName();
-		Set<String> inheritedNames = data.getKeys(path + "/inherited");
+		Set<String> inheritedNames = data.getNode(path + "/inherited").getKeys(false);
 		for (String inheritedName : inheritedNames) {
 			Group inherited = getGroup(inheritedName);
 			if (inherited != null) {
-				group.setInheritedGroup(inherited, data.getBoolean(path + "/inherited/" + inheritedName));
+				group.setInheritedGroup(inherited, data.getNode(path + "/inherited/" + inheritedName).getBoolean());
 			}
 		}
 	}
 
 	@Override
 	public void saveGroup(Group group) {
-		String path = "groups/" + group.getName();
-		saveInheritance(group);
-		savePermissions(group);
-		saveData(group);
-		data.setValue(path + "/per-world", group.isPerWorld());
-		data.setValue(path + "/per-world", group.getWorlds());
-		data.setValue(path + "/default", group.isDefault());
-		data.save();
+		try {
+			String path = "groups/" + group.getName();
+			saveInheritance(group);
+			savePermissions(group);
+			saveData(group);
+			data.getNode(path + "/per-world").setValue(group.isPerWorld());
+			data.getNode(path + "/worlds").setValue(group.getWorlds());
+			data.getNode(path + "/default").setValue(group.isDefault());
+			data.save();
+		} catch (ConfigurationException e) {
+			logger.severe("Failed to save group " + group.getName() + ": " + e.getMessage());
+		}
 	}
 	
 	private void saveInheritance(Group group) {
 		String path = "groups/" + group.getName();
 		Map<Group, Boolean> groupMap = group.getInheritedGroups();
 		for (Map.Entry<Group, Boolean> entry : groupMap.entrySet()) {
-			data.setValue(path + "/inherited/" + entry.getKey().getName(), entry.getValue());
+			data.getNode(path + "/inherited/" + entry.getKey()).setValue(entry.getValue());
 		}
 	}
 	
@@ -141,7 +150,7 @@ public class FlatFileGroupManager implements GroupManager {
 		String path = "groups/" + group.getName();
 		Set<Map.Entry<String, Boolean>> perms = group.getPermissions().entrySet();
 		for (Map.Entry<String, Boolean> perm :  perms) {
-			data.setValue(path + "/permissions/" + perm.getKey(), perm.getValue());
+			data.getNode(path + "/permissions/" + perm.getKey()).setValue(perm.getValue());
 		}
 	}
 	
@@ -149,37 +158,44 @@ public class FlatFileGroupManager implements GroupManager {
 		String path = "groups/" + group.getName();
 		Set<Map.Entry<String, DataValue>> values = group.getMetadataMap().entrySet();
 		for (Map.Entry<String, DataValue> value : values) {
-			data.setValue(path + "/metadata/" + value.getKey(), value.getValue());
+			data.getNode(path + "/metadata/" + value.getKey()).setValue(value.getValue());
 		}
 	}
 	
 	@Override
 	public void addGroup(String name) {
-		groups.add(new Group(name));
-		String path = "groups/" + name;
-		data.setValue(path + "/inherited/admin", false);
-		data.setValue(path + "/default", false);
-		data.setValue(path + "/per-world", false);
-		String[] list = {"world"};
-		data.setValue(path + "/worlds", Arrays.asList(list));
-		data.setValue(path + "/permissions/foo.bar", false);
-		data.setValue(path + "/permissions/baz.qux", false);
-		data.setValue(path + "/metadata/build", true);
-		data.setValue(path + "/metadata/prefix", "");
-		data.setValue(path + "/metadata/suffix", "");
-		data.save();
+		try {
+			groups.add(new Group(name));
+			String path = "groups/" + name;
+			data.getNode(path + "/inherited/admin").setValue(false);
+			data.getNode(path + "/default").setValue(false);
+			data.getNode(path + "/per-world").setValue(false);
+			data.getNode(path + "/worlds").setValue(Arrays.asList("world"));
+			data.getNode(path + "/permissions/foo.bar").setValue(false);
+			data.getNode(path + "/permissions/baz.qux").setValue(false);
+			data.getNode(path + "/metadata/build").setValue(true);
+			data.getNode(path + "/metadata/prefix").setValue("&f");
+			data.getNode(path + "/metadata/suffix").setValue("&f");
+			data.save();
+		} catch (ConfigurationException e) {
+			logger.severe("Failed to add group " + name + ": " + e.getMessage());
+		}
 	}
 
 	@Override
 	public void removeGroup(String name) {
-		Group group = getGroup(name);
-		if (group == null) {
-			return;
-		}
+		try {
+			Group group = getGroup(name);
+			if (group == null) {
+				return;
+			}
 
-		groups.remove(group);
-		data.setValue("groups/" + name, null);
-		data.save();
+			groups.remove(group);
+			data.getNode("groups/" + name).setValue(null);
+			data.save();
+		} catch (ConfigurationException e) {
+			logger.severe("Failed to remove group " + name + ": " + e.getMessage());
+		}
 	}
 
 	@Override

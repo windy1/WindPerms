@@ -31,84 +31,93 @@ import java.util.Map;
 import java.util.Set;
 
 import org.spout.api.data.DataValue;
-import org.spout.api.util.config.Configuration;
+import org.spout.api.exception.ConfigurationException;
+import org.spout.api.util.config.yaml.YamlConfiguration;
 
 public class FlatFileUserManager implements UserManager {
 	private final PermissionsLogger logger = Permissions.getLogger();
-	private static final Configuration data = new Configuration(new File("plugins/Permissions/users.yml"));
+	private static final YamlConfiguration data = new YamlConfiguration(new File("plugins/Permissions/users.yml"));
 	private final Set<User> users = new HashSet<User>();
 
 	@Override
 	public void load() {
-		GroupManager groupManager = Permissions.getGroupManager();
-		data.load();
-		data.setPathSeparator("/");
-		Set<String> names = data.getKeys("users");
-		if (!names.isEmpty()) {
-			logger.info("Loading user data...");
-		}
-
-		// Load users
-		for (String name : names) {
-
-			// Create new user
-			String path = "users/" + name;
-			User user = new User(name);
-			
-			// Turn off autosaving for the user while loading - data will not save to disk.
-			user.setAutoSave(false);
-
-			// Load permissions and data
-			loadPermissions(user);
-			loadData(user);
-
-			// Load group
-			Group group = groupManager.getGroup(data.getString(path + "/group"));
-			if (group != null) {
-				user.setGroup(group);
+		try {
+			GroupManager groupManager = Permissions.getGroupManager();
+			data.load();
+			data.setPathSeparator("/");
+			Set<String> names = data.getNode("users").getKeys(false);
+			if (!names.isEmpty()) {
+				logger.info("Loading user data...");
 			}
 
-			// Turn autosave back on and add user.
-			user.setAutoSave(true);
-			users.add(user);
-		}
+			// Load users
+			for (String name : names) {
+
+				// Create new user
+				String path = "users/" + name;
+				User user = new User(name);
+			
+				// Turn off autosaving for the user while loading - data will not save to disk.
+				user.setAutoSave(false);
+
+				// Load permissions and data
+				loadPermissions(user);
+				loadData(user);
+
+				// Load group
+				Group group = groupManager.getGroup(data.getNode(path + "/group").getString());
+				if (group != null) {
+					user.setGroup(group);
+				}
+
+				// Turn autosave back on and add user.
+				user.setAutoSave(true);
+				users.add(user);
+			}
 		
-		if (!names.isEmpty()) {
-			logger.info("User data loaded. " + users.size() + " unique users loaded!");
+			if (!names.isEmpty()) {
+				logger.info("User data loaded. " + users.size() + " unique users loaded!");
+			}
+		} catch (ConfigurationException e) {
+			logger.severe("Failed to load user data: " + e.getMessage());
 		}
 	}
 	
 	private void loadPermissions(User user) {
 		String path = "users/" + user.getName();
-		Set<String> nodes = data.getKeys(path + "/permissions");
+		Set<String> nodes = data.getNode(path + "/permissions").getKeys(false);
 		for (String node : nodes) {
-			user.setPermission(node, data.getBoolean(path + "/permissions/" + node));
+			user.setPermission(node, data.getNode(path + "/permissions/" + node).getBoolean());
 		}
 	}
 	
 	private void loadData(User user) {
 		String path = "users/" + user.getName();
-		Set<String> nodes = data.getKeys(path + "/metadata");
+		Set<String> nodes = data.getNode(path + "/metadata").getKeys(false);
 		for (String node : nodes) {
-			user.setMetadata(node, data.getValue(path + "/metadata/" + node));
+			user.setMetadata(node, data.getNode(path + "/metadata/" + node).getValue());
 		}
 	}
 
 	@Override
 	public void saveUser(User user) {
-		String path = "users/" + user.getName();
-		savePermissions(user);
-		saveData(user);
-		String groupName = user.getGroup() != null ? user.getGroup().getName() : "";
-		data.setValue(path + "/group", groupName);
-		data.save();
+		try {
+			String path = "users/" + user.getName();
+			savePermissions(user);
+			saveData(user);
+			String groupName = user.getGroup() != null ? user.getGroup().getName() : "";
+			data.getNode(path + "/group").setValue(groupName);
+			data.save();
+		} catch (ConfigurationException e) {
+			logger.severe("Failed to save user: " + user.getName() + ": " + e.getMessage());
+		}
 	}
 	
 	private void savePermissions(User user) {
 		String path = "users/" + user.getName();
 		Set<Map.Entry<String, Boolean>> perms = user.getPermissions().entrySet();
 		for (Map.Entry<String, Boolean> perm : perms) {
-			data.setValue(path + "/permissions/" + perm.getKey(), perm.getValue());
+			data.getNode(path + "/permissions/" + perm.getKey()).setValue(perm.getValue());
 		}
 	}
 	
@@ -116,33 +125,41 @@ public class FlatFileUserManager implements UserManager {
 		String path = "users/" + user.getName();
 		Set<Map.Entry<String, DataValue>> values = user.getMetadataMap().entrySet();
 		for (Map.Entry<String, DataValue> value : values) {
-			data.setValue(path + "/metadata/" + value.getKey(), value.getValue());
+			data.getNode(path + "/metadata/" + value.getKey()).setValue(value.getValue());
 		}
 	}
 
 	@Override
 	public void addUser(String username) {
-		users.add(new User(username));
-		String path = "users/" + username;
-		data.setValue(path + "/group", "default");
-		data.setValue(path + "/permissions/foo.bar", false);
-		data.setValue(path + "/permissions/baz.qux", false);
-		data.setValue(path + "/metadata/build", true);
-		data.setValue(path + "/metadata/prefix", "");
-		data.setValue(path + "/metadata/suffix", "");
-		data.save();
+		try {
+			users.add(new User(username));
+			String path = "users/" + username;
+			data.getNode(path + "/group").setValue("default");
+			data.getNode(path + "/permissions/foo.bar").setValue(false);
+			data.getNode(path + "/permissions/baz.qux").setValue(false);
+			data.getNode(path + "/metadata/build").setValue(true);
+			data.getNode(path + "/metadata/prefix").setValue("&f");
+			data.getNode(path + "/metadata/suffix").setValue("&f");
+			data.save();
+		} catch (ConfigurationException e) {
+			logger.severe("Failed to add user " + username + ": " + e.getMessage());
+		}
 	}
 
 	@Override
 	public void removeUser(String username) {
-		User user = getUser(username);
-		if (user == null) {
-			return;
-		}
+		try {
+			User user = getUser(username);
+			if (user == null) {
+				return;
+			}
 
-		users.remove(user);
-		data.setValue("users/" + username, null);
-		data.save();
+			users.remove(user);
+			data.getNode("users/" + username).setValue(null);
+			data.save();
+		} catch (ConfigurationException e) {
+			logger.severe("Failed to remove user " + username + ": " + e.getMessage());
+		}
 	}
 
 	@Override

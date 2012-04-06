@@ -19,24 +19,31 @@
 package net.windwaker.permissions.data;
 
 import net.windwaker.permissions.api.GroupManager;
+import net.windwaker.permissions.api.Permissions;
+import net.windwaker.permissions.api.PermissionsLogger;
 import net.windwaker.permissions.api.UserManager;
 import net.windwaker.permissions.data.file.FlatFileGroupManager;
 import net.windwaker.permissions.data.file.FlatFileUserManager;
 import net.windwaker.permissions.data.sql.SQLGroupManager;
 import net.windwaker.permissions.data.sql.SQLUserManager;
+import org.spout.api.exception.ConfigurationException;
 import org.spout.api.util.config.Configuration;
+import org.spout.api.util.config.ConfigurationHolder;
 import org.spout.api.util.config.ConfigurationNode;
+import org.spout.api.util.config.yaml.YamlConfiguration;
 
 import java.io.File;
+import java.util.logging.Logger;
 
 public class Settings {
 	private static final Settings settings = new Settings();
-	private static final Configuration data = new Configuration(new File("plugins/Permissions/settings.yml"));
-	public static final ConfigurationNode DATA_MANAGEMENT = new ConfigurationNode("data-management", "sql");
-	public static final ConfigurationNode SQL_PROTOCOL = new ConfigurationNode("sql.protocol", "mysql");
-	public static final ConfigurationNode SQL_HOST = new ConfigurationNode("sql.host", "184.168.194.134");
-	public static final ConfigurationNode SQL_USERNAME = new ConfigurationNode("sql.username", "w1ndwaker");
-	public static final ConfigurationNode SQL_PASSWORD = new ConfigurationNode("sql.password", "WalkerCrouse!1");
+	private static final PermissionsLogger logger = Permissions.getLogger();
+	private static final YamlConfiguration data = new YamlConfiguration(new File("plugins/Permissions/settings.yml"));
+	public static final ConfigurationHolder DATA_MANAGEMENT = new ConfigurationHolder("data-management", "sql");
+	public static final ConfigurationHolder SQL_PROTOCOL = new ConfigurationHolder("sql.protocol", "mysql");
+	public static final ConfigurationHolder SQL_HOST = new ConfigurationHolder("sql.host", "184.168.194.134");
+	public static final ConfigurationHolder SQL_USERNAME = new ConfigurationHolder("sql.username", "w1ndwaker");
+	public static final ConfigurationHolder SQL_PASSWORD = new ConfigurationHolder("sql.password", "WalkerCrouse!1");
 
 	private Settings() {
 
@@ -45,26 +52,30 @@ public class Settings {
 	public static Settings getInstance() {
 		return settings;
 	}
-	
+
 	public static void init() {
-		data.load();
-		data.addNodes(DATA_MANAGEMENT, SQL_PROTOCOL, SQL_HOST, SQL_USERNAME, SQL_PASSWORD);
-		data.save();
+		try {
+			data.load();
+			data.addChildren(DATA_MANAGEMENT, SQL_PROTOCOL, SQL_HOST, SQL_USERNAME, SQL_PASSWORD);
+			data.save();
+		} catch (ConfigurationException e) {
+			logger.severe("Failed to load settings file: " + e.getMessage());
+		}
 	}
-	
+
 	public GroupManager createGroupManager() {
 		String data = DATA_MANAGEMENT.getString();
 		if (data.equalsIgnoreCase("flat-file")) {
 			return new FlatFileGroupManager();
 		}
-		
+
 		if (data.equalsIgnoreCase("sql")) {
 			return new SQLGroupManager();
 		}
 
 		return new FlatFileGroupManager();
 	}
-	
+
 	public UserManager createUserManager() {
 		String data = DATA_MANAGEMENT.getString();
 		if (data.equalsIgnoreCase("flat-file")) {

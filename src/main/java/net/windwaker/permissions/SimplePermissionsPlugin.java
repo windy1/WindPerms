@@ -28,6 +28,7 @@ import net.windwaker.permissions.command.UserCommand;
 import net.windwaker.permissions.data.Settings;
 
 import net.windwaker.sql.Connection;
+import net.windwaker.sql.Driver;
 import org.spout.api.Spout;
 import org.spout.api.command.CommandRegistrationsFactory;
 import org.spout.api.command.annotated.AnnotatedCommandRegistrationFactory;
@@ -86,13 +87,14 @@ public class SimplePermissionsPlugin extends PermissionsPlugin {
 	public void connectToDatabase() {
 		String host = null;
 		String protocol = null;
-		PluginManager pluginManager = Spout.getGame().getPluginManager();
+		PluginManager pluginManager = Spout.getEngine().getPluginManager();		
 		try {
-
+			
 			// Create connection
+			Driver driver = Driver.getByProtocol(protocol);
 			host = Settings.SQL_HOST.getString();
 			protocol = Settings.SQL_PROTOCOL.getString();
-			Connection connection = new Connection(host, protocol);
+			Connection connection = new Connection(host, driver);
 			
 			// Connect
 			String user = Settings.SQL_USERNAME.getString();
