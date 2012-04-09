@@ -37,7 +37,6 @@ import java.util.Set;
 public class SQLGroupManager implements GroupManager {
 	private final Connection connection = SimplePermissionsPlugin.getInstance().getConnection();
 	private final Table groupTable = new Table(connection, "permissions_groups");
-	private final Table permissionsTable = new Table(connection, "permissions_group_permissions");
 	private final PermissionsLogger logger = Permissions.getLogger();
 	private final Set<Group> groups = new HashSet<Group>();
 	
@@ -48,13 +47,13 @@ public class SQLGroupManager implements GroupManager {
 			// Create the group table
 			logger.info("Loading group data...");
 			if (!groupTable.exists()) {
-				System.out.println("Creating table...");
+				logger.info("Creating group table...");
 				Map<String, DataType> columnDataTypeMap = new HashMap<String, DataType>();
 				columnDataTypeMap.put("name", new DataType(DataType.TEXT));
 				columnDataTypeMap.put("def", new DataType(DataType.CHARACTER, "1"));
 				columnDataTypeMap.put("per_world", new DataType(DataType.CHARACTER, "1"));
 				groupTable.create(columnDataTypeMap);
-				System.out.println("Table created!");
+				logger.info("Group table created!");
 			}
 
 			Set<String> names = (Set<String>) groupTable.values("name");
@@ -75,11 +74,25 @@ public class SQLGroupManager implements GroupManager {
 				loadPermissions(group);
 				loadData(group);
 				loadWorlds(group);
+				
+				// Turn auto-save back on and add the group
+				group.setAutoSave(true);
+				groups.add(group);
 			}
+
+			// Load inheritance - All groups must be loaded first
+			for (Group group : groups) {
+				loadInheritance(group);
+			}
+
+			logger.info("Group data loaded. " + groups.size() + " unique groups loaded!");
 
 		} catch (SQLException e) {
 			logger.severe("Failed to load group data: " + e.getMessage());
 		}
+	}
+	
+	private void loadInheritance(Group group) {
 	}
 	
 	private void loadPermissions(Group group) {
