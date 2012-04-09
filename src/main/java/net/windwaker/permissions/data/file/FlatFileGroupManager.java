@@ -54,7 +54,7 @@ public class FlatFileGroupManager implements GroupManager {
 				String path = "groups/" + name;
 				Group group = new Group(name);
 
-				// Turn off autosave for loading.
+				// Turn off auto-save for loading.
 				group.setAutoSave(false);
 
 				// Set some values.
