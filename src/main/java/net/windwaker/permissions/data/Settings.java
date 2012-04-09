@@ -36,40 +36,34 @@ import java.io.File;
 import java.util.logging.Logger;
 
 public class Settings {
-	private static final Settings settings = new Settings();
 	private static final PermissionsLogger logger = Permissions.getLogger();
 	private static final YamlConfiguration data = new YamlConfiguration(new File("plugins/Permissions/settings.yml"));
-	public static final ConfigurationHolder DATA_MANAGEMENT = new ConfigurationHolder("data-management", "sql");
-	public static final ConfigurationHolder SQL_PROTOCOL = new ConfigurationHolder("sql.protocol", "mysql");
-	public static final ConfigurationHolder SQL_HOST = new ConfigurationHolder("sql.host", "184.168.194.134");
-	public static final ConfigurationHolder SQL_USERNAME = new ConfigurationHolder("sql.username", "w1ndwaker");
-	public static final ConfigurationHolder SQL_PASSWORD = new ConfigurationHolder("sql.password", "WalkerCrouse!1");
+	/*
+	public static final ConfigurationHolder SQL_ENABLED = new ConfigurationHolder(false, "sql.enabled");
+	public static final ConfigurationHolder SQL_PROTOCOL = new ConfigurationHolder("mysql", "sql.protocol");
+	public static final ConfigurationHolder SQL_HOST = new ConfigurationHolder("184.168.194.134", "sql.host");
+	public static final ConfigurationHolder SQL_USERNAME = new ConfigurationHolder("w1ndwaker", "sql.username");
+	public static final ConfigurationHolder SQL_PASSWORD = new ConfigurationHolder("WalkerCrouse!1", "sql.password");
+	*/
 
-	private Settings() {
-
-	}
-
-	public static Settings getInstance() {
-		return settings;
-	}
-
-	public static void init() {
+	public static void load() {
 		try {
 			data.load();
-			data.addChildren(DATA_MANAGEMENT, SQL_PROTOCOL, SQL_HOST, SQL_USERNAME, SQL_PASSWORD);
+			/*
+			data.addChild(SQL_ENABLED);
+			data.addChild(SQL_PROTOCOL);
+			data.addChild(SQL_HOST);
+			data.addChild(SQL_USERNAME);
+			data.addChild(SQL_PASSWORD);
 			data.save();
+			*/
 		} catch (ConfigurationException e) {
 			logger.severe("Failed to load settings file: " + e.getMessage());
 		}
 	}
 
 	public GroupManager createGroupManager() {
-		String data = DATA_MANAGEMENT.getString();
-		if (data.equalsIgnoreCase("flat-file")) {
-			return new FlatFileGroupManager();
-		}
-
-		if (data.equalsIgnoreCase("sql")) {
+		if (/*SQL_ENABLED.getBoolean()*/ true) {
 			return new SQLGroupManager();
 		}
 
@@ -77,12 +71,7 @@ public class Settings {
 	}
 
 	public UserManager createUserManager() {
-		String data = DATA_MANAGEMENT.getString();
-		if (data.equalsIgnoreCase("flat-file")) {
-			return new FlatFileUserManager();
-		}
-
-		if (data.equalsIgnoreCase("sql")) {
+		if (/*SQL_ENABLED.getBoolean()*/ true) {
 			return new SQLUserManager();
 		}
 

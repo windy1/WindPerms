@@ -18,15 +18,42 @@
  */
 package net.windwaker.permissions.data.sql;
 
+import net.windwaker.permissions.SimplePermissionsPlugin;
 import net.windwaker.permissions.api.GroupManager;
+import net.windwaker.permissions.api.Permissions;
+import net.windwaker.permissions.api.PermissionsLogger;
 import net.windwaker.permissions.api.permissible.Group;
+import net.windwaker.sql.Connection;
+import net.windwaker.sql.DataType;
+import net.windwaker.sql.Table;
 
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 public class SQLGroupManager implements GroupManager {
-
+	private final Connection connection = SimplePermissionsPlugin.getInstance().getConnection();
+	private final PermissionsLogger logger = Permissions.getLogger();
+	
 	@Override
 	public void load() {
+		try {
+			
+			// Create the group table
+			Table table = new Table(connection, "permissions_groups");
+			if (!table.exists()) {
+				System.out.println("Creating table...");
+				Map<String, DataType> columnDataTypeMap = new HashMap<String, DataType>();
+				columnDataTypeMap.put("name", DataType.TEXT);
+				columnDataTypeMap.put("default", DataType.CHARACTER.setParameters("1"));
+				columnDataTypeMap.put("per_world", DataType.CHARACTER.setParameters("1"));
+				table.create(columnDataTypeMap);
+				System.out.println("Table created!");
+			}
+		} catch (SQLException e) {
+			logger.severe("Failed to load group data: " + e.getMessage());
+		}
 	}
 	
 	private void loadPermissions(Group group) {

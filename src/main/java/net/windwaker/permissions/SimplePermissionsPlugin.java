@@ -40,10 +40,10 @@ import java.sql.SQLException;
 
 public class SimplePermissionsPlugin extends PermissionsPlugin {
 	private static SimplePermissionsPlugin instance;
-	private static final Settings settings = Settings.getInstance();
 	private GroupManager groupManager;
 	private UserManager userManager;
 	private final PermissionsLogger logger = Permissions.getLogger();
+	private Connection connection;
 
 	public SimplePermissionsPlugin() {
 		instance = this;
@@ -56,8 +56,9 @@ public class SimplePermissionsPlugin extends PermissionsPlugin {
 		Permissions.setPlugin(this);
 
 		// Load data
-		Settings.init();
-		if (Settings.DATA_MANAGEMENT.getString().equalsIgnoreCase("sql")) {
+		Settings settings = new Settings();
+		settings.load();
+		if (/*Settings.SQL_ENABLED.getBoolean()*/ true) {
 			connectToDatabase();
 		}
 		
@@ -85,20 +86,19 @@ public class SimplePermissionsPlugin extends PermissionsPlugin {
 	}
 	
 	public void connectToDatabase() {
-		String host = null;
+		String host;
 		String protocol = null;
 		PluginManager pluginManager = Spout.getEngine().getPluginManager();		
 		try {
 			
 			// Create connection
-			Driver driver = Driver.getByProtocol(protocol);
-			host = Settings.SQL_HOST.getString();
-			protocol = Settings.SQL_PROTOCOL.getString();
-			Connection connection = new Connection(host, driver);
+			host = /*Settings.SQL_HOST.getString();*/ "184.168.194.134/w1ndwaker";
+			protocol = /*Settings.SQL_PROTOCOL.getString();*/ "mysql";
+			connection = new Connection(host, Driver.getByProtocol(protocol));
 			
 			// Connect
-			String user = Settings.SQL_USERNAME.getString();
-			String password = Settings.SQL_PASSWORD.getString();
+			String user = /*Settings.SQL_USERNAME.getString();*/ "w1ndwaker";
+			String password = /*Settings.SQL_PASSWORD.getString();*/ "WalkerCrouse!1";
 			logger.info("Connecting to " + host + "...");
 			connection.connect(user, password);
 			logger.info("Established connection with " + host + "!");
@@ -132,6 +132,10 @@ public class SimplePermissionsPlugin extends PermissionsPlugin {
 
 	public static SimplePermissionsPlugin getInstance() {
 		return instance;
+	}
+	
+	public Connection getConnection() {
+		return connection;
 	}
 
 	@Override
