@@ -22,16 +22,12 @@
 package net.windwaker.permissions;
 
 import net.windwaker.permissions.api.*;
-import net.windwaker.permissions.api.GroupManager;
-import net.windwaker.permissions.api.UserManager;
-import net.windwaker.permissions.api.PermissionsLogger;
 import net.windwaker.permissions.command.GroupCommand;
 import net.windwaker.permissions.command.PermissionsCommand;
 import net.windwaker.permissions.command.UserCommand;
 import net.windwaker.permissions.data.Settings;
 import net.windwaker.sql.Connection;
 import net.windwaker.sql.Driver;
-
 import org.spout.api.Spout;
 import org.spout.api.command.CommandRegistrationsFactory;
 import org.spout.api.command.annotated.AnnotatedCommandRegistrationFactory;
@@ -61,23 +57,23 @@ public class SimplePermissionsPlugin extends PermissionsPlugin {
 		// Load data
 		Settings settings = new Settings();
 		settings.load();
-		if (/*Settings.SQL_ENABLED.getBoolean()*/ true) {
+		if (Settings.SQL_ENABLED.getBoolean()) {
 			connectToDatabase();
 		}
-		
+
 		groupManager = settings.createGroupManager();
 		groupManager.load();
 
 		userManager = settings.createUserManager();
 		userManager.load();
 	}
-	
+
 	@Override
 	public void onEnable() {
-		
+
 		// Register events
 		Spout.getEventManager().registerEvents(new PermissionsHandler(), this);
-		
+
 		// Register commands
 		CommandRegistrationsFactory<Class<?>> commandRegFactory = new AnnotatedCommandRegistrationFactory(new SimpleInjector(), new SimpleAnnotatedCommandExecutorFactory());
 		getGame().getRootCommand().addSubCommands(this, PermissionsCommand.class, commandRegFactory);
@@ -87,21 +83,21 @@ public class SimplePermissionsPlugin extends PermissionsPlugin {
 		// Hello world!
 		logger.info("Permissions v" + getDescription().getVersion() + " enabled!");
 	}
-	
+
 	public void connectToDatabase() {
 		String host;
 		String protocol = null;
-		PluginManager pluginManager = Spout.getEngine().getPluginManager();		
+		PluginManager pluginManager = Spout.getEngine().getPluginManager();
 		try {
-			
+
 			// Create connection
-			host = /*Settings.SQL_HOST.getString();*/ "184.168.194.134/w1ndwaker";
-			protocol = /*Settings.SQL_PROTOCOL.getString();*/ "mysql";
-			connection = new Connection(host, Driver.getByProtocol(protocol));
-			
+			host = Settings.SQL_HOST.getString();
+			protocol = Settings.SQL_PROTOCOL.getString();
+			connection = new Connection(host, Driver.get(protocol));
+
 			// Connect
-			String user = /*Settings.SQL_USERNAME.getString();*/ "w1ndwaker";
-			String password = /*Settings.SQL_PASSWORD.getString();*/ "WalkerCrouse!1";
+			String user = Settings.SQL_USERNAME.getString();
+			String password = Settings.SQL_PASSWORD.getString();
 			logger.info("Connecting to " + host + "...");
 			connection.connect(user, password);
 			logger.info("Established connection with " + host + "!");
@@ -120,7 +116,7 @@ public class SimplePermissionsPlugin extends PermissionsPlugin {
 			logger.severe("Failed to find valid " + protocol + " JDBC driver: " + e.getMessage());
 			logger.severe("Shutting down...");
 			pluginManager.disablePlugin(this);
-		
+
 		} catch (IllegalAccessException e) {
 			logger.severe("Access is denied to JDBC driver: " + e.getMessage());
 			logger.severe("Shutting down...");
@@ -136,7 +132,7 @@ public class SimplePermissionsPlugin extends PermissionsPlugin {
 	public static SimplePermissionsPlugin getInstance() {
 		return instance;
 	}
-	
+
 	public Connection getConnection() {
 		return connection;
 	}

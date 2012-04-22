@@ -25,7 +25,6 @@ import net.windwaker.permissions.api.GroupManager;
 import net.windwaker.permissions.api.Permissions;
 import net.windwaker.permissions.api.PermissionsLogger;
 import net.windwaker.permissions.api.permissible.Group;
-
 import org.spout.api.Spout;
 import org.spout.api.data.DataValue;
 import org.spout.api.exception.ConfigurationException;
@@ -33,11 +32,7 @@ import org.spout.api.geo.World;
 import org.spout.api.util.config.yaml.YamlConfiguration;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class FlatFileGroupManager implements GroupManager {
 	private final PermissionsLogger logger = Permissions.getLogger();
@@ -73,11 +68,11 @@ public class FlatFileGroupManager implements GroupManager {
 				loadWorlds(group);
 				loadData(group);
 
-				// Turn autosave back on and add the group.
+				// Turn auto-save back on and add the group.
 				group.setAutoSave(true);
 				groups.add(group);
 			}
-		
+
 			// Load inheritance - must be loaded after all other groups are loaded.
 			for (Group group : groups) {
 				loadInheritance(group);
@@ -90,7 +85,7 @@ public class FlatFileGroupManager implements GroupManager {
 			logger.severe("Failed to load group data: " + e.getMessage());
 		}
 	}
-	
+
 	private void loadPermissions(Group group) {
 		String path = "groups/" + group.getName();
 		Set<String> nodes = data.getNode(path + "/permissions").getKeys(false);
@@ -98,7 +93,7 @@ public class FlatFileGroupManager implements GroupManager {
 			group.setPermission(node, data.getNode(path + "/permissions/" + node).getBoolean());
 		}
 	}
-	
+
 	private void loadWorlds(Group group) {
 		String path = "groups/" + group.getName();
 		List<String> worldNames = data.getNode(path + "/worlds").getStringList();
@@ -109,7 +104,7 @@ public class FlatFileGroupManager implements GroupManager {
 			}
 		}
 	}
-	
+
 	private void loadData(Group group) {
 		String path = "groups/" + group.getName();
 		Set<String> nodes = data.getNode(path + "/metadata").getKeys(false);
@@ -117,7 +112,7 @@ public class FlatFileGroupManager implements GroupManager {
 			group.setMetadata(node, data.getNode(path + "/metadata/" + node).getValue());
 		}
 	}
-	
+
 	private void loadInheritance(Group group) {
 		String path = "groups/" + group.getName();
 		Set<String> inheritedNames = data.getNode(path + "/inherited").getKeys(false);
@@ -144,7 +139,7 @@ public class FlatFileGroupManager implements GroupManager {
 			logger.severe("Failed to save group " + group.getName() + ": " + e.getMessage());
 		}
 	}
-	
+
 	private void saveInheritance(Group group) {
 		String path = "groups/" + group.getName();
 		Map<Group, Boolean> groupMap = group.getInheritedGroups();
@@ -152,15 +147,15 @@ public class FlatFileGroupManager implements GroupManager {
 			data.getNode(path + "/inherited/" + entry.getKey()).setValue(entry.getValue());
 		}
 	}
-	
+
 	private void savePermissions(Group group) {
 		String path = "groups/" + group.getName();
 		Set<Map.Entry<String, Boolean>> perms = group.getPermissions().entrySet();
-		for (Map.Entry<String, Boolean> perm :  perms) {
+		for (Map.Entry<String, Boolean> perm : perms) {
 			data.getNode(path + "/permissions/" + perm.getKey()).setValue(perm.getValue());
 		}
 	}
-	
+
 	private void saveData(Group group) {
 		String path = "groups/" + group.getName();
 		Set<Map.Entry<String, DataValue>> values = group.getMetadataMap().entrySet();
@@ -168,7 +163,7 @@ public class FlatFileGroupManager implements GroupManager {
 			data.getNode(path + "/metadata/" + value.getKey()).setValue(value.getValue());
 		}
 	}
-	
+
 	@Override
 	public void addGroup(String name) {
 		try {
@@ -215,7 +210,7 @@ public class FlatFileGroupManager implements GroupManager {
 
 		return null;
 	}
-	
+
 	@Override
 	public Set<Group> getGroups() {
 		return groups;

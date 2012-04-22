@@ -40,7 +40,7 @@ public abstract class Permissible {
 	public Permissible(String name) {
 		this.name = name;
 	}
-	
+
 	/**
 	 * Gets the name of this Permissible
 	 *
@@ -57,7 +57,7 @@ public abstract class Permissible {
 	 */
 	public Map<String, Boolean> getPermissions() {
 		return permissionNodes;
-	} 
+	}
 
 	/**
 	 * Sets a permissions state for the subject

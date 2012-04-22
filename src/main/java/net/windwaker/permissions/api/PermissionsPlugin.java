@@ -30,14 +30,14 @@ import org.spout.api.plugin.CommonPlugin;
  */
 public abstract class PermissionsPlugin extends CommonPlugin {
 	/**
-	 * Gets the plugin's GroupManager
+	 * Gets the plugins GroupManager
 	 *
 	 * @return the GroupManager
 	 */
 	public abstract GroupManager getGroupManager();
 
 	/**
-	 * Gets the plugin's UserManager.
+	 * Gets the plugins UserManager.
 	 *
 	 * @return the UserManager
 	 */

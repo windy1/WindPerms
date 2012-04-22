@@ -36,26 +36,35 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+/*
+ *            ------------------------------
+ * Table:     |     permissions_groups      |
+ *            ------------------------------
+ * Fields:    |  name  |  def  |  per_world |
+ *            ------------------------------
+ * Data Type: |  text  |char(1)|   char(1)  |
+ *            ------------------------------
+ */
 @SuppressWarnings("unchecked")
 public class SQLGroupManager implements GroupManager {
 	private final Connection connection = SimplePermissionsPlugin.getInstance().getConnection();
 	private final Table groupTable = new Table(connection, "permissions_groups");
 	private final PermissionsLogger logger = Permissions.getLogger();
 	private final Set<Group> groups = new HashSet<Group>();
-	
+
 	@Override
 	public void load() {
 		try {
-			
+
 			// Create the group table
 			logger.info("Loading group data...");
 			if (!groupTable.exists()) {
 				logger.info("Creating group table...");
-				Map<String, DataType> columnDataTypeMap = new HashMap<String, DataType>();
-				columnDataTypeMap.put("name", new DataType(DataType.TEXT));
-				columnDataTypeMap.put("def", new DataType(DataType.CHARACTER, "1"));
-				columnDataTypeMap.put("per_world", new DataType(DataType.CHARACTER, "1"));
-				groupTable.create(columnDataTypeMap);
+				Map<String, DataType> fieldDataTypeMap = new HashMap<String, DataType>();
+				fieldDataTypeMap.put("name", new DataType(DataType.TEXT));
+				fieldDataTypeMap.put("def", new DataType(DataType.CHARACTER, "1"));
+				fieldDataTypeMap.put("per_world", new DataType(DataType.CHARACTER, "1"));
+				groupTable.create(fieldDataTypeMap);
 				logger.info("Group table created!");
 			}
 
@@ -77,7 +86,7 @@ public class SQLGroupManager implements GroupManager {
 				loadPermissions(group);
 				loadData(group);
 				loadWorlds(group);
-				
+
 				// Turn auto-save back on and add the group
 				group.setAutoSave(true);
 				groups.add(group);
@@ -94,16 +103,16 @@ public class SQLGroupManager implements GroupManager {
 			logger.severe("Failed to load group data: " + e.getMessage());
 		}
 	}
-	
+
 	private void loadInheritance(Group group) {
 	}
-	
+
 	private void loadPermissions(Group group) {
 	}
-	
+
 	private void loadWorlds(Group group) {
 	}
-	
+
 	private void loadData(Group group) {
 	}
 
@@ -111,7 +120,7 @@ public class SQLGroupManager implements GroupManager {
 	public void addGroup(String name) {
 		try {
 			groups.add(new Group(name));
-			groupTable.add(new String[] {"name"}, new String[] {name});
+			groupTable.add(new String[]{"name"}, new String[]{name});
 		} catch (SQLException e) {
 			logger.severe("Failed to add group " + name + ": " + e.getMessage());
 		}
@@ -126,7 +135,6 @@ public class SQLGroupManager implements GroupManager {
 					groups.remove(group);
 				}
 			}
-			
 		} catch (SQLException e) {
 			logger.severe("Failed to remove group " + name + ": " + e.getMessage());
 		}
@@ -151,13 +159,13 @@ public class SQLGroupManager implements GroupManager {
 	@Override
 	public void saveGroup(Group group) {
 	}
-	
+
 	private void saveInheritance(Group group) {
 	}
-	
+
 	private void savePermissions(Group group) {
 	}
-	
+
 	private void saveData(Group group) {
 	}
 }

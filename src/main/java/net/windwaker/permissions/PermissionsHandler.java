@@ -22,13 +22,12 @@
 package net.windwaker.permissions;
 
 import net.windwaker.permissions.api.GroupManager;
-import net.windwaker.permissions.api.UserManager;
-import net.windwaker.permissions.api.PermissionsLogger;
 import net.windwaker.permissions.api.Permissions;
+import net.windwaker.permissions.api.PermissionsLogger;
+import net.windwaker.permissions.api.UserManager;
 import net.windwaker.permissions.api.permissible.Group;
 import net.windwaker.permissions.api.permissible.Permissible;
 import net.windwaker.permissions.api.permissible.User;
-
 import org.spout.api.event.EventHandler;
 import org.spout.api.event.Listener;
 import org.spout.api.event.Order;
@@ -43,30 +42,30 @@ public class PermissionsHandler implements Listener {
 	private final UserManager userManager = Permissions.getUserManager();
 	private final GroupManager groupManager = Permissions.getGroupManager();
 	private final PermissionsLogger logger = Permissions.getLogger();
-	
+
 	@EventHandler(order = Order.EARLIEST)
-	public void onGroupsGet(PermissionGetGroupsEvent event) {
+	public void checkGroup(PermissionGetGroupsEvent event) {
 		User user = userManager.getUser(event.getSubject().getName());
 		if (user == null) {
 			return;
 		}
-		
+
 		Group group = user.getGroup();
 		if (group == null) {
 			return;
 		}
-		
+
 		String[] name = {group.getName()};
 		event.setGroups(name);
 	}
 
 	@EventHandler(order = Order.EARLIEST)
-	public void onGroupCheck(PermissionGroupEvent event) {
+	public void checkGroup(PermissionGroupEvent event) {
 		User user = userManager.getUser(event.getSubject().getName());
 		if (user == null) {
 			return;
 		}
-		
+
 		Group group = user.getGroup();
 		if (group == null) {
 			return;
@@ -81,7 +80,7 @@ public class PermissionsHandler implements Listener {
 	}
 
 	@EventHandler(order = Order.EARLIEST)
-	public void onNodeCheck(PermissionNodeEvent event) {
+	public void checkNode(PermissionNodeEvent event) {
 		String name = event.getSubject().getName();
 		Permissible subject = groupManager.getGroup(name) != null ? groupManager.getGroup(name) : userManager.getUser(name);
 		if (subject == null) {
@@ -99,7 +98,7 @@ public class PermissionsHandler implements Listener {
 	}
 
 	@EventHandler(order = Order.EARLIEST)
-	public void onDataGet(RetrieveDataEvent event) {
+	public void sendData(RetrieveDataEvent event) {
 		String name = event.getSubject().getName();
 		Permissible subject = groupManager.getGroup(name) != null ? groupManager.getGroup(name) : userManager.getUser(name);
 		if (subject == null) {
@@ -113,7 +112,7 @@ public class PermissionsHandler implements Listener {
 	}
 
 	@EventHandler(order = Order.EARLIEST)
-	public void onPlayerLogin(PlayerLoginEvent event) {
+	public void playerLogin(PlayerLoginEvent event) {
 		String playerName = event.getPlayer().getName();
 		User user = userManager.getUser(playerName);
 		if (user != null) {

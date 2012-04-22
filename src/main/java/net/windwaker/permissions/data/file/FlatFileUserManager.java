@@ -22,20 +22,19 @@
 package net.windwaker.permissions.data.file;
 
 import net.windwaker.permissions.api.GroupManager;
-import net.windwaker.permissions.api.UserManager;
-import net.windwaker.permissions.api.PermissionsLogger;
 import net.windwaker.permissions.api.Permissions;
+import net.windwaker.permissions.api.PermissionsLogger;
+import net.windwaker.permissions.api.UserManager;
 import net.windwaker.permissions.api.permissible.Group;
 import net.windwaker.permissions.api.permissible.User;
+import org.spout.api.data.DataValue;
+import org.spout.api.exception.ConfigurationException;
+import org.spout.api.util.config.yaml.YamlConfiguration;
 
 import java.io.File;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-
-import org.spout.api.data.DataValue;
-import org.spout.api.exception.ConfigurationException;
-import org.spout.api.util.config.yaml.YamlConfiguration;
 
 public class FlatFileUserManager implements UserManager {
 	private final PermissionsLogger logger = Permissions.getLogger();
@@ -59,8 +58,8 @@ public class FlatFileUserManager implements UserManager {
 				// Create new user
 				String path = "users/" + name;
 				User user = new User(name);
-			
-				// Turn off autosaving for the user while loading - data will not save to disk.
+
+				// Turn off auto-saving for the user while loading - data will not save to disk.
 				user.setAutoSave(false);
 
 				// Load permissions and data
@@ -73,11 +72,11 @@ public class FlatFileUserManager implements UserManager {
 					user.setGroup(group);
 				}
 
-				// Turn autosave back on and add user.
+				// Turn auto-save back on and add user.
 				user.setAutoSave(true);
 				users.add(user);
 			}
-		
+
 			if (!names.isEmpty()) {
 				logger.info("User data loaded. " + users.size() + " unique users loaded!");
 			}
@@ -85,7 +84,7 @@ public class FlatFileUserManager implements UserManager {
 			logger.severe("Failed to load user data: " + e.getMessage());
 		}
 	}
-	
+
 	private void loadPermissions(User user) {
 		String path = "users/" + user.getName();
 		Set<String> nodes = data.getNode(path + "/permissions").getKeys(false);
@@ -93,7 +92,7 @@ public class FlatFileUserManager implements UserManager {
 			user.setPermission(node, data.getNode(path + "/permissions/" + node).getBoolean());
 		}
 	}
-	
+
 	private void loadData(User user) {
 		String path = "users/" + user.getName();
 		Set<String> nodes = data.getNode(path + "/metadata").getKeys(false);
@@ -115,7 +114,7 @@ public class FlatFileUserManager implements UserManager {
 			logger.severe("Failed to save user: " + user.getName() + ": " + e.getMessage());
 		}
 	}
-	
+
 	private void savePermissions(User user) {
 		String path = "users/" + user.getName();
 		Set<Map.Entry<String, Boolean>> perms = user.getPermissions().entrySet();
@@ -123,7 +122,7 @@ public class FlatFileUserManager implements UserManager {
 			data.getNode(path + "/permissions/" + perm.getKey()).setValue(perm.getValue());
 		}
 	}
-	
+
 	private void saveData(User user) {
 		String path = "users/" + user.getName();
 		Set<Map.Entry<String, DataValue>> values = user.getMetadataMap().entrySet();

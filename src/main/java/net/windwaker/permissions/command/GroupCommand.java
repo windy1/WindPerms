@@ -24,7 +24,6 @@ package net.windwaker.permissions.command;
 import net.windwaker.permissions.api.GroupManager;
 import net.windwaker.permissions.api.Permissions;
 import net.windwaker.permissions.api.permissible.Group;
-
 import org.spout.api.ChatColor;
 import org.spout.api.command.CommandContext;
 import org.spout.api.command.CommandSource;
@@ -36,7 +35,7 @@ import java.util.Map;
 
 public class GroupCommand {
 	private final GroupManager groupManager = Permissions.getGroupManager();
-	
+
 	@Command(aliases = {"group", "gr"}, desc = "Modifies a group", usage = "<info|set|add|remove|check|help> [inherit|default|perm|build] [group] [bool:build|bool:default|group|perm|identifier] [bool:inherit|bool:permState]", min = 1, max = 5)
 	@CommandPermissions("permissions.command.group")
 	public void group(CommandContext args, CommandSource source) throws CommandException {
@@ -48,7 +47,7 @@ public class GroupCommand {
 		}
 
 		if (args.length() == 2) {
-			if (args.getString(0).equalsIgnoreCase("info")) {					
+			if (args.getString(0).equalsIgnoreCase("info")) {
 				printInfo(source, args.getString(1));
 				return;
 			}
@@ -69,7 +68,7 @@ public class GroupCommand {
 		if (args.length() == 3) {
 			throw new CommandException("Check your argument count!");
 		}
-		
+
 		if (args.length() == 4) {
 			if (args.getString(0).equalsIgnoreCase("set")) {
 				if (args.getString(1).equalsIgnoreCase("default")) {
@@ -87,7 +86,7 @@ public class GroupCommand {
 					return;
 				}
 			}
-			
+
 			if (args.getString(0).equalsIgnoreCase("check")) {
 				if (args.getString(1).equalsIgnoreCase("inherit")) {
 					checkInherit(source, args.getString(2), args.getString(3));
@@ -100,14 +99,14 @@ public class GroupCommand {
 				}
 			}
 		}
-		
+
 		if (args.length() == 5) {
 			if (args.getString(0).equalsIgnoreCase("set")) {
 				if (args.getString(1).equalsIgnoreCase("inherit")) {
 					setInherit(source, args.getString(2), args.getString(3), args.getString(4));
 					return;
 				}
-				
+
 				if (args.getString(1).equalsIgnoreCase("perm")) {
 					setPermission(source, args.getString(2), args.getString(3), args.getString(4));
 					return;
@@ -121,87 +120,82 @@ public class GroupCommand {
 	}
 
 	private void printHelp(CommandSource source) {
-		source.sendMessage(ChatColor.BRIGHT_GREEN + "----------" + ChatColor.WHITE + " [" + ChatColor.CYAN + "Permissions - Groups" + ChatColor.WHITE + "] "
-		+ ChatColor.BRIGHT_GREEN + "----------");
+		source.sendMessage(ChatColor.BRIGHT_GREEN + "----------" + ChatColor.WHITE + " [" + ChatColor.CYAN + "Permissions - Groups" + ChatColor.WHITE + "] " + ChatColor.BRIGHT_GREEN + "----------");
 		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN + "/group help" + ChatColor.BRIGHT_GREEN + " : Shows this menu.");
 		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN + "/group info <user>" + ChatColor.BRIGHT_GREEN + " : Check a users info.");
-		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN
-		+ "/group set <inherit|default|perm|build> <group> <true|false|inheritedGroup|permissionNode> [true|false|other]"
-		+ ChatColor.BRIGHT_GREEN + " : Set various flags for user.");
+		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN + "/group set <inherit|default|perm|build> <group> <true|false|inheritedGroup|permissionNode> [true|false|other]" + ChatColor.BRIGHT_GREEN + " : Set various flags for user.");
 		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN + "/group <add|remove> <group>" + ChatColor.BRIGHT_GREEN + " : Add or remove a group.");
-		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN + "/group check <inherit|perm> <group> <inheritedGroup|permissionNode>"
-		+ ChatColor.BRIGHT_GREEN + " : Check various flags.");
+		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN + "/group check <inherit|perm> <group> <inheritedGroup|permissionNode>" + ChatColor.BRIGHT_GREEN + " : Check various flags.");
 	}
-	
+
 	private void printInfo(CommandSource source, String name) throws CommandException {
 		Group group = groupManager.getGroup(name);
 		if (group == null) {
 			throw new CommandException(name + " doesn't exist!");
 		}
-		
-		source.sendMessage(ChatColor.BRIGHT_GREEN + "----------" + ChatColor.WHITE + " [" + ChatColor.CYAN + group.getName() + ChatColor.WHITE 
-		+ "] " + ChatColor.BRIGHT_GREEN + "----------");
+
+		source.sendMessage(ChatColor.BRIGHT_GREEN + "----------" + ChatColor.WHITE + " [" + ChatColor.CYAN + group.getName() + ChatColor.WHITE + "] " + ChatColor.BRIGHT_GREEN + "----------");
 		source.sendMessage(ChatColor.BRIGHT_GREEN + "- Default: " + ChatColor.CYAN + group.isDefault());
 	}
-	
+
 	private void setInherit(CommandSource source, String groupName, String inheritedName, String bool) throws CommandException {
 		Group group = groupManager.getGroup(groupName);
 		if (group == null) {
 			throw new CommandException(groupName + " does not exist!");
 		}
-		
+
 		Group inherited = groupManager.getGroup(inheritedName);
 		if (inherited == null) {
 			throw new CommandException(inheritedName + " does not exist!");
 		}
-		
+
 		boolean inherit = false;
 		if (bool.equalsIgnoreCase("true")) {
 			inherit = true;
 		}
-		
+
 		group.setInheritedGroup(inherited, inherit);
 		String out = inherit ? "does" : "does not";
 		source.sendMessage(ChatColor.BRIGHT_GREEN + group.getName() + " now " + out + " inherits " + inherited.getName());
 	}
-	
+
 	private void setDefault(CommandSource source, String groupName, String bool) throws CommandException {
 		Group group = groupManager.getGroup(groupName);
 		if (group == null) {
 			throw new CommandException(groupName + " doesn't exist!");
 		}
-		
+
 		boolean def = false;
 		if (bool.equalsIgnoreCase("true")) {
 			def = true;
 		}
-		
+
 		group.setDefault(def);
 		source.sendMessage(ChatColor.BRIGHT_GREEN + group.getName() + "'s default state is now set to " + def);
 	}
-	
+
 	private void setPermission(CommandSource source, String groupName, String node, String bool) throws CommandException {
 		Group group = groupManager.getGroup(groupName);
 		if (group == null) {
 			throw new CommandException(groupName + " doesn't exist!");
 		}
-		
+
 		boolean state = false;
 		if (bool.equalsIgnoreCase("true")) {
 			state = true;
 		}
-		
+
 		group.setPermission(node, state);
 		String has = state ? "has" : "does not have";
 		source.sendMessage(ChatColor.BRIGHT_GREEN + group.getName() + " now " + has + " permissions for " + node);
 	}
-	
+
 	private void checkInherit(CommandSource source, String groupName, String inheritedName) throws CommandException {
 		Group group = groupManager.getGroup(groupName);
 		if (group == null) {
 			throw new CommandException(groupName + " doesn't exist!");
 		}
-		
+
 		Group inherited = groupManager.getGroup(inheritedName);
 		if (inherited == null) {
 			throw new CommandException(groupName + " doesn't exist!");
@@ -215,13 +209,13 @@ public class GroupCommand {
 			source.sendMessage(ChatColor.BRIGHT_GREEN + "Group " + inherited + " has not been assigned to group " + groupName);
 		}
 	}
-	
+
 	private void checkPermission(CommandSource source, String groupName, String node) throws CommandException {
 		Group group = groupManager.getGroup(groupName);
 		if (group == null) {
 			throw new CommandException(groupName + " doesn't exist!");
 		}
-		
+
 		String has = group.hasPermission(node) ? "has" : "does not have";
 		source.sendMessage(ChatColor.BRIGHT_GREEN + "Group " + groupName + " " + has + " permissions for " + node);
 	}

@@ -29,7 +29,6 @@ import net.windwaker.permissions.data.file.FlatFileGroupManager;
 import net.windwaker.permissions.data.file.FlatFileUserManager;
 import net.windwaker.permissions.data.sql.SQLGroupManager;
 import net.windwaker.permissions.data.sql.SQLUserManager;
-
 import org.spout.api.exception.ConfigurationException;
 import org.spout.api.util.config.ConfigurationHolder;
 import org.spout.api.util.config.yaml.YamlConfiguration;
@@ -38,7 +37,7 @@ import java.io.File;
 
 public class Settings {
 	private static final PermissionsLogger logger = Permissions.getLogger();
-	private static final YamlConfiguration data = new YamlConfiguration(new File("plugins/Permissions/settings.yml"));
+	private final YamlConfiguration data = new YamlConfiguration(new File("plugins/Permissions/settings.yml"));
 	public static final ConfigurationHolder SQL_ENABLED = new ConfigurationHolder(false, "sql.enabled");
 	public static final ConfigurationHolder SQL_PROTOCOL = new ConfigurationHolder("mysql", "sql.protocol");
 	public static final ConfigurationHolder SQL_HOST = new ConfigurationHolder("184.168.194.134", "sql.host");
@@ -46,7 +45,7 @@ public class Settings {
 	public static final ConfigurationHolder SQL_USERNAME = new ConfigurationHolder("w1ndwaker", "sql.username");
 	public static final ConfigurationHolder SQL_PASSWORD = new ConfigurationHolder("WalkerCrouse!1", "sql.password");
 
-	public static void load() {
+	public void load() {
 		try {
 			data.load();
 			ConfigurationHolder[] nodes = {SQL_ENABLED, SQL_PROTOCOL, SQL_HOST, SQL_DATABASE_NAME, SQL_USERNAME, SQL_PASSWORD};
@@ -54,7 +53,7 @@ public class Settings {
 				node.setConfiguration(data);
 				node.getValue();
 			}
-			
+
 			data.save();
 		} catch (ConfigurationException e) {
 			logger.severe("Failed to load settings file: " + e.getMessage());

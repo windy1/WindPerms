@@ -38,6 +38,15 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+/*
+ *            ------------------------------
+ * Table:     |     permissions_users       |
+ *            ------------------------------
+ * Fields:    |    name     |     group     |
+ *            ------------------------------
+ * Data Type: |    text     |     text      |
+ *            ------------------------------
+ */
 @SuppressWarnings("unchecked")
 public class SQLUserManager implements UserManager {
 	private final Connection connection = SimplePermissionsPlugin.getInstance().getConnection();
@@ -59,21 +68,21 @@ public class SQLUserManager implements UserManager {
 				userTable.create(columnDataTypeMap);
 				logger.info("User table created!");
 			}
-			
+
 			Set<String> names = (Set<String>) userTable.values("name");
 			for (String name : names) {
-				
+
 				// Create our user
 				System.out.println(name);
 				User user = new User(name);
 
 				// Turn off auto-save for loading
 				user.setAutoSave(false);
-				
+
 				// Load permissions and data
 				loadPermissions(user);
 				loadData(user);
-				
+
 				// Load group
 				GroupManager groupManager = Permissions.getGroupManager();
 				Group group = groupManager.getGroup(userTable.getString("group", "name", name));
@@ -87,15 +96,15 @@ public class SQLUserManager implements UserManager {
 			}
 
 			logger.info("User data loaded. " + users.size() + " unique users loaded!");
-		
+
 		} catch (SQLException e) {
 			logger.severe("Failed to load user data: " + e.getMessage());
 		}
 	}
-	
+
 	private void loadPermissions(User user) {
 	}
-	
+
 	private void loadData(User user) {
 	}
 
@@ -103,7 +112,7 @@ public class SQLUserManager implements UserManager {
 	public void addUser(String username) {
 		try {
 			users.add(new User(username));
-			userTable.add(new String[] {"name"}, new String[] {username});
+			userTable.add(new String[]{"name"}, new String[]{username});
 		} catch (SQLException e) {
 			logger.severe("Failed to add user " + username + ": " + e.getMessage());
 		}
@@ -118,7 +127,7 @@ public class SQLUserManager implements UserManager {
 					users.remove(user);
 				}
 			}
-		
+
 		} catch (SQLException e) {
 			logger.severe("Failed to remove user " + username + ": " + e.getMessage());
 		}
@@ -143,10 +152,10 @@ public class SQLUserManager implements UserManager {
 	@Override
 	public void saveUser(User user) {
 	}
-	
+
 	private void savePermissions(User user) {
 	}
-	
+
 	private void saveData(User user) {
 	}
 }

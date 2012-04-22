@@ -33,7 +33,7 @@ import java.util.logging.Level;
 public class PermissionsLogger {
 
 	protected PermissionsLogger() {
-		
+
 	}
 
 	/**

@@ -21,15 +21,11 @@
  */
 package net.windwaker.permissions.api.permissible;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import net.windwaker.permissions.api.GroupManager;
 import net.windwaker.permissions.api.Permissions;
 import org.spout.api.geo.World;
+
+import java.util.*;
 
 /**
  * Represents a group of users.

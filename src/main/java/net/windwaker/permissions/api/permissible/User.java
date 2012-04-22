@@ -21,11 +21,11 @@
  */
 package net.windwaker.permissions.api.permissible;
 
-import java.util.Map;
-import java.util.Set;
-
 import net.windwaker.permissions.api.Permissions;
 import net.windwaker.permissions.api.UserManager;
+
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Represents a user entity.
