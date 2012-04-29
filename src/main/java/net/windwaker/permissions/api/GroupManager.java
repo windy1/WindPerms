@@ -21,9 +21,8 @@
  */
 package net.windwaker.permissions.api;
 
-import net.windwaker.permissions.api.permissible.Group;
-
 import java.util.Set;
+import net.windwaker.permissions.api.permissible.Group;
 
 /**
  * Utility class for group management.

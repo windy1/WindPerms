@@ -21,6 +21,7 @@
  */
 package net.windwaker.permissions.command;
 
+import java.util.Map;
 import net.windwaker.permissions.api.GroupManager;
 import net.windwaker.permissions.api.Permissions;
 import net.windwaker.permissions.api.permissible.Group;
@@ -31,8 +32,11 @@ import org.spout.api.command.annotated.Command;
 import org.spout.api.command.annotated.CommandPermissions;
 import org.spout.api.exception.CommandException;
 
-import java.util.Map;
-
+/**
+ * Handles all command starting with 'group'.
+ * 
+ * @author Windwaker
+ */
 public class GroupCommand {
 	private final GroupManager groupManager = Permissions.getGroupManager();
 

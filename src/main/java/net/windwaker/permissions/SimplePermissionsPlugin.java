@@ -21,22 +21,23 @@
  */
 package net.windwaker.permissions;
 
+import java.sql.Connection;
 import net.windwaker.permissions.api.*;
 import net.windwaker.permissions.command.GroupCommand;
 import net.windwaker.permissions.command.PermissionsCommand;
 import net.windwaker.permissions.command.UserCommand;
 import net.windwaker.permissions.data.Settings;
-import net.windwaker.sql.Connection;
-import net.windwaker.sql.Driver;
 import org.spout.api.Spout;
 import org.spout.api.command.CommandRegistrationsFactory;
 import org.spout.api.command.annotated.AnnotatedCommandRegistrationFactory;
 import org.spout.api.command.annotated.SimpleAnnotatedCommandExecutorFactory;
 import org.spout.api.command.annotated.SimpleInjector;
-import org.spout.api.plugin.PluginManager;
 
-import java.sql.SQLException;
-
+/**
+ * Implementation of PermissionsPlugin
+ * 
+ * @author Windwaker
+ */
 public class SimplePermissionsPlugin extends PermissionsPlugin {
 	private static SimplePermissionsPlugin instance;
 	private GroupManager groupManager;
@@ -85,43 +86,7 @@ public class SimplePermissionsPlugin extends PermissionsPlugin {
 	}
 
 	public void connectToDatabase() {
-		String host;
-		String protocol = null;
-		PluginManager pluginManager = Spout.getEngine().getPluginManager();
-		try {
-
-			// Create connection
-			host = Settings.SQL_HOST.getString();
-			protocol = Settings.SQL_PROTOCOL.getString();
-			connection = new Connection(host, Driver.get(protocol));
-
-			// Connect
-			String user = Settings.SQL_USERNAME.getString();
-			String password = Settings.SQL_PASSWORD.getString();
-			logger.info("Connecting to " + host + "...");
-			connection.connect(user, password);
-			logger.info("Established connection with " + host + "!");
-
-		} catch (SQLException e) {
-			logger.severe("Failed to connect to SQL database: " + e.getMessage());
-			logger.severe("Shutting down...");
-			pluginManager.disablePlugin(this);
-
-		} catch (ClassNotFoundException e) {
-			logger.severe("Failed to find valid " + protocol + " JDBC driver: " + e.getMessage());
-			logger.severe("Shutting down...");
-			pluginManager.disablePlugin(this);
-
-		} catch (InstantiationException e) {
-			logger.severe("Failed to find valid " + protocol + " JDBC driver: " + e.getMessage());
-			logger.severe("Shutting down...");
-			pluginManager.disablePlugin(this);
-
-		} catch (IllegalAccessException e) {
-			logger.severe("Access is denied to JDBC driver: " + e.getMessage());
-			logger.severe("Shutting down...");
-			pluginManager.disablePlugin(this);
-		}
+	    // TODO: Connect to database with SimpleSave by alta189 and I.
 	}
 
 	@Override

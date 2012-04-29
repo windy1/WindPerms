@@ -38,39 +38,65 @@ import org.spout.api.event.server.permissions.PermissionGetGroupsEvent;
 import org.spout.api.event.server.permissions.PermissionGroupEvent;
 import org.spout.api.event.server.permissions.PermissionNodeEvent;
 
+/**
+ * Handles all calls in SpoutAPI like PermissionsSubject.getGroups(), PermissionsSubject.isInGroup(String group), 
+ * PermissionsSubject.hasPermission(String node), or DataSubject.getData(String node).
+ * 
+ * @author Windwaker
+ */
 public class PermissionsHandler implements Listener {
 	private final UserManager userManager = Permissions.getUserManager();
 	private final GroupManager groupManager = Permissions.getGroupManager();
 	private final PermissionsLogger logger = Permissions.getLogger();
 
+	/**
+	 * Catches the PermissionsGetGroupsEvent and sets the result to the subjects group.
+	 * This is invoked when PermissionsSubject.getGroups() is called.
+	 * 
+	 * @param event of invocation 
+	 */
 	@EventHandler(order = Order.EARLIEST)
 	public void checkGroup(PermissionGetGroupsEvent event) {
+		
+		// Get the user
 		User user = userManager.getUser(event.getSubject().getName());
 		if (user == null) {
 			return;
 		}
 
+		// Get the users group
 		Group group = user.getGroup();
 		if (group == null) {
 			return;
 		}
 
+		// Return the group
 		String[] name = {group.getName()};
 		event.setGroups(name);
 	}
 
+	/**
+	 * Catches the PermissionsGroupEvent and sets the result to whether or not the subject is in the group.
+	 * This is invoked when PermissionsSubject.isInGroup(String group) is called.
+	 * 
+	 * @param event of invocation 
+	 */
 	@EventHandler(order = Order.EARLIEST)
 	public void checkGroup(PermissionGroupEvent event) {
+		
+		// Get the user
 		User user = userManager.getUser(event.getSubject().getName());
 		if (user == null) {
 			return;
 		}
 
+		// Get the users group
 		Group group = user.getGroup();
 		if (group == null) {
 			return;
 		}
 
+		// Return whether the user is in the group queried
 		String name = event.getGroup();
 		if (group.getName().equalsIgnoreCase(name)) {
 			event.setResult(true);
@@ -79,14 +105,30 @@ public class PermissionsHandler implements Listener {
 		}
 	}
 
+	/**
+	 * Catches the PermissionNodeEvent and sets the result to whether or not the subject has the permission node.
+	 * This is invoked when PermissionsSubject.hasPermission(String node) is called.
+	 * 
+	 * @param event of invocation 
+	 */
 	@EventHandler(order = Order.EARLIEST)
 	public void checkNode(PermissionNodeEvent event) {
+		
+		// Get the subject - hasPermission(String node) can be called on a group or a user
 		String name = event.getSubject().getName();
 		Permissible subject = groupManager.getGroup(name) != null ? groupManager.getGroup(name) : userManager.getUser(name);
 		if (subject == null) {
 			return;
 		}
 
+		/*
+		 * Get the node and all parent nodes of the events.
+		 *	For instance, if 'foo.bar.baz' is queried, 
+		 *	PermissionNodeEvent.getNodes() will return 'foo.bar.baz', 'foo.bar.*', and 'foo.*'.
+		 * 
+		 * Then loop through the nodes to see if the subject has any of the nodes and set the result.
+		 * If one node is found, return. We only need one node to grant permission.
+		 */
 		for (String node : event.getNodes()) {
 			if (subject.hasPermission(node) || subject.hasPermission("*")) {
 				event.setResult(Result.ALLOW);
@@ -97,8 +139,14 @@ public class PermissionsHandler implements Listener {
 		}
 	}
 
+	/**
+	 * Catches the RetrieveDataEvent and sets the result to the meta-data that was queried.
+	 * This is invoked when DataSubject.getData(String node) is called.
+	 * 
+	 * @param event of invocation 
+	 */
 	@EventHandler(order = Order.EARLIEST)
-	public void sendData(RetrieveDataEvent event) {
+	public void checkData(RetrieveDataEvent event) {
 		String name = event.getSubject().getName();
 		Permissible subject = groupManager.getGroup(name) != null ? groupManager.getGroup(name) : userManager.getUser(name);
 		if (subject == null) {
@@ -111,6 +159,12 @@ public class PermissionsHandler implements Listener {
 		}
 	}
 
+	/**
+	 * Catches the PlayerLoginEvent and creates a user profile if non-existent.
+	 * This is invoked when a player joins.
+	 * 
+	 * @param event 
+	 */
 	@EventHandler(order = Order.EARLIEST)
 	public void playerLogin(PlayerLoginEvent event) {
 		String playerName = event.getPlayer().getName();

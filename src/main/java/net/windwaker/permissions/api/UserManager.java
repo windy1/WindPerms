@@ -21,9 +21,8 @@
  */
 package net.windwaker.permissions.api;
 
-import net.windwaker.permissions.api.permissible.User;
-
 import java.util.Set;
+import net.windwaker.permissions.api.permissible.User;
 
 /**
  * Utility class for user management.

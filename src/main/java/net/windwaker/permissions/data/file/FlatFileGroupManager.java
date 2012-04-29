@@ -21,6 +21,8 @@
  */
 package net.windwaker.permissions.data.file;
 
+import java.io.File;
+import java.util.*;
 import net.windwaker.permissions.api.GroupManager;
 import net.windwaker.permissions.api.Permissions;
 import net.windwaker.permissions.api.PermissionsLogger;
@@ -31,9 +33,11 @@ import org.spout.api.exception.ConfigurationException;
 import org.spout.api.geo.World;
 import org.spout.api.util.config.yaml.YamlConfiguration;
 
-import java.io.File;
-import java.util.*;
-
+/**
+ * Flat-file implementation of GroupManager done in YAML.
+ * 
+ * @author Windwaker
+ */
 public class FlatFileGroupManager implements GroupManager {
 	private final PermissionsLogger logger = Permissions.getLogger();
 	private final YamlConfiguration data = new YamlConfiguration(new File("plugins/Permissions/groups.yml"));

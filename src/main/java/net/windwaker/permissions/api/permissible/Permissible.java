@@ -21,10 +21,9 @@
  */
 package net.windwaker.permissions.api.permissible;
 
-import org.spout.api.data.DataValue;
-
 import java.util.HashMap;
 import java.util.Map;
+import org.spout.api.data.DataValue;
 
 /**
  * Represents a permissible entity.

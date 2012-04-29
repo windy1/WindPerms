@@ -29,6 +29,11 @@ import org.spout.api.command.annotated.Command;
 import org.spout.api.command.annotated.CommandPermissions;
 import org.spout.api.exception.CommandException;
 
+/**
+ * Handles all commands starting with 'permissions'
+ * 
+ * @author Windwaker
+ */
 public class PermissionsCommand {
 	private final SimplePermissionsPlugin plugin = SimplePermissionsPlugin.getInstance();
 

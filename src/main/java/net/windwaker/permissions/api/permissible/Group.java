@@ -21,11 +21,10 @@
  */
 package net.windwaker.permissions.api.permissible;
 
+import java.util.*;
 import net.windwaker.permissions.api.GroupManager;
 import net.windwaker.permissions.api.Permissions;
 import org.spout.api.geo.World;
-
-import java.util.*;
 
 /**
  * Represents a group of users.

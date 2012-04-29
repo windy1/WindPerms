@@ -21,9 +21,8 @@
  */
 package net.windwaker.permissions.api;
 
-import org.spout.api.Spout;
-
 import java.util.logging.Level;
+import org.spout.api.Spout;
 
 /**
  * A logger specific to the Permissions platform.

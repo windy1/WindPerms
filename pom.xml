@@ -19,7 +19,6 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <permissions.build>Unknown</permissions.build>
         <spoutapi.version>dev-SNAPSHOT</spoutapi.version>
-        <windsql.version>dev-SNAPSHOT</windsql.version>
     </properties>
 
     <!-- Dependencies -->
@@ -28,11 +27,6 @@
             <groupId>org.spout</groupId>
             <artifactId>spoutapi</artifactId>
             <version>${spoutapi.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>net.windwaker</groupId>
-            <artifactId>windsql</artifactId>
-            <version>${windsql.version}</version>
         </dependency>
     </dependencies>
 
@@ -44,6 +38,14 @@
             <email>wjcrouse913@aim.com</email>
         </developer>
     </developers>
+    
+    <!-- Repositories -->
+    <repositories>
+        <repository>
+            <id>spout-repo</id>
+            <url>http://repo.spout.org/</url>
+        </repository>
+    </repositories>
 
     <!-- Build configuration -->
     <build>

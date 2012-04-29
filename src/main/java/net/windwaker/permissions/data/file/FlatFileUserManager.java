@@ -21,6 +21,10 @@
  */
 package net.windwaker.permissions.data.file;
 
+import java.io.File;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import net.windwaker.permissions.api.GroupManager;
 import net.windwaker.permissions.api.Permissions;
 import net.windwaker.permissions.api.PermissionsLogger;
@@ -31,11 +35,11 @@ import org.spout.api.data.DataValue;
 import org.spout.api.exception.ConfigurationException;
 import org.spout.api.util.config.yaml.YamlConfiguration;
 
-import java.io.File;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
+/**
+ * Flat-file implementation of UserManager done in YAML.
+ * 
+ * @author Windwaker
+ */
 public class FlatFileUserManager implements UserManager {
 	private final PermissionsLogger logger = Permissions.getLogger();
 	private static final YamlConfiguration data = new YamlConfiguration(new File("plugins/Permissions/users.yml"));

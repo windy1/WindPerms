@@ -33,6 +33,11 @@ import org.spout.api.command.annotated.Command;
 import org.spout.api.command.annotated.CommandPermissions;
 import org.spout.api.exception.CommandException;
 
+/**
+ * Handles all commands starting with 'user'.
+ * 
+ * @author Windwaker
+ */
 public class UserCommand {
 	private final UserManager userManager = Permissions.getUserManager();
 	private final GroupManager groupManager = Permissions.getGroupManager();
