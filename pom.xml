@@ -1,80 +1,82 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	
+	<!-- Project info -->
+	<groupId>net.windwaker</groupId>
+	<artifactId>windperms</artifactId>
+	<version>dev-SNAPSHOT</version>
+	<packaging>jar</packaging>
+	<name>WindPerms</name>
+	<url>http://github.com/W1ndwaker/Permissions/</url>
+	
+	<!-- Issue management -->
+	<issueManagement>
+		<system>GitHub</system>
+		<url>https://github.com/W1ndwaker/Permissions/issues</url>
+	</issueManagement>
 
-    <!-- Project info -->
-    <groupId>net.windwaker</groupId>
-    <artifactId>windperms</artifactId>
-    <version>dev-SNAPSHOT</version>
-    <packaging>jar</packaging>
-    <name>WindPerms</name>
-    <url>http://github.com/W1ndwaker/Permissions/</url>
-
-    <issueManagement>
-        <system>GitHub</system>
-        <url>https://github.com/W1ndwaker/Permissions/issues</url>
-    </issueManagement>
-
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <permissions.build>Unknown</permissions.build>
-        <spoutapi.version>dev-SNAPSHOT</spoutapi.version>
+	<!-- Properties -->
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<permissions.build>Unknown</permissions.build>
+		<spoutapi.version>dev-SNAPSHOT</spoutapi.version>
 		<build.number>Unknown</build.number>
-    </properties>
+	</properties>
 
-    <!-- Dependencies -->
-    <dependencies>
-        <dependency>
-            <groupId>org.spout</groupId>
-            <artifactId>spoutapi</artifactId>
-            <version>${spoutapi.version}</version>
-        </dependency>
-    </dependencies>
+	<!-- Dependencies -->
+	<dependencies>
+		<dependency>
+			<groupId>org.spout</groupId>
+			<artifactId>spoutapi</artifactId>
+			<version>${spoutapi.version}</version>
+		</dependency>
+	</dependencies>
 
-    <!-- Credits -->
-    <developers>
-        <developer>
-            <id>windwaker</id>
-            <name>Windwaker</name>
-            <email>wjcrouse913@aim.com</email>
-        </developer>
-    </developers>
-    
+	<!-- Credits -->
+	<developers>
+		<developer>
+			<id>windwaker</id>
+			<name>Windwaker</name>
+			<email>wjcrouse913@aim.com</email>
+		</developer>
+	</developers>
+	
 	<!-- Continuous integration -->
 	<ciManagement>
 		<system>jenkins</system>
 		<url>http://build.spout.org</url>
 	</ciManagement>
 	
-    <!-- Repositories -->
-    <repositories>
-        <repository>
-            <id>spout-repo</id>
-            <url>http://repo.spout.org/</url>
-        </repository>
-    </repositories>
-
-    <!-- Build configuration -->
-    <build>
-        <defaultGoal>clean install</defaultGoal>
-        <resources>
-            <resource>
+	<!-- Repositories -->
+	<repositories>
+		<repository>
+			<id>spout-repo</id>
+			<url>http://repo.spout.org/</url>
+		</repository>
+	</repositories>
+	
+	<!-- Build configuration -->
+	<build>
+		<defaultGoal>clean install</defaultGoal>
+		<resources>
+			<resource>
 				<targetPath>.</targetPath>
-                <filtering>true</filtering>
+				<filtering>true</filtering>
 				<directory>${basedir}/src/main/resources</directory>				
-                <includes>
-                    <include>*.yml</include>
-                </includes>
-            </resource>
-            <resource>
+				<includes>
+					<include>*.yml</include>
+				</includes>
+			</resource>
+		
+			<resource>
 				<targetPath>.</targetPath>
 				<filtering>false</filtering>
-                <directory>${basedir}</directory>				
-                <includes>
-                    <include>LICENSE.txt</include>
-                    <include>README.md</include>
-                </includes>
-            </resource>
-        </resources>
-    </build>
+				<directory>${basedir}</directory>				
+				<includes>
+					<include>LICENSE.txt</include>
+					<include>README.md</include>
+				</includes>
+			</resource>
+		</resources>
+	</build>
 </project>
