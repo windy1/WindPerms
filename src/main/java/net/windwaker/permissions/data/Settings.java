@@ -51,9 +51,9 @@ public class Settings extends ConfigurationHolderConfiguration {
 	
 	private static File file;
 	
-	public Settings() {
-		super(new YamlConfiguration(new File("plugins/Permissions/config.yml")));
-		file = new File("plugins/Permissions/config.yml");
+	public Settings(File datafolder) {
+		super(new YamlConfiguration(new File(datafolder, "config.yml")));
+		file = new File(datafolder, "config.yml");
 	}
 	
 	@Override
