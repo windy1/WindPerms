@@ -32,6 +32,7 @@ import org.spout.api.command.CommandRegistrationsFactory;
 import org.spout.api.command.annotated.AnnotatedCommandRegistrationFactory;
 import org.spout.api.command.annotated.SimpleAnnotatedCommandExecutorFactory;
 import org.spout.api.command.annotated.SimpleInjector;
+import org.spout.api.exception.ConfigurationException;
 
 /**
  * Implementation of PermissionsPlugin
@@ -44,6 +45,8 @@ public class SimplePermissionsPlugin extends PermissionsPlugin {
 	private UserManager userManager;
 	private final PermissionsLogger logger = Permissions.getLogger();
 	private Connection connection;
+	
+	private Settings settings;
 
 	public SimplePermissionsPlugin() {
 		instance = this;
@@ -56,7 +59,7 @@ public class SimplePermissionsPlugin extends PermissionsPlugin {
 		Permissions.setPlugin(this);
 
 		// Load data
-		Settings settings = new Settings();
+		settings = new Settings(this.getDataFolder());
 		settings.load();
 		if (Settings.SQL_ENABLED.getBoolean()) {
 			connectToDatabase();
@@ -71,7 +74,10 @@ public class SimplePermissionsPlugin extends PermissionsPlugin {
 
 	@Override
 	public void onEnable() {
+		
 
+		
+		
 		// Register events
 		Spout.getEventManager().registerEvents(new PermissionsHandler(), this);
 
@@ -91,6 +97,12 @@ public class SimplePermissionsPlugin extends PermissionsPlugin {
 
 	@Override
 	public void onDisable() {
+		try {
+			settings.save();
+		} catch (ConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		logger.info("Permissions v" + getDescription().getVersion() + " disabled.");
 	}
 
