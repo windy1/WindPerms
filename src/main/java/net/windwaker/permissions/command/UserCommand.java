@@ -26,6 +26,7 @@ import net.windwaker.permissions.api.Permissions;
 import net.windwaker.permissions.api.UserManager;
 import net.windwaker.permissions.api.permissible.Group;
 import net.windwaker.permissions.api.permissible.User;
+
 import org.spout.api.ChatColor;
 import org.spout.api.command.CommandContext;
 import org.spout.api.command.CommandSource;
@@ -35,7 +36,6 @@ import org.spout.api.exception.CommandException;
 
 /**
  * Handles all commands starting with 'user'.
- * 
  * @author Windwaker
  */
 public class UserCommand {
@@ -117,7 +117,6 @@ public class UserCommand {
 		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN + "/user set <group|perm|build> <user> <true|false|group|permissionNode> [true|false|other]" + ChatColor.BRIGHT_GREEN + " : Set various flag for the user.");
 		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN + "/user <add|remove> <user>" + ChatColor.BRIGHT_GREEN + " : Add or remove a user.");
 		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN + "/user check <perm> <user> <permissionNode>" + ChatColor.BRIGHT_GREEN + " : Checks various flags for user.");
-
 	}
 
 	private void printInfo(CommandSource source, String username) throws CommandException {

@@ -22,11 +22,11 @@
 package net.windwaker.permissions.api;
 
 import java.util.Set;
+
 import net.windwaker.permissions.api.permissible.User;
 
 /**
  * Utility class for user management.
- *
  * @author Windwaker
  */
 public interface UserManager {
@@ -37,28 +37,24 @@ public interface UserManager {
 
 	/**
 	 * Adds a user
-	 *
 	 * @param username
 	 */
 	public void addUser(String username);
 
 	/**
 	 * Removes a user
-	 *
 	 * @param username
 	 */
 	public void removeUser(String username);
 
 	/**
 	 * Saves a user from said name
-	 *
 	 * @param user
 	 */
 	public void saveUser(User user);
 
 	/**
 	 * Gets a user from said name
-	 *
 	 * @param name
 	 * @return user
 	 */
@@ -66,7 +62,6 @@ public interface UserManager {
 
 	/**
 	 * Gets all defined users.
-	 *
 	 * @return all users.
 	 */
 	public Set<User> getUsers();

@@ -25,20 +25,17 @@ import org.spout.api.plugin.CommonPlugin;
 
 /**
  * Represents a plugin to populate the Permissions platform.
- *
  * @author Windwaker
  */
 public abstract class PermissionsPlugin extends CommonPlugin {
 	/**
 	 * Gets the plugins GroupManager
-	 *
 	 * @return the GroupManager
 	 */
 	public abstract GroupManager getGroupManager();
 
 	/**
 	 * Gets the plugins UserManager.
-	 *
 	 * @return the UserManager
 	 */
 	public abstract UserManager getUserManager();

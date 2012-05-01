@@ -23,20 +23,14 @@ package net.windwaker.permissions.api;
 
 /**
  * Represents the Permissions platform.
- *
  * @author Windwaker
  */
 public class Permissions {
 	private static PermissionsPlugin instance = null;
 	private static final PermissionsLogger logger = new PermissionsLogger();
 
-	private Permissions() {
-
-	}
-
 	/**
 	 * Sets the PermissionsPlugin of the Permissions platform.
-	 *
 	 * @param plugin
 	 */
 	public static void setPlugin(PermissionsPlugin plugin) {
@@ -45,7 +39,6 @@ public class Permissions {
 
 	/**
 	 * Gets the logger specific to Permissions.
-	 *
 	 * @return logger.
 	 */
 	public static PermissionsLogger getLogger() {
@@ -54,7 +47,6 @@ public class Permissions {
 
 	/**
 	 * Gets the GroupManager associated with Permissions.
-	 *
 	 * @return GroupManager
 	 */
 	public static GroupManager getGroupManager() {
@@ -63,7 +55,6 @@ public class Permissions {
 
 	/**
 	 * Gets the UserManager associated with Permissions.
-	 *
 	 * @return UserManager
 	 */
 	public static UserManager getUserManager() {

@@ -19,6 +19,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <permissions.build>Unknown</permissions.build>
         <spoutapi.version>dev-SNAPSHOT</spoutapi.version>
+		<build.number>Unknown</build.number>
     </properties>
 
     <!-- Dependencies -->
@@ -39,6 +40,12 @@
         </developer>
     </developers>
     
+	<!-- Continuous integration -->
+	<ciManagement>
+		<system>jenkins</system>
+		<url>http://build.spout.org</url>
+	</ciManagement>
+	
     <!-- Repositories -->
     <repositories>
         <repository>
@@ -49,17 +56,20 @@
 
     <!-- Build configuration -->
     <build>
-        <defaultGoal>clean package install</defaultGoal>
+        <defaultGoal>clean install</defaultGoal>
         <resources>
             <resource>
-                <directory>src/main/resources</directory>
+				<targetPath>.</targetPath>
                 <filtering>true</filtering>
+				<directory>${basedir}/src/main/resources</directory>				
                 <includes>
                     <include>*.yml</include>
                 </includes>
             </resource>
             <resource>
-                <directory>.</directory>
+				<targetPath>.</targetPath>
+				<filtering>false</filtering>
+                <directory>${basedir}</directory>				
                 <includes>
                     <include>LICENSE.txt</include>
                     <include>README.md</include>

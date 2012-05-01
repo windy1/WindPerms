@@ -28,6 +28,7 @@ import net.windwaker.permissions.api.UserManager;
 import net.windwaker.permissions.api.permissible.Group;
 import net.windwaker.permissions.api.permissible.Permissible;
 import net.windwaker.permissions.api.permissible.User;
+
 import org.spout.api.event.EventHandler;
 import org.spout.api.event.Listener;
 import org.spout.api.event.Order;
@@ -39,9 +40,8 @@ import org.spout.api.event.server.permissions.PermissionGroupEvent;
 import org.spout.api.event.server.permissions.PermissionNodeEvent;
 
 /**
- * Handles all calls in SpoutAPI like PermissionsSubject.getGroups(), PermissionsSubject.isInGroup(String group), 
+ * Handles all calls in SpoutAPI like PermissionsSubject.getGroups(), PermissionsSubject.isInGroup(String group),
  * PermissionsSubject.hasPermission(String node), or DataSubject.getData(String node).
- * 
  * @author Windwaker
  */
 public class PermissionsHandler implements Listener {
@@ -52,12 +52,11 @@ public class PermissionsHandler implements Listener {
 	/**
 	 * Catches the PermissionsGetGroupsEvent and sets the result to the subjects group.
 	 * This is invoked when PermissionsSubject.getGroups() is called.
-	 * 
-	 * @param event of invocation 
+	 * @param event of invocation
 	 */
 	@EventHandler(order = Order.EARLIEST)
 	public void checkGroup(PermissionGetGroupsEvent event) {
-		
+
 		// Get the user
 		User user = userManager.getUser(event.getSubject().getName());
 		if (user == null) {
@@ -78,12 +77,11 @@ public class PermissionsHandler implements Listener {
 	/**
 	 * Catches the PermissionsGroupEvent and sets the result to whether or not the subject is in the group.
 	 * This is invoked when PermissionsSubject.isInGroup(String group) is called.
-	 * 
-	 * @param event of invocation 
+	 * @param event of invocation
 	 */
 	@EventHandler(order = Order.EARLIEST)
 	public void checkGroup(PermissionGroupEvent event) {
-		
+
 		// Get the user
 		User user = userManager.getUser(event.getSubject().getName());
 		if (user == null) {
@@ -108,12 +106,11 @@ public class PermissionsHandler implements Listener {
 	/**
 	 * Catches the PermissionNodeEvent and sets the result to whether or not the subject has the permission node.
 	 * This is invoked when PermissionsSubject.hasPermission(String node) is called.
-	 * 
-	 * @param event of invocation 
+	 * @param event of invocation
 	 */
 	@EventHandler(order = Order.EARLIEST)
 	public void checkNode(PermissionNodeEvent event) {
-		
+
 		// Get the subject - hasPermission(String node) can be called on a group or a user
 		String name = event.getSubject().getName();
 		Permissible subject = groupManager.getGroup(name) != null ? groupManager.getGroup(name) : userManager.getUser(name);
@@ -142,8 +139,7 @@ public class PermissionsHandler implements Listener {
 	/**
 	 * Catches the RetrieveDataEvent and sets the result to the meta-data that was queried.
 	 * This is invoked when DataSubject.getData(String node) is called.
-	 * 
-	 * @param event of invocation 
+	 * @param event of invocation
 	 */
 	@EventHandler(order = Order.EARLIEST)
 	public void checkData(RetrieveDataEvent event) {
@@ -162,8 +158,7 @@ public class PermissionsHandler implements Listener {
 	/**
 	 * Catches the PlayerLoginEvent and creates a user profile if non-existent.
 	 * This is invoked when a player joins.
-	 * 
-	 * @param event 
+	 * @param event
 	 */
 	@EventHandler(order = Order.EARLIEST)
 	public void playerLogin(PlayerLoginEvent event) {
@@ -176,6 +171,5 @@ public class PermissionsHandler implements Listener {
 
 		logger.info(playerName + " does not have a Permissions profile, creating...");
 		userManager.addUser(playerName);
-
 	}
 }

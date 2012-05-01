@@ -1,5 +1,5 @@
 name: Permissions
-version: "${project.version}"
+version: ${build.number}
 description: Permissions is a plugin for the Spout server that provides Permissible player actions for other plugins.
 author: Windwaker
 website: http://github.com/WalkerCrouse/Permissions

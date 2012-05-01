@@ -22,11 +22,11 @@
 package net.windwaker.permissions.api;
 
 import java.util.Set;
+
 import net.windwaker.permissions.api.permissible.Group;
 
 /**
  * Utility class for group management.
- *
  * @author Windwaker
  */
 public interface GroupManager {
@@ -37,28 +37,24 @@ public interface GroupManager {
 
 	/**
 	 * Adds a group
-	 *
 	 * @param name
 	 */
 	public void addGroup(String name);
 
 	/**
 	 * Removes a group
-	 *
 	 * @param name
 	 */
 	public void removeGroup(String name);
 
 	/**
 	 * Saves a group from said name
-	 *
 	 * @param group
 	 */
 	public void saveGroup(Group group);
 
 	/**
 	 * Gets a group from said name
-	 *
 	 * @param name
 	 * @return group
 	 */
@@ -66,7 +62,6 @@ public interface GroupManager {
 
 	/**
 	 * Gets all defined groups.
-	 *
 	 * @return all groups.
 	 */
 	public Set<Group> getGroups();
