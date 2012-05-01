@@ -49,13 +49,19 @@ public class Settings extends ConfigurationHolderConfiguration {
 	public static final ConfigurationHolder SQL_USERNAME = new ConfigurationHolder("w1ndwaker", "sql.username");
 	public static final ConfigurationHolder SQL_PASSWORD = new ConfigurationHolder("WalkerCrouse!1", "sql.password");
 	
+	private static File file;
+	
 	public Settings() {
 		super(new YamlConfiguration(new File("plugins/Permissions/config.yml")));
+		file = new File("plugins/Permissions/config.yml");
 	}
 	
 	@Override
 	public void load() {
 		try {
+			if(!file.exists()) {
+				super.save();
+			}
 			super.load();
 		} catch (ConfigurationException e) {
 			logger.severe("Failed to load configuration: " + e.getMessage());
