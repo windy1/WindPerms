@@ -7,12 +7,12 @@
 	<version>dev-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>WindPerms</name>
-	<url>http://github.com/W1ndwaker/Permissions/</url>
+	<url>http://github.com/W1ndwaker/WindPerms/</url>
 	
 	<!-- Issue management -->
 	<issueManagement>
 		<system>GitHub</system>
-		<url>https://github.com/W1ndwaker/Permissions/issues</url>
+		<url>https://github.com/W1ndwaker/WindPerms/issues/</url>
 	</issueManagement>
 
 	<!-- Properties -->
@@ -44,7 +44,7 @@
 	<!-- Continuous integration -->
 	<ciManagement>
 		<system>jenkins</system>
-		<url>http://build.spout.org</url>
+		<url>http://build.spout.org/</url>
 	</ciManagement>
 	
 	<!-- Repositories -->
