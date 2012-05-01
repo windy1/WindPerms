@@ -23,12 +23,12 @@ package net.windwaker.permissions.api.permissible;
 
 import java.util.Map;
 import java.util.Set;
+
 import net.windwaker.permissions.api.Permissions;
 import net.windwaker.permissions.api.UserManager;
 
 /**
  * Represents a user entity.
- *
  * @author Windwaker
  */
 public class User extends Permissible {
@@ -41,7 +41,6 @@ public class User extends Permissible {
 
 	/**
 	 * Sets the user's group
-	 *
 	 * @param group
 	 */
 	public void setGroup(Group group) {
@@ -61,7 +60,6 @@ public class User extends Permissible {
 
 	/**
 	 * Gets the user's group.
-	 *
 	 * @return the user's group.
 	 */
 	public Group getGroup() {

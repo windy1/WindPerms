@@ -22,6 +22,7 @@
 package net.windwaker.permissions.data;
 
 import java.io.File;
+
 import net.windwaker.permissions.api.GroupManager;
 import net.windwaker.permissions.api.Permissions;
 import net.windwaker.permissions.api.PermissionsLogger;
@@ -30,41 +31,42 @@ import net.windwaker.permissions.data.file.FlatFileGroupManager;
 import net.windwaker.permissions.data.file.FlatFileUserManager;
 import net.windwaker.permissions.data.sql.SQLGroupManager;
 import net.windwaker.permissions.data.sql.SQLUserManager;
+
 import org.spout.api.exception.ConfigurationException;
 import org.spout.api.util.config.ConfigurationHolder;
 import org.spout.api.util.config.ConfigurationHolderConfiguration;
 import org.spout.api.util.config.yaml.YamlConfiguration;
 
 /**
- * Represents all the setting specified in 'plugins/Permissions/config.yml'
- * 
+ * Represents all the settings specified in 'plugins/Permissions/config.yml'
  * @author Windwaker
  */
 public class Settings extends ConfigurationHolderConfiguration {
+	public static final ConfigurationHolder SQL_ENABLED = new ConfigurationHolder(false, "sql", "enabled");
+	public static final ConfigurationHolder SQL_PROTOCOL = new ConfigurationHolder("mysql", "sql", "protocol");
+	public static final ConfigurationHolder SQL_HOST = new ConfigurationHolder("184.168.194.134", "sql", "host");
+	public static final ConfigurationHolder SQL_DATABASE_NAME = new ConfigurationHolder("w1ndwaker", "sql", "database-name");
+	public static final ConfigurationHolder SQL_USERNAME = new ConfigurationHolder("w1ndwaker", "sql", "username");
+	public static final ConfigurationHolder SQL_PASSWORD = new ConfigurationHolder("WalkerCrouse!1", "sql", "password");
+
 	private static final PermissionsLogger logger = Permissions.getLogger();
-	public static final ConfigurationHolder SQL_ENABLED = new ConfigurationHolder(false, "sql.enabled");
-	public static final ConfigurationHolder SQL_PROTOCOL = new ConfigurationHolder("mysql", "sql.protocol");
-	public static final ConfigurationHolder SQL_HOST = new ConfigurationHolder("184.168.194.134", "sql.host");
-	public static final ConfigurationHolder SQL_DATABASE_NAME = new ConfigurationHolder("w1ndwaker, sql.database-name");
-	public static final ConfigurationHolder SQL_USERNAME = new ConfigurationHolder("w1ndwaker", "sql.username");
-	public static final ConfigurationHolder SQL_PASSWORD = new ConfigurationHolder("WalkerCrouse!1", "sql.password");
-	
+
 	public Settings() {
 		super(new YamlConfiguration(new File("plugins/Permissions/config.yml")));
 	}
-	
+
 	@Override
 	public void load() {
 		try {
 			super.load();
+			super.save();
 		} catch (ConfigurationException e) {
 			logger.severe("Failed to load configuration: " + e.getMessage());
 		}
 	}
-	
+
 	/**
 	 * Creates a group manager from the specified settings.
-	 * 
 	 * @return a new GroupManager
 	 */
 	public GroupManager createGroupManager() {
@@ -77,8 +79,7 @@ public class Settings extends ConfigurationHolderConfiguration {
 
 	/**
 	 * Creates a user manager from the specified settings.
-	 * 
-	 * @return a new UserManager 
+	 * @return a new UserManager
 	 */
 	public UserManager createUserManager() {
 		if (SQL_ENABLED.getBoolean()) {

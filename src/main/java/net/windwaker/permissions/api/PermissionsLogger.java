@@ -22,22 +22,20 @@
 package net.windwaker.permissions.api;
 
 import java.util.logging.Level;
+
 import org.spout.api.Spout;
 
 /**
  * A logger specific to the Permissions platform.
- *
  * @author Windwaker
  */
 public class PermissionsLogger {
-
 	protected PermissionsLogger() {
 
 	}
 
 	/**
 	 * Logs a message to the console with given level.
-	 *
 	 * @param level
 	 * @param obj
 	 */
@@ -47,7 +45,6 @@ public class PermissionsLogger {
 
 	/**
 	 * Logs a message to the console with "INFO" level.
-	 *
 	 * @param obj
 	 */
 	public void info(Object obj) {
@@ -56,7 +53,6 @@ public class PermissionsLogger {
 
 	/**
 	 * Logs a message to the console with "WARNING" level.
-	 *
 	 * @param obj
 	 */
 	public void warning(Object obj) {
@@ -65,7 +61,6 @@ public class PermissionsLogger {
 
 	/**
 	 * Logs a message to the console with "SEVERE" level.
-	 *
 	 * @param obj
 	 */
 	public void severe(Object obj) {

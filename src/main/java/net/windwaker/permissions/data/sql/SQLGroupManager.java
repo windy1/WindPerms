@@ -22,6 +22,7 @@
 package net.windwaker.permissions.data.sql;
 
 import java.util.Set;
+
 import net.windwaker.permissions.api.GroupManager;
 import net.windwaker.permissions.api.permissible.Group;
 
@@ -35,24 +36,23 @@ import net.windwaker.permissions.api.permissible.Group;
  *            ------------------------------
  */
 public class SQLGroupManager implements GroupManager {
+	public void load() {
+	}
 
-    public void load() {
-    }
+	public void addGroup(String name) {
+	}
 
-    public void addGroup(String name) {
-    }
+	public void removeGroup(String name) {
+	}
 
-    public void removeGroup(String name) {
-    }
+	public void saveGroup(Group group) {
+	}
 
-    public void saveGroup(Group group) {
-    }
+	public Group getGroup(String name) {
+		return null;
+	}
 
-    public Group getGroup(String name) {
-	return null;
-    }
-
-    public Set<Group> getGroups() {
-	return null;
-    }
+	public Set<Group> getGroups() {
+		return null;
+	}
 }
