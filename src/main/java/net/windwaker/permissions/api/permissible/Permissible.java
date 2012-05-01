@@ -23,11 +23,11 @@ package net.windwaker.permissions.api.permissible;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import org.spout.api.data.DataValue;
 
 /**
  * Represents a permissible entity.
- *
  * @author Windwaker
  */
 public abstract class Permissible {
@@ -42,7 +42,6 @@ public abstract class Permissible {
 
 	/**
 	 * Gets the name of this Permissible
-	 *
 	 * @return name of subject
 	 */
 	public String getName() {
@@ -51,7 +50,6 @@ public abstract class Permissible {
 
 	/**
 	 * Gets all permissions of subject, including any inherited.
-	 *
 	 * @return all permissions
 	 */
 	public Map<String, Boolean> getPermissions() {
@@ -60,7 +58,6 @@ public abstract class Permissible {
 
 	/**
 	 * Sets a permissions state for the subject
-	 *
 	 * @param node
 	 * @param state
 	 */
@@ -73,7 +70,6 @@ public abstract class Permissible {
 
 	/**
 	 * Whether or not the subject has permissions for said node.
-	 *
 	 * @param node
 	 * @return true if permission
 	 */
@@ -87,7 +83,6 @@ public abstract class Permissible {
 
 	/**
 	 * Returns data mapping of entity.
-	 *
 	 * @return data
 	 */
 	public Map<String, DataValue> getMetadataMap() {
@@ -96,7 +91,6 @@ public abstract class Permissible {
 
 	/**
 	 * Adds a data entry.
-	 *
 	 * @param node
 	 * @param value
 	 */
@@ -109,7 +103,6 @@ public abstract class Permissible {
 
 	/**
 	 * Adds a data entry
-	 *
 	 * @param node
 	 * @param value
 	 */
@@ -119,7 +112,6 @@ public abstract class Permissible {
 
 	/**
 	 * Gets an entry from given node.
-	 *
 	 * @param node
 	 * @returnn data value.
 	 */
@@ -133,7 +125,6 @@ public abstract class Permissible {
 
 	/**
 	 * If the entity has an data entry for given node.
-	 *
 	 * @param node
 	 * @return true if has data
 	 */
@@ -143,7 +134,6 @@ public abstract class Permissible {
 
 	/**
 	 * Sets whether or not the entity should save to disk automatically.
-	 *
 	 * @param autoSave
 	 */
 	public void setAutoSave(boolean autoSave) {
@@ -152,7 +142,6 @@ public abstract class Permissible {
 
 	/**
 	 * Whether or not the entity auto-saves.
-	 *
 	 * @param autoSave
 	 * @return true if auto-saves.
 	 */

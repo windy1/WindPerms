@@ -22,9 +22,11 @@
 package net.windwaker.permissions.command;
 
 import java.util.Map;
+
 import net.windwaker.permissions.api.GroupManager;
 import net.windwaker.permissions.api.Permissions;
 import net.windwaker.permissions.api.permissible.Group;
+
 import org.spout.api.ChatColor;
 import org.spout.api.command.CommandContext;
 import org.spout.api.command.CommandSource;
@@ -34,7 +36,6 @@ import org.spout.api.exception.CommandException;
 
 /**
  * Handles all command starting with 'group'.
- * 
  * @author Windwaker
  */
 public class GroupCommand {

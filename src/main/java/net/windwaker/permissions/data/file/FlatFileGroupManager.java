@@ -22,11 +22,17 @@
 package net.windwaker.permissions.data.file;
 
 import java.io.File;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import net.windwaker.permissions.api.GroupManager;
 import net.windwaker.permissions.api.Permissions;
 import net.windwaker.permissions.api.PermissionsLogger;
 import net.windwaker.permissions.api.permissible.Group;
+
 import org.spout.api.Spout;
 import org.spout.api.data.DataValue;
 import org.spout.api.exception.ConfigurationException;
@@ -35,7 +41,6 @@ import org.spout.api.util.config.yaml.YamlConfiguration;
 
 /**
  * Flat-file implementation of GroupManager done in YAML.
- * 
  * @author Windwaker
  */
 public class FlatFileGroupManager implements GroupManager {
@@ -55,7 +60,6 @@ public class FlatFileGroupManager implements GroupManager {
 
 			// Load groups
 			for (String name : names) {
-
 				// Create new group
 				String path = "groups/" + name;
 				Group group = new Group(name);

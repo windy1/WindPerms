@@ -22,6 +22,7 @@
 package net.windwaker.permissions.data.sql;
 
 import java.util.Set;
+
 import net.windwaker.permissions.api.UserManager;
 import net.windwaker.permissions.api.permissible.User;
 
@@ -35,24 +36,23 @@ import net.windwaker.permissions.api.permissible.User;
  *            ------------------------------
  */
 public class SQLUserManager implements UserManager {
+	public void load() {
+	}
 
-    public void load() {
-    }
+	public void addUser(String username) {
+	}
 
-    public void addUser(String username) {
-    }
+	public void removeUser(String username) {
+	}
 
-    public void removeUser(String username) {
-    }
+	public void saveUser(User user) {
+	}
 
-    public void saveUser(User user) {
-    }
+	public User getUser(String name) {
+		return null;
+	}
 
-    public User getUser(String name) {
-	return null;
-    }
-
-    public Set<User> getUsers() {
-	return null;
-    }
+	public Set<User> getUsers() {
+		return null;
+	}
 }

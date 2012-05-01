@@ -22,11 +22,17 @@
 package net.windwaker.permissions;
 
 import java.sql.Connection;
-import net.windwaker.permissions.api.*;
+
+import net.windwaker.permissions.api.GroupManager;
+import net.windwaker.permissions.api.Permissions;
+import net.windwaker.permissions.api.PermissionsLogger;
+import net.windwaker.permissions.api.PermissionsPlugin;
+import net.windwaker.permissions.api.UserManager;
 import net.windwaker.permissions.command.GroupCommand;
 import net.windwaker.permissions.command.PermissionsCommand;
 import net.windwaker.permissions.command.UserCommand;
 import net.windwaker.permissions.data.Settings;
+
 import org.spout.api.Spout;
 import org.spout.api.command.CommandRegistrationsFactory;
 import org.spout.api.command.annotated.AnnotatedCommandRegistrationFactory;
@@ -35,15 +41,14 @@ import org.spout.api.command.annotated.SimpleInjector;
 
 /**
  * Implementation of PermissionsPlugin
- * 
  * @author Windwaker
  */
 public class SimplePermissionsPlugin extends PermissionsPlugin {
+	private final PermissionsLogger logger = Permissions.getLogger();
 	private static SimplePermissionsPlugin instance;
+	private Connection connection;
 	private GroupManager groupManager;
 	private UserManager userManager;
-	private final PermissionsLogger logger = Permissions.getLogger();
-	private Connection connection;
 
 	public SimplePermissionsPlugin() {
 		instance = this;
@@ -51,7 +56,6 @@ public class SimplePermissionsPlugin extends PermissionsPlugin {
 
 	@Override
 	public void onLoad() {
-
 		// Set plugin of platform
 		Permissions.setPlugin(this);
 
@@ -71,7 +75,6 @@ public class SimplePermissionsPlugin extends PermissionsPlugin {
 
 	@Override
 	public void onEnable() {
-
 		// Register events
 		Spout.getEventManager().registerEvents(new PermissionsHandler(), this);
 
@@ -81,25 +84,16 @@ public class SimplePermissionsPlugin extends PermissionsPlugin {
 		getGame().getRootCommand().addSubCommands(this, GroupCommand.class, commandRegFactory);
 		getGame().getRootCommand().addSubCommands(this, UserCommand.class, commandRegFactory);
 
-		// Hello world!
-		logger.info("Permissions v" + getDescription().getVersion() + " enabled!");
+		logger.info("b" + getDescription().getVersion() + " enabled.");
 	}
 
 	public void connectToDatabase() {
-	    // TODO: Connect to database with SimpleSave by alta189 and I.
+		// TODO: Connect to database with SimpleSave by alta189 and I.
 	}
 
 	@Override
 	public void onDisable() {
-		logger.info("Permissions v" + getDescription().getVersion() + " disabled.");
-	}
-
-	public static SimplePermissionsPlugin getInstance() {
-		return instance;
-	}
-
-	public Connection getConnection() {
-		return connection;
+		logger.info("disabled");
 	}
 
 	@Override
@@ -110,5 +104,13 @@ public class SimplePermissionsPlugin extends PermissionsPlugin {
 	@Override
 	public UserManager getUserManager() {
 		return userManager;
+	}
+
+	public static SimplePermissionsPlugin getInstance() {
+		return instance;
+	}
+
+	public Connection getConnection() {
+		return connection;
 	}
 }

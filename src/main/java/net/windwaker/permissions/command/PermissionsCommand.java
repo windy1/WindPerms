@@ -22,6 +22,7 @@
 package net.windwaker.permissions.command;
 
 import net.windwaker.permissions.SimplePermissionsPlugin;
+
 import org.spout.api.ChatColor;
 import org.spout.api.command.CommandContext;
 import org.spout.api.command.CommandSource;
@@ -31,7 +32,6 @@ import org.spout.api.exception.CommandException;
 
 /**
  * Handles all commands starting with 'permissions'
- * 
  * @author Windwaker
  */
 public class PermissionsCommand {
@@ -58,7 +58,7 @@ public class PermissionsCommand {
 	}
 
 	private void printInfo(CommandSource source) {
-		source.sendMessage(ChatColor.BRIGHT_GREEN + "This server is running Permissions v" + plugin.getDescription().getVersion() + " by Windwaker.");
+		source.sendMessage(ChatColor.BRIGHT_GREEN + "This server is running Permissions b" + plugin.getDescription().getVersion() + " by Windwaker.");
 		source.sendMessage(ChatColor.BRIGHT_GREEN + "There are " + plugin.getGroupManager().getGroups().size() + " unique groups registered.");
 		source.sendMessage(ChatColor.BRIGHT_GREEN + "There are " + plugin.getUserManager().getUsers().size() + " unique users registered.");
 	}

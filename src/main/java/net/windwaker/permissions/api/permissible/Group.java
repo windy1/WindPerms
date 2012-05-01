@@ -21,14 +21,19 @@
  */
 package net.windwaker.permissions.api.permissible;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import net.windwaker.permissions.api.GroupManager;
 import net.windwaker.permissions.api.Permissions;
+
 import org.spout.api.geo.World;
 
 /**
  * Represents a group of users.
- *
  * @author Windwaker
  */
 public class Group extends Permissible {
@@ -44,7 +49,6 @@ public class Group extends Permissible {
 
 	/**
 	 * Gets any inherited groups.
-	 *
 	 * @return inherited groups.
 	 */
 	public Map<Group, Boolean> getInheritedGroups() {
@@ -53,7 +57,6 @@ public class Group extends Permissible {
 
 	/**
 	 * Adds an inherited group.
-	 *
 	 * @param group
 	 */
 	public void setInheritedGroup(Group group, boolean inherit) {
@@ -73,7 +76,6 @@ public class Group extends Permissible {
 
 	/**
 	 * Sets if the group should be the default group.
-	 *
 	 * @param def
 	 */
 	public void setDefault(boolean def) {
@@ -85,7 +87,6 @@ public class Group extends Permissible {
 
 	/**
 	 * Whether or not the group is a default group
-	 *
 	 * @return true if default
 	 */
 	public boolean isDefault() {
@@ -94,7 +95,6 @@ public class Group extends Permissible {
 
 	/**
 	 * Whether or not the group is per-world or universal.
-	 *
 	 * @return true if per-world
 	 */
 	public boolean isPerWorld() {
@@ -103,7 +103,6 @@ public class Group extends Permissible {
 
 	/**
 	 * Sets if the group is universal or per-world.
-	 *
 	 * @param perWorld
 	 */
 	public void setPerWorld(boolean perWorld) {
@@ -115,7 +114,6 @@ public class Group extends Permissible {
 
 	/**
 	 * Gets the worlds associated with the group, does nothing if per-world is false.
-	 *
 	 * @return
 	 */
 	public List<World> getWorlds() {
@@ -124,7 +122,6 @@ public class Group extends Permissible {
 
 	/**
 	 * Adds a world to the groups worlds.
-	 *
 	 * @param world
 	 */
 	public void addWorld(World world) {
@@ -136,7 +133,6 @@ public class Group extends Permissible {
 
 	/**
 	 * Removes a world from the groups world.
-	 *
 	 * @param world
 	 */
 	public void removeWorld(World world) {
