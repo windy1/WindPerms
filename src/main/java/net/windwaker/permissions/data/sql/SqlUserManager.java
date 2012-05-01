@@ -23,36 +23,36 @@ package net.windwaker.permissions.data.sql;
 
 import java.util.Set;
 
-import net.windwaker.permissions.api.GroupManager;
-import net.windwaker.permissions.api.permissible.Group;
+import net.windwaker.permissions.api.UserManager;
+import net.windwaker.permissions.api.permissible.User;
 
 /*
  *            ------------------------------
- * Table:     |     permissions_groups      |
+ * Table:     |     permissions_users       |
  *            ------------------------------
- * Fields:    |  name  |  def  |  per_world |
+ * Fields:    |    name     |     group     |
  *            ------------------------------
- * Data Type: |  text  |char(1)|   char(1)  |
+ * Data Type: |    text     |     text      |
  *            ------------------------------
  */
-public class SQLGroupManager implements GroupManager {
+public class SqlUserManager implements UserManager {
 	public void load() {
 	}
 
-	public void addGroup(String name) {
+	public void addUser(String username) {
 	}
 
-	public void removeGroup(String name) {
+	public void removeUser(String username) {
 	}
 
-	public void saveGroup(Group group) {
+	public void saveUser(User user) {
 	}
 
-	public Group getGroup(String name) {
+	public User getUser(String name) {
 		return null;
 	}
 
-	public Set<Group> getGroups() {
+	public Set<User> getUsers() {
 		return null;
 	}
 }

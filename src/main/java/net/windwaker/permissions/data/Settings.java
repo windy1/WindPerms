@@ -27,10 +27,10 @@ import net.windwaker.permissions.api.GroupManager;
 import net.windwaker.permissions.api.Permissions;
 import net.windwaker.permissions.api.PermissionsLogger;
 import net.windwaker.permissions.api.UserManager;
-import net.windwaker.permissions.data.file.FlatFileGroupManager;
-import net.windwaker.permissions.data.file.FlatFileUserManager;
-import net.windwaker.permissions.data.sql.SQLGroupManager;
-import net.windwaker.permissions.data.sql.SQLUserManager;
+import net.windwaker.permissions.data.yaml.YamlGroupManager;
+import net.windwaker.permissions.data.yaml.YamlUserManager;
+import net.windwaker.permissions.data.sql.SqlGroupManager;
+import net.windwaker.permissions.data.sql.SqlUserManager;
 
 import org.spout.api.exception.ConfigurationException;
 import org.spout.api.util.config.ConfigurationHolder;
@@ -71,10 +71,10 @@ public class Settings extends ConfigurationHolderConfiguration {
 	 */
 	public GroupManager createGroupManager() {
 		if (SQL_ENABLED.getBoolean()) {
-			return new SQLGroupManager();
+			return new SqlGroupManager();
 		}
 
-		return new FlatFileGroupManager();
+		return new YamlGroupManager();
 	}
 
 	/**
@@ -83,9 +83,9 @@ public class Settings extends ConfigurationHolderConfiguration {
 	 */
 	public UserManager createUserManager() {
 		if (SQL_ENABLED.getBoolean()) {
-			return new SQLUserManager();
+			return new SqlUserManager();
 		}
 
-		return new FlatFileUserManager();
+		return new YamlUserManager();
 	}
 }

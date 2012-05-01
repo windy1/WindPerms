@@ -19,7 +19,7 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package net.windwaker.permissions.data.file;
+package net.windwaker.permissions.data.yaml;
 
 import java.io.File;
 import java.util.Arrays;
@@ -43,7 +43,7 @@ import org.spout.api.util.config.yaml.YamlConfiguration;
  * Flat-file implementation of GroupManager done in YAML.
  * @author Windwaker
  */
-public class FlatFileGroupManager implements GroupManager {
+public class YamlGroupManager implements GroupManager {
 	private final PermissionsLogger logger = Permissions.getLogger();
 	private final YamlConfiguration data = new YamlConfiguration(new File("plugins/Permissions/groups.yml"));
 	private final Set<Group> groups = new HashSet<Group>();

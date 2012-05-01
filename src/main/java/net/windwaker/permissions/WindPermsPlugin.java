@@ -43,14 +43,14 @@ import org.spout.api.command.annotated.SimpleInjector;
  * Implementation of PermissionsPlugin
  * @author Windwaker
  */
-public class SimplePermissionsPlugin extends PermissionsPlugin {
+public class WindPermsPlugin extends PermissionsPlugin {
 	private final PermissionsLogger logger = Permissions.getLogger();
-	private static SimplePermissionsPlugin instance;
+	private static WindPermsPlugin instance;
 	private Connection connection;
 	private GroupManager groupManager;
 	private UserManager userManager;
 
-	public SimplePermissionsPlugin() {
+	public WindPermsPlugin() {
 		instance = this;
 	}
 
@@ -106,7 +106,7 @@ public class SimplePermissionsPlugin extends PermissionsPlugin {
 		return userManager;
 	}
 
-	public static SimplePermissionsPlugin getInstance() {
+	public static WindPermsPlugin getInstance() {
 		return instance;
 	}
 

@@ -28,6 +28,10 @@ package net.windwaker.permissions.api;
 public class Permissions {
 	private static PermissionsPlugin instance = null;
 	private static final PermissionsLogger logger = new PermissionsLogger();
+	
+	private Permissions() {
+		
+	}
 
 	/**
 	 * Sets the PermissionsPlugin of the Permissions platform.

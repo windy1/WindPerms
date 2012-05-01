@@ -21,7 +21,7 @@
  */
 package net.windwaker.permissions.command;
 
-import net.windwaker.permissions.SimplePermissionsPlugin;
+import net.windwaker.permissions.WindPermsPlugin;
 
 import org.spout.api.ChatColor;
 import org.spout.api.command.CommandContext;
@@ -35,7 +35,7 @@ import org.spout.api.exception.CommandException;
  * @author Windwaker
  */
 public class PermissionsCommand {
-	private final SimplePermissionsPlugin plugin = SimplePermissionsPlugin.getInstance();
+	private final WindPermsPlugin plugin = WindPermsPlugin.getInstance();
 
 	@Command(aliases = {"permissions", "pr"}, desc = "General permissions command.", usage = "[help]")
 	@CommandPermissions("permissions.command.permissions")

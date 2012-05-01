@@ -4,10 +4,10 @@
 
     <!-- Project info -->
     <groupId>net.windwaker</groupId>
-    <artifactId>permissions</artifactId>
+    <artifactId>windperms</artifactId>
     <version>dev-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <name>Permissions</name>
+    <name>WindPerms</name>
     <url>http://github.com/W1ndwaker/Permissions/</url>
 
     <issueManagement>
