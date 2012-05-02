@@ -39,7 +39,7 @@ import org.spout.api.geo.World;
 public class Group extends Permissible {
 	private final GroupManager groupManager = Permissions.getGroupManager();
 	private boolean def = false;
-	private boolean perWorld = false;
+	private boolean universal = true;
 	private final Map<Group, Boolean> inherited = new HashMap<Group, Boolean>();
 	private final List<World> worlds = new ArrayList<World>();
 
@@ -94,26 +94,26 @@ public class Group extends Permissible {
 	}
 
 	/**
-	 * Whether or not the group is per-world or universal.
-	 * @return true if per-world
+	 * Whether or not the group is universal.
+	 * @return true if universal
 	 */
-	public boolean isPerWorld() {
-		return perWorld;
+	public boolean isUniversal() {
+		return universal;
 	}
 
 	/**
-	 * Sets if the group is universal or per-world.
-	 * @param perWorld
+	 * Sets if the group is universal.
+	 * @param universal
 	 */
-	public void setPerWorld(boolean perWorld) {
-		this.perWorld = perWorld;
+	public void setUniversal(boolean universal) {
+		this.universal = universal;
 		if (autoSave) {
 			save();
 		}
 	}
 
 	/**
-	 * Gets the worlds associated with the group, does nothing if per-world is false.
+	 * Gets the worlds associated with the group, does nothing if universal is true.
 	 * @return
 	 */
 	public List<World> getWorlds() {

@@ -69,7 +69,7 @@ public class YamlGroupManager implements GroupManager {
 
 				// Set some values.
 				group.setDefault(data.getNode(path + "/default").getBoolean());
-				group.setPerWorld(data.getNode(path + "/per-world").getBoolean());
+				group.setUniversal(data.getNode(path + "/universal").getBoolean());
 
 				// Load permissions, data, and worlds
 				loadPermissions(group);
@@ -139,7 +139,7 @@ public class YamlGroupManager implements GroupManager {
 			saveInheritance(group);
 			savePermissions(group);
 			saveData(group);
-			data.getNode(path + "/per-world").setValue(group.isPerWorld());
+			data.getNode(path + "/universal").setValue(group.isUniversal());
 			data.getNode(path + "/worlds").setValue(group.getWorlds());
 			data.getNode(path + "/default").setValue(group.isDefault());
 			data.save();
@@ -179,7 +179,7 @@ public class YamlGroupManager implements GroupManager {
 			String path = "groups/" + name;
 			data.getNode(path + "/inherited/admin").setValue(false);
 			data.getNode(path + "/default").setValue(false);
-			data.getNode(path + "/per-world").setValue(false);
+			data.getNode(path + "/universal").setValue(false);
 			data.getNode(path + "/worlds").setValue(Arrays.asList("world"));
 			data.getNode(path + "/permissions/foo.bar").setValue(false);
 			data.getNode(path + "/permissions/baz.qux").setValue(false);
