@@ -26,6 +26,7 @@ import java.util.Set;
 
 import net.windwaker.permissions.api.Permissions;
 import net.windwaker.permissions.api.UserManager;
+import org.spout.api.data.DataValue;
 
 /**
  * Represents a user entity.
@@ -50,6 +51,14 @@ public class User extends Permissible {
 		for (Map.Entry<String, Boolean> node : nodes) {
 			if (!permissionNodes.containsKey(node.getKey())) {
 				permissionNodes.put(node.getKey(), node.getValue());
+			}
+		}
+		
+		// Inherit metadata
+		Set<Map.Entry<String, DataValue>> data = group.getMetadataMap().entrySet();
+		for (Map.Entry<String, DataValue> d : data) {
+			if (!metadata.containsKey(d.getKey())) {
+				metadata.put(d.getKey(), d.getValue());
 			}
 		}
 
