@@ -28,6 +28,7 @@ import org.spout.api.command.CommandContext;
 import org.spout.api.command.CommandSource;
 import org.spout.api.command.annotated.Command;
 import org.spout.api.command.annotated.CommandPermissions;
+import org.spout.api.command.annotated.NestedCommand;
 import org.spout.api.exception.CommandException;
 
 /**
@@ -35,29 +36,16 @@ import org.spout.api.exception.CommandException;
  * @author Windwaker
  */
 public class PermissionsCommand {
-	private final WindPermsPlugin plugin = WindPermsPlugin.getInstance();
+	private static final WindPermsPlugin plugin = WindPermsPlugin.getInstance();
 
 	@Command(aliases = {"permissions", "pr"}, desc = "General permissions command.", usage = "[help]")
 	@CommandPermissions("permissions.command.permissions")
+	@NestedCommand(value = PermissionsCommands.class)
 	public void permissions(CommandContext args, CommandSource source) throws CommandException {
-		if (args.length() == 0) {
-			printInfo(source);
-			return;
-		}
 
-		if (args.length() == 1) {
-			if (args.getString(0).equalsIgnoreCase("help")) {
-				printHelp(source);
-				return;
-			}
-		}
-
-		// If it reaches the end while parsing, send help.
-		printHelp(source);
-		throw new CommandException("Check your arguments!");
 	}
 
-	private void printInfo(CommandSource source) {
+	public static void printInfo(CommandSource source) {
 		source.sendMessage(ChatColor.BRIGHT_GREEN + "This server is running Permissions b" + plugin.getDescription().getVersion() + " by Windwaker.");
 		source.sendMessage(ChatColor.BRIGHT_GREEN + "There are " + plugin.getGroupManager().getGroups().size() + " unique groups registered.");
 		source.sendMessage(ChatColor.BRIGHT_GREEN + "There are " + plugin.getUserManager().getUsers().size() + " unique users registered.");

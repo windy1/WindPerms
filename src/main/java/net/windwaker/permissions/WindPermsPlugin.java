@@ -28,9 +28,7 @@ import net.windwaker.permissions.api.Permissions;
 import net.windwaker.permissions.api.PermissionsLogger;
 import net.windwaker.permissions.api.PermissionsPlugin;
 import net.windwaker.permissions.api.UserManager;
-import net.windwaker.permissions.command.GroupCommand;
 import net.windwaker.permissions.command.PermissionsCommand;
-import net.windwaker.permissions.command.UserCommand;
 import net.windwaker.permissions.data.Settings;
 
 import org.spout.api.Spout;
@@ -81,8 +79,6 @@ public class WindPermsPlugin extends PermissionsPlugin {
 		// Register commands
 		CommandRegistrationsFactory<Class<?>> commandRegFactory = new AnnotatedCommandRegistrationFactory(new SimpleInjector(), new SimpleAnnotatedCommandExecutorFactory());
 		getGame().getRootCommand().addSubCommands(this, PermissionsCommand.class, commandRegFactory);
-		getGame().getRootCommand().addSubCommands(this, GroupCommand.class, commandRegFactory);
-		getGame().getRootCommand().addSubCommands(this, UserCommand.class, commandRegFactory);
 
 		logger.info("b" + getDescription().getVersion() + " enabled.");
 	}

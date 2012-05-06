@@ -21,11 +21,11 @@
  */
 package net.windwaker.permissions.command;
 
-import java.util.Map;
-
 import net.windwaker.permissions.api.GroupManager;
 import net.windwaker.permissions.api.Permissions;
+import net.windwaker.permissions.api.UserManager;
 import net.windwaker.permissions.api.permissible.Group;
+import net.windwaker.permissions.api.permissible.User;
 
 import org.spout.api.ChatColor;
 import org.spout.api.command.CommandContext;
@@ -34,26 +34,158 @@ import org.spout.api.command.annotated.Command;
 import org.spout.api.command.annotated.CommandPermissions;
 import org.spout.api.exception.CommandException;
 
+import java.util.Map;
+
 /**
- * Handles all command starting with 'group'.
+ * Handles all commands starting with 'user'.
  * @author Windwaker
  */
-public class GroupCommand {
+public class PermissionsCommands {
+	private final UserManager userManager = Permissions.getUserManager();
 	private final GroupManager groupManager = Permissions.getGroupManager();
 
-	@Command(aliases = {"group", "gr"}, desc = "Modifies a group", usage = "<info|set|add|remove|check|help> [inherit|default|perm|build] [group] [bool:build|bool:default|group|perm|identifier] [bool:inherit|bool:permState]", min = 1, max = 5)
-	@CommandPermissions("permissions.command.group")
-	public void group(CommandContext args, CommandSource source) throws CommandException {
+	@Command(aliases = {"-user", "-u"}, desc = "Modify Permissions users.", usage = "<info|set|add|remove|check|help> [group|perm|build] [user] [group:groupName|perm:node|bool:build|identifier] [bool]", min = 1, max = 5)
+	@CommandPermissions("permissions.command.user")
+	public void user(CommandContext args, CommandSource source) throws CommandException {
 		if (args.length() == 1) {
 			if (args.getString(0).equalsIgnoreCase("help")) {
-				printHelp(source);
+				printUserHelp(source);
 				return;
 			}
 		}
 
 		if (args.length() == 2) {
 			if (args.getString(0).equalsIgnoreCase("info")) {
-				printInfo(source, args.getString(1));
+				printUserInfo(source, args.getString(1));
+				return;
+			}
+
+			if (args.getString(0).equalsIgnoreCase("add")) {
+				userManager.addUser(args.getString(1));
+				source.sendMessage(ChatColor.BRIGHT_GREEN + "Added user " + args.getString(1));
+				return;
+			}
+
+			if (args.getString(0).equalsIgnoreCase("remove")) {
+				userManager.removeUser(args.getString(1));
+				source.sendMessage(ChatColor.BRIGHT_GREEN + "Removed user " + args.getString(1));
+				return;
+			}
+		}
+
+		if (args.length() == 3) {
+			throw new CommandException("Check your arguments count!");
+		}
+
+		if (args.length() == 4) {
+			if (args.getString(0).equalsIgnoreCase("set")) {
+				if (args.getString(1).equalsIgnoreCase("group")) {
+					setGroup(source, args.getString(2), args.getString(3));
+					return;
+				}
+
+				if (args.getString(1).equalsIgnoreCase("perm")) {
+					setUserPermission(source, args.getString(2), args.getString(3), "true");
+					return;
+				}
+
+				if (args.getString(1).equalsIgnoreCase("check")) {
+					if (args.getString(2).equalsIgnoreCase("perm")) {
+						checkUserPermission(source, args.getString(2), args.getString(3));
+						return;
+					}
+				}
+			}
+		}
+
+		if (args.length() == 5) {
+			if (args.getString(0).equalsIgnoreCase("set")) {
+				if (args.getString(1).equalsIgnoreCase("perm")) {
+					setUserPermission(source, args.getString(2), args.getString(3), args.getString(4));
+					return;
+				}
+			}
+		}
+
+		// If it reaches the end while parsing, send help.
+		PermissionsCommand.printHelp(source);
+		throw new CommandException("Check your arguments!");
+	}
+
+	private void printUserHelp(CommandSource source) {
+		source.sendMessage(ChatColor.BRIGHT_GREEN + "----------" + ChatColor.WHITE + " [" + ChatColor.CYAN + "Permissions - Users" + ChatColor.WHITE + "] " + ChatColor.BRIGHT_GREEN + "----------");
+		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN + "/user help" + ChatColor.BRIGHT_GREEN + " : Shows this menu.");
+		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN + "/user info <user>" + ChatColor.BRIGHT_GREEN + " : View a users information.");
+		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN + "/user set <group|perm|build> <user> <true|false|group|permissionNode> [true|false|other]" + ChatColor.BRIGHT_GREEN + " : Set various flag for the user.");
+		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN + "/user <add|remove> <user>" + ChatColor.BRIGHT_GREEN + " : Add or remove a user.");
+		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN + "/user check <perm> <user> <permissionNode>" + ChatColor.BRIGHT_GREEN + " : Checks various flags for user.");
+	}
+
+	private void printUserInfo(CommandSource source, String username) throws CommandException {
+		User user = userManager.getUser(username);
+		if (user == null) {
+			throw new CommandException(username + " does not exist!");
+		}
+
+		source.sendMessage(ChatColor.BRIGHT_GREEN + "----------" + ChatColor.WHITE + " [" + ChatColor.CYAN + user.getName() + ChatColor.WHITE + "] " + ChatColor.BRIGHT_GREEN + "----------");
+		String groupName = user.getGroup() != null ? user.getGroup().getName() : "None";
+		source.sendMessage(ChatColor.BRIGHT_GREEN + "- Group: " + ChatColor.CYAN + groupName);
+	}
+
+	private void setGroup(CommandSource source, String username, String groupName) throws CommandException {
+		User user = userManager.getUser(username);
+		if (user == null) {
+			throw new CommandException(username + " does not exist!");
+		}
+
+		Group group = groupManager.getGroup(groupName);
+		if (group == null) {
+			throw new CommandException(groupName + " does not exist!");
+		}
+
+		user.setGroup(group);
+		source.sendMessage(ChatColor.BRIGHT_GREEN + username + " is now in group: " + group.getName());
+	}
+
+	private void setUserPermission(CommandSource source, String username, String node, String bool) throws CommandException {
+		User user = userManager.getUser(username);
+		if (user == null) {
+			throw new CommandException(username + " does not exist!");
+		}
+
+		boolean state = false;
+		if (bool.equalsIgnoreCase("true")) {
+			state = true;
+		}
+
+		user.setPermission(node, state);
+		String has = state ? "has" : "does not have";
+		source.sendMessage(ChatColor.BRIGHT_GREEN + user.getName() + " now " + has + " permission for " + node);
+	}
+
+	private void checkUserPermission(CommandSource source, String username, String node) throws CommandException {
+		User user = userManager.getUser(username);
+		if (user == null) {
+			throw new CommandException(username + " does not exist!");
+		}
+
+		String has = user.hasPermission(node) ? "has" : "does not have";
+		source.sendMessage(ChatColor.BRIGHT_GREEN + "User " + username + " " + has + " permission for " + node);
+	}
+
+	@Command(aliases = {"-group", "-g"}, desc = "Modifies a group", usage = "<info|set|add|remove|check|help> [inherit|default|perm|build] [group] [bool:build|bool:default|group|perm|identifier] [bool:inherit|bool:permState]", min = 1, max = 5)
+	@CommandPermissions("permissions.command.group")
+	public void group(CommandContext args, CommandSource source) throws CommandException {
+		if (args.length() == 1) {
+			if (args.getString(0).equalsIgnoreCase("help")) {
+				printGroupHelp(source);
+				return;
+			}
+		}
+
+		if (args.length() == 2) {
+			if (args.getString(0).equalsIgnoreCase("info")) {
+				printGroupInfo(source, args.getString(1));
 				return;
 			}
 
@@ -87,7 +219,7 @@ public class GroupCommand {
 				}
 
 				if (args.getString(1).equalsIgnoreCase("perm")) {
-					setPermission(source, args.getString(2), args.getString(3), "true");
+					setGroupPermission(source, args.getString(2), args.getString(3), "true");
 					return;
 				}
 			}
@@ -99,7 +231,7 @@ public class GroupCommand {
 				}
 
 				if (args.getString(1).equalsIgnoreCase("perm")) {
-					checkPermission(source, args.getString(2), args.getString(3));
+					checkGroupPermission(source, args.getString(2), args.getString(3));
 					return;
 				}
 			}
@@ -113,7 +245,7 @@ public class GroupCommand {
 				}
 
 				if (args.getString(1).equalsIgnoreCase("perm")) {
-					setPermission(source, args.getString(2), args.getString(3), args.getString(4));
+					setGroupPermission(source, args.getString(2), args.getString(3), args.getString(4));
 					return;
 				}
 			}
@@ -124,7 +256,7 @@ public class GroupCommand {
 		throw new CommandException("Check your arguments!");
 	}
 
-	private void printHelp(CommandSource source) {
+	private void printGroupHelp(CommandSource source) {
 		source.sendMessage(ChatColor.BRIGHT_GREEN + "----------" + ChatColor.WHITE + " [" + ChatColor.CYAN + "Permissions - Groups" + ChatColor.WHITE + "] " + ChatColor.BRIGHT_GREEN + "----------");
 		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN + "/group help" + ChatColor.BRIGHT_GREEN + " : Shows this menu.");
 		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN + "/group info <user>" + ChatColor.BRIGHT_GREEN + " : Check a users info.");
@@ -133,7 +265,7 @@ public class GroupCommand {
 		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN + "/group check <inherit|perm> <group> <inheritedGroup|permissionNode>" + ChatColor.BRIGHT_GREEN + " : Check various flags.");
 	}
 
-	private void printInfo(CommandSource source, String name) throws CommandException {
+	private void printGroupInfo(CommandSource source, String name) throws CommandException {
 		Group group = groupManager.getGroup(name);
 		if (group == null) {
 			throw new CommandException(name + " doesn't exist!");
@@ -179,7 +311,7 @@ public class GroupCommand {
 		source.sendMessage(ChatColor.BRIGHT_GREEN + group.getName() + "'s default state is now set to " + def);
 	}
 
-	private void setPermission(CommandSource source, String groupName, String node, String bool) throws CommandException {
+	private void setGroupPermission(CommandSource source, String groupName, String node, String bool) throws CommandException {
 		Group group = groupManager.getGroup(groupName);
 		if (group == null) {
 			throw new CommandException(groupName + " doesn't exist!");
@@ -215,7 +347,7 @@ public class GroupCommand {
 		}
 	}
 
-	private void checkPermission(CommandSource source, String groupName, String node) throws CommandException {
+	private void checkGroupPermission(CommandSource source, String groupName, String node) throws CommandException {
 		Group group = groupManager.getGroup(groupName);
 		if (group == null) {
 			throw new CommandException(groupName + " doesn't exist!");
@@ -223,5 +355,15 @@ public class GroupCommand {
 
 		String has = group.hasPermission(node) ? "has" : "does not have";
 		source.sendMessage(ChatColor.BRIGHT_GREEN + "Group " + groupName + " " + has + " permissions for " + node);
+	}
+
+	@Command(aliases = {"-help, -h"}, desc = "Prints general help")
+	public void help(CommandContext args, CommandSource source) throws CommandException {
+		PermissionsCommand.printHelp(source);
+	}
+
+	@Command(aliases = {"-version", "-v"}, desc = "Prints the version info")
+	public void version(CommandContext args, CommandSource source) throws CommandException {
+		PermissionsCommand.printInfo(source);
 	}
 }
