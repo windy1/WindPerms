@@ -4,7 +4,7 @@
 	<!-- Project info -->
 	<groupId>net.windwaker</groupId>
 	<artifactId>windperms</artifactId>
-	<version>v0.1-b50</version>
+	<version>0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>WindPerms</name>
 	<url>http://github.com/W1ndwaker/WindPerms/</url>
@@ -19,6 +19,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<spoutapi.version>dev-SNAPSHOT</spoutapi.version>
+		<version.build>v0.1-b51</version.build>
 	</properties>
 
 	<!-- Dependencies -->
