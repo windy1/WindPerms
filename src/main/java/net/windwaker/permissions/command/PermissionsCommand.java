@@ -21,9 +21,6 @@
  */
 package net.windwaker.permissions.command;
 
-import net.windwaker.permissions.WindPermsPlugin;
-
-import org.spout.api.ChatColor;
 import org.spout.api.command.CommandContext;
 import org.spout.api.command.CommandSource;
 import org.spout.api.command.annotated.Command;
@@ -36,26 +33,9 @@ import org.spout.api.exception.CommandException;
  * @author Windwaker
  */
 public class PermissionsCommand {
-	private static final WindPermsPlugin plugin = WindPermsPlugin.getInstance();
-
-	@Command(aliases = {"permissions", "pr"}, desc = "General permissions command.", usage = "[help]")
+	@Command(aliases = {"permissions", "pr"}, desc = "General permissions command.")
 	@CommandPermissions("permissions.command.permissions")
 	@NestedCommand(value = PermissionsCommands.class)
 	public void permissions(CommandContext args, CommandSource source) throws CommandException {
-
-	}
-
-	public static void printInfo(CommandSource source) {
-		source.sendMessage(ChatColor.BRIGHT_GREEN + "This server is running Permissions b" + plugin.getDescription().getVersion() + " by Windwaker.");
-		source.sendMessage(ChatColor.BRIGHT_GREEN + "There are " + plugin.getGroupManager().getGroups().size() + " unique groups registered.");
-		source.sendMessage(ChatColor.BRIGHT_GREEN + "There are " + plugin.getUserManager().getUsers().size() + " unique users registered.");
-	}
-
-	public static void printHelp(CommandSource source) {
-		source.sendMessage(ChatColor.BRIGHT_GREEN + "----------" + ChatColor.WHITE + " [" + ChatColor.CYAN + "Permissions" + ChatColor.WHITE + "] " + ChatColor.BRIGHT_GREEN + "----------");
-		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN + "/gr help" + ChatColor.BRIGHT_GREEN + " : View help for modifying groups.");
-		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN + "/us help" + ChatColor.BRIGHT_GREEN + " : View help for modifying users.");
-		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN + "/pr help" + ChatColor.BRIGHT_GREEN + " : View this menu.");
-		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN + "/pr" + ChatColor.BRIGHT_GREEN + " : View information about this plugin.");
 	}
 }

@@ -21,6 +21,7 @@
  */
 package net.windwaker.permissions.command;
 
+import net.windwaker.permissions.WindPerms;
 import net.windwaker.permissions.api.GroupManager;
 import net.windwaker.permissions.api.Permissions;
 import net.windwaker.permissions.api.UserManager;
@@ -28,6 +29,7 @@ import net.windwaker.permissions.api.permissible.Group;
 import net.windwaker.permissions.api.permissible.User;
 
 import org.spout.api.ChatColor;
+import org.spout.api.Spout;
 import org.spout.api.command.CommandContext;
 import org.spout.api.command.CommandSource;
 import org.spout.api.command.annotated.Command;
@@ -41,10 +43,11 @@ import java.util.Map;
  * @author Windwaker
  */
 public class PermissionsCommands {
+	private final WindPerms plugin = WindPerms.getInstance();
 	private final UserManager userManager = Permissions.getUserManager();
 	private final GroupManager groupManager = Permissions.getGroupManager();
 
-	@Command(aliases = {"-user", "-u"}, desc = "Modify Permissions users.", usage = "<info|set|add|remove|check|help> [group|perm|build] [user] [group:groupName|perm:node|bool:build|identifier] [bool]", min = 1, max = 5)
+	@Command(aliases = {"-user", "-u"}, desc = "Modify Permissions users.", usage = "<info|set|add|remove|check|help> [group|perm|build] [user] [group:groupName|perm:node|bool:build|identifier] [bool]", min = 0, max = 5)
 	@CommandPermissions("permissions.command.user")
 	public void user(CommandContext args, CommandSource source) throws CommandException {
 		if (args.length() == 1) {
@@ -108,17 +111,17 @@ public class PermissionsCommands {
 		}
 
 		// If it reaches the end while parsing, send help.
-		PermissionsCommand.printHelp(source);
+		printUserHelp(source);
 		throw new CommandException("Check your arguments!");
 	}
 
 	private void printUserHelp(CommandSource source) {
 		source.sendMessage(ChatColor.BRIGHT_GREEN + "----------" + ChatColor.WHITE + " [" + ChatColor.CYAN + "Permissions - Users" + ChatColor.WHITE + "] " + ChatColor.BRIGHT_GREEN + "----------");
-		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN + "/user help" + ChatColor.BRIGHT_GREEN + " : Shows this menu.");
-		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN + "/user info <user>" + ChatColor.BRIGHT_GREEN + " : View a users information.");
-		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN + "/user set <group|perm|build> <user> <true|false|group|permissionNode> [true|false|other]" + ChatColor.BRIGHT_GREEN + " : Set various flag for the user.");
-		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN + "/user <add|remove> <user>" + ChatColor.BRIGHT_GREEN + " : Add or remove a user.");
-		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN + "/user check <perm> <user> <permissionNode>" + ChatColor.BRIGHT_GREEN + " : Checks various flags for user.");
+		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN + "/pr -user" + ChatColor.BRIGHT_GREEN + " : Shows this menu.");
+		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN + "/pr -user info <user>" + ChatColor.BRIGHT_GREEN + " : View a users information.");
+		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN + "/pr -user set <group|perm|build> <user> <true|false|group|permissionNode> [true|false|other]" + ChatColor.BRIGHT_GREEN + " : Set various flag for the user.");
+		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN + "/pr -user <add|remove> <user>" + ChatColor.BRIGHT_GREEN + " : Add or remove a user.");
+		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN + "/pr -user check <perm> <user> <permissionNode>" + ChatColor.BRIGHT_GREEN + " : Checks various flags for user.");
 	}
 
 	private void printUserInfo(CommandSource source, String username) throws CommandException {
@@ -173,7 +176,7 @@ public class PermissionsCommands {
 		source.sendMessage(ChatColor.BRIGHT_GREEN + "User " + username + " " + has + " permission for " + node);
 	}
 
-	@Command(aliases = {"-group", "-g"}, desc = "Modifies a group", usage = "<info|set|add|remove|check|help> [inherit|default|perm|build] [group] [bool:build|bool:default|group|perm|identifier] [bool:inherit|bool:permState]", min = 1, max = 5)
+	@Command(aliases = {"-group", "-g"}, desc = "Modifies a group", usage = "<info|set|add|remove|check|help> [inherit|default|perm|build] [group] [bool:build|bool:default|group|perm|identifier] [bool:inherit|bool:permState]", min = 0, max = 5)
 	@CommandPermissions("permissions.command.group")
 	public void group(CommandContext args, CommandSource source) throws CommandException {
 		if (args.length() == 1) {
@@ -252,17 +255,17 @@ public class PermissionsCommands {
 		}
 
 		// If it reaches the end while parsing, send help.
-		PermissionsCommand.printHelp(source);
+		printGroupHelp(source);
 		throw new CommandException("Check your arguments!");
 	}
 
 	private void printGroupHelp(CommandSource source) {
 		source.sendMessage(ChatColor.BRIGHT_GREEN + "----------" + ChatColor.WHITE + " [" + ChatColor.CYAN + "Permissions - Groups" + ChatColor.WHITE + "] " + ChatColor.BRIGHT_GREEN + "----------");
-		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN + "/group help" + ChatColor.BRIGHT_GREEN + " : Shows this menu.");
-		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN + "/group info <user>" + ChatColor.BRIGHT_GREEN + " : Check a users info.");
-		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN + "/group set <inherit|default|perm|build> <group> <true|false|inheritedGroup|permissionNode> [true|false|other]" + ChatColor.BRIGHT_GREEN + " : Set various flags for user.");
-		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN + "/group <add|remove> <group>" + ChatColor.BRIGHT_GREEN + " : Add or remove a group.");
-		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN + "/group check <inherit|perm> <group> <inheritedGroup|permissionNode>" + ChatColor.BRIGHT_GREEN + " : Check various flags.");
+		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN + "/pr -group help" + ChatColor.BRIGHT_GREEN + " : Shows this menu.");
+		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN + "/pr -group info <user>" + ChatColor.BRIGHT_GREEN + " : Check a users info.");
+		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN + "/pr -group set <inherit|default|perm|build> <group> <true|false|inheritedGroup|permissionNode> [true|false|other]" + ChatColor.BRIGHT_GREEN + " : Set various flags for user.");
+		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN + "/pr -group <add|remove> <group>" + ChatColor.BRIGHT_GREEN + " : Add or remove a group.");
+		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN + "/pr -group check <inherit|perm> <group> <inheritedGroup|permissionNode>" + ChatColor.BRIGHT_GREEN + " : Check various flags.");
 	}
 
 	private void printGroupInfo(CommandSource source, String name) throws CommandException {
@@ -357,13 +360,29 @@ public class PermissionsCommands {
 		source.sendMessage(ChatColor.BRIGHT_GREEN + "Group " + groupName + " " + has + " permissions for " + node);
 	}
 
-	@Command(aliases = {"-help, -h"}, desc = "Prints general help")
+	@Command(aliases = {"-help", "-h"}, desc = "Prints general help")
 	public void help(CommandContext args, CommandSource source) throws CommandException {
-		PermissionsCommand.printHelp(source);
+		printHelp(source);
 	}
 
 	@Command(aliases = {"-version", "-v"}, desc = "Prints the version info")
 	public void version(CommandContext args, CommandSource source) throws CommandException {
-		PermissionsCommand.printInfo(source);
+		printInfo(source);
+	}
+
+	private void printInfo(CommandSource source) {
+		source.sendMessage(ChatColor.BRIGHT_GREEN + "WindPerms " + plugin.getDescription().getVersion());
+		source.sendMessage(ChatColor.BRIGHT_GREEN + "Copyright (c) 2012 Walker Crouse, http://windwaker.net/");
+		source.sendMessage(ChatColor.BRIGHT_GREEN + "Implementing SpoutAPI v" + Spout.getAPIVersion());
+		source.sendMessage(ChatColor.BRIGHT_GREEN + "There are " + plugin.getGroupManager().getGroups().size() + " unique groups registered.");
+		source.sendMessage(ChatColor.BRIGHT_GREEN + "There are " + plugin.getUserManager().getUsers().size() + " unique users registered.");
+	}
+
+	private void printHelp(CommandSource source) {
+		source.sendMessage(ChatColor.BRIGHT_GREEN + "----------" + ChatColor.WHITE + " [" + ChatColor.CYAN + "Permissions" + ChatColor.WHITE + "] " + ChatColor.BRIGHT_GREEN + "----------");
+		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN + "/pr -group" + ChatColor.BRIGHT_GREEN + " : View help for modifying groups.");
+		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN + "/pr -user" + ChatColor.BRIGHT_GREEN + " : View help for modifying users.");
+		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN + "/pr -help" + ChatColor.BRIGHT_GREEN + " : View this menu.");
+		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN + "/pr -version" + ChatColor.BRIGHT_GREEN + " : View information about this plugin.");
 	}
 }

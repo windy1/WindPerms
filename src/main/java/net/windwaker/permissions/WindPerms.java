@@ -41,14 +41,14 @@ import org.spout.api.command.annotated.SimpleInjector;
  * Implementation of PermissionsPlugin
  * @author Windwaker
  */
-public class WindPermsPlugin extends PermissionsPlugin {
+public class WindPerms extends PermissionsPlugin {
 	private final PermissionsLogger logger = Permissions.getLogger();
-	private static WindPermsPlugin instance;
+	private static WindPerms instance;
 	private Connection connection;
 	private GroupManager groupManager;
 	private UserManager userManager;
 
-	public WindPermsPlugin() {
+	public WindPerms() {
 		instance = this;
 	}
 
@@ -80,7 +80,7 @@ public class WindPermsPlugin extends PermissionsPlugin {
 		CommandRegistrationsFactory<Class<?>> commandRegFactory = new AnnotatedCommandRegistrationFactory(new SimpleInjector(), new SimpleAnnotatedCommandExecutorFactory());
 		getGame().getRootCommand().addSubCommands(this, PermissionsCommand.class, commandRegFactory);
 
-		logger.info("b" + getDescription().getVersion() + " enabled.");
+		logger.info("WindPerms " + getDescription().getVersion() + " enabled.");
 	}
 
 	public void connectToDatabase() {
@@ -102,7 +102,7 @@ public class WindPermsPlugin extends PermissionsPlugin {
 		return userManager;
 	}
 
-	public static WindPermsPlugin getInstance() {
+	public static WindPerms getInstance() {
 		return instance;
 	}
 
