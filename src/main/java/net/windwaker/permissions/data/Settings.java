@@ -42,6 +42,7 @@ import org.spout.api.util.config.yaml.YamlConfiguration;
  * @author Windwaker
  */
 public class Settings extends ConfigurationHolderConfiguration {
+	public static final ConfigurationHolder USE_WILDCARD = new ConfigurationHolder(true, "use-wildcard");
 	public static final ConfigurationHolder SQL_ENABLED = new ConfigurationHolder(false, "sql", "enabled");
 	public static final ConfigurationHolder SQL_PROTOCOL = new ConfigurationHolder("mysql", "sql", "protocol");
 	public static final ConfigurationHolder SQL_HOST = new ConfigurationHolder("184.168.194.134", "sql", "host");

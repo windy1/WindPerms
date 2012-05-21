@@ -28,6 +28,7 @@ import net.windwaker.permissions.api.UserManager;
 import net.windwaker.permissions.api.permissible.Group;
 import net.windwaker.permissions.api.permissible.Permissible;
 import net.windwaker.permissions.api.permissible.User;
+import net.windwaker.permissions.data.Settings;
 
 import org.spout.api.event.EventHandler;
 import org.spout.api.event.Listener;
@@ -127,7 +128,7 @@ public class PermissionsHandler implements Listener {
 		 * If one node is found, return. We only need one node to grant permission.
 		 */
 		for (String node : event.getNodes()) {
-			if (subject.hasPermission(node) || subject.hasPermission("*")) {
+			if (subject.hasPermission(node) || (subject.hasPermission("*") & Settings.USE_WILDCARD.getBoolean())) {
 				event.setResult(Result.ALLOW);
 				return;
 			} else {
