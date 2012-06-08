@@ -27,10 +27,10 @@ import net.windwaker.permissions.api.GroupManager;
 import net.windwaker.permissions.api.Permissions;
 import net.windwaker.permissions.api.PermissionsLogger;
 import net.windwaker.permissions.api.UserManager;
-import net.windwaker.permissions.data.yaml.YamlGroupManager;
-import net.windwaker.permissions.data.yaml.YamlUserManager;
 import net.windwaker.permissions.data.sql.SqlGroupManager;
 import net.windwaker.permissions.data.sql.SqlUserManager;
+import net.windwaker.permissions.data.yaml.YamlGroupManager;
+import net.windwaker.permissions.data.yaml.YamlUserManager;
 
 import org.spout.api.exception.ConfigurationException;
 import org.spout.api.util.config.ConfigurationHolder;
@@ -49,7 +49,6 @@ public class Settings extends ConfigurationHolderConfiguration {
 	public static final ConfigurationHolder SQL_DATABASE_NAME = new ConfigurationHolder("w1ndwaker", "sql", "database-name");
 	public static final ConfigurationHolder SQL_USERNAME = new ConfigurationHolder("w1ndwaker", "sql", "username");
 	public static final ConfigurationHolder SQL_PASSWORD = new ConfigurationHolder("WalkerCrouse!1", "sql", "password");
-
 	private static final PermissionsLogger logger = Permissions.getLogger();
 
 	public Settings() {

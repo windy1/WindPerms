@@ -26,6 +26,7 @@ import java.util.Set;
 
 import net.windwaker.permissions.api.Permissions;
 import net.windwaker.permissions.api.UserManager;
+
 import org.spout.api.data.DataValue;
 
 /**
@@ -53,7 +54,7 @@ public class User extends Permissible {
 				permissionNodes.put(node.getKey(), node.getValue());
 			}
 		}
-		
+
 		// Inherit metadata
 		Set<Map.Entry<String, DataValue>> data = group.getMetadataMap().entrySet();
 		for (Map.Entry<String, DataValue> d : data) {
