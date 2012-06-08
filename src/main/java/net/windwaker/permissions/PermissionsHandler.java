@@ -128,7 +128,7 @@ public class PermissionsHandler implements Listener {
 		 * If one node is found, return. We only need one node to grant permission.
 		 */
 		for (String node : event.getNodes()) {
-			if (subject.hasPermission(node) || (subject.hasPermission("*") & Settings.USE_WILDCARD.getBoolean())) {
+			if (subject.hasPermission(node) || (subject.hasPermission("*") && Settings.USE_WILDCARD.getBoolean())) {
 				event.setResult(Result.ALLOW);
 				return;
 			} else {
