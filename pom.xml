@@ -19,7 +19,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<spoutapi.version>dev-SNAPSHOT</spoutapi.version>
-		<version.build>v0.1-b51</version.build>
+		<version.build>v0.1-bUnknown</version.build>
 	</properties>
 
 	<!-- Dependencies -->
@@ -73,7 +73,6 @@
 				<directory>${basedir}</directory>				
 				<includes>
 					<include>LICENSE.txt</include>
-					<include>README.md</include>
 				</includes>
 			</resource>
 		</resources>
