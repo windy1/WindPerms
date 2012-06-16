@@ -78,7 +78,7 @@ public class WindPerms extends PermissionsPlugin {
 
 		// Register commands
 		CommandRegistrationsFactory<Class<?>> commandRegFactory = new AnnotatedCommandRegistrationFactory(new SimpleInjector(), new SimpleAnnotatedCommandExecutorFactory());
-		getGame().getRootCommand().addSubCommands(this, PermissionsCommand.class, commandRegFactory);
+		getEngine().getRootCommand().addSubCommands(this, PermissionsCommand.class, commandRegFactory);
 
 		logger.info("WindPerms " + getDescription().getVersion() + " enabled.");
 	}
