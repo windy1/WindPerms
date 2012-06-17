@@ -40,7 +40,7 @@ public class PermissionsLogger {
 	 * @param obj
 	 */
 	public void log(Level level, Object obj) {
-		Spout.getLogger().log(level, "[Permissions] " + obj.toString());
+		Spout.getLogger().log(level, "[WindPerms] " + obj.toString());
 	}
 
 	/**

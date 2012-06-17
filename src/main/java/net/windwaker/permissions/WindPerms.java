@@ -84,7 +84,6 @@ public class WindPerms extends PermissionsPlugin {
 	}
 
 	public void connectToDatabase() {
-		// TODO: Connect to database with SimpleSave by alta189 and I.
 	}
 
 	@Override
