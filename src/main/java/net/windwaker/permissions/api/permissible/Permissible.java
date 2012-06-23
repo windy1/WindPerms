@@ -77,7 +77,6 @@ public abstract class Permissible {
 		if (permissionNodes.containsKey(node)) {
 			return permissionNodes.get(node);
 		}
-
 		return false;
 	}
 
@@ -119,7 +118,6 @@ public abstract class Permissible {
 		if (metadata.containsKey(node)) {
 			return metadata.get(node);
 		}
-
 		return null;
 	}
 

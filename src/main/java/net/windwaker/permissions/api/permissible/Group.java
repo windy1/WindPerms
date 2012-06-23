@@ -57,11 +57,13 @@ public class Group extends Permissible {
 
 	/**
 	 * Adds an inherited group.
-	 * @param group
+	 * @param group to inherit
 	 */
 	public void setInheritedGroup(Group group, boolean inherit) {
-		// Set the group and inherit permissions
-		inherited.put(group, inherit);
+		if (!group.isAssignableFrom(this)) {
+			inherited.put(group, inherit);
+		}
+
 		Set<Map.Entry<String, Boolean>> nodes = group.getPermissions().entrySet();
 		for (Map.Entry<String, Boolean> node : nodes) {
 			if (!permissionNodes.containsKey(node.getKey()) && inherit) {
@@ -72,6 +74,18 @@ public class Group extends Permissible {
 		if (autoSave) {
 			save();
 		}
+	}
+
+	/**
+	 * Whether or not this group inherits the given group.
+	 * @param group to check
+	 * @return true if inherits
+	 */
+	public boolean isAssignableFrom(Group group) {
+		if (inherited.containsKey(group)) {
+			return inherited.get(group);
+		}
+		return false;
 	}
 
 	/**
