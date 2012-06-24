@@ -49,6 +49,7 @@ public class YamlUserManager implements UserManager {
 	@Override
 	public void load() {
 		try {
+
 			GroupManager groupManager = Permissions.getGroupManager();
 			data.load();
 			data.setPathSeparator("/");
@@ -160,7 +161,6 @@ public class YamlUserManager implements UserManager {
 			if (user == null) {
 				return;
 			}
-
 			users.remove(user);
 			data.getNode("users/" + username).setValue(null);
 			data.save();
@@ -176,7 +176,6 @@ public class YamlUserManager implements UserManager {
 				return user;
 			}
 		}
-
 		return null;
 	}
 

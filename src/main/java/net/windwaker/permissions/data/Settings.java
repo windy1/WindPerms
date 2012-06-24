@@ -73,7 +73,6 @@ public class Settings extends ConfigurationHolderConfiguration {
 		if (SQL_ENABLED.getBoolean()) {
 			return new SqlGroupManager();
 		}
-
 		return new YamlGroupManager();
 	}
 
@@ -85,7 +84,6 @@ public class Settings extends ConfigurationHolderConfiguration {
 		if (SQL_ENABLED.getBoolean()) {
 			return new SqlUserManager();
 		}
-
 		return new YamlUserManager();
 	}
 }

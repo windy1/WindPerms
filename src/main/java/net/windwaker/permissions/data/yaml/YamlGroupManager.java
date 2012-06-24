@@ -51,6 +51,7 @@ public class YamlGroupManager implements GroupManager {
 	@Override
 	public void load() {
 		try {
+
 			data.load();
 			data.setPathSeparator("/");
 			Set<String> names = data.getNode("groups").getKeys(false);
@@ -199,7 +200,6 @@ public class YamlGroupManager implements GroupManager {
 			if (group == null) {
 				return;
 			}
-
 			groups.remove(group);
 			data.getNode("groups/" + name).setValue(null);
 			data.save();
@@ -215,7 +215,6 @@ public class YamlGroupManager implements GroupManager {
 				return group;
 			}
 		}
-
 		return null;
 	}
 

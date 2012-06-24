@@ -29,6 +29,7 @@ import java.util.Set;
 
 import net.windwaker.permissions.api.GroupManager;
 import net.windwaker.permissions.api.Permissions;
+import net.windwaker.permissions.exception.HierarchicalException;
 
 import org.spout.api.geo.World;
 
@@ -60,9 +61,10 @@ public class Group extends Permissible {
 	 * @param group to inherit
 	 */
 	public void setInheritedGroup(Group group, boolean inherit) {
-		if (!group.isAssignableFrom(this)) {
-			inherited.put(group, inherit);
+		if (group.isAssignableFrom(this)) {
+			throw new HierarchicalException("Group " + group.getName() + " already inherits " + name + ". Two groups may not inherit each other.");
 		}
+		inherited.put(group, inherit);
 
 		Set<Map.Entry<String, Boolean>> nodes = group.getPermissions().entrySet();
 		for (Map.Entry<String, Boolean> node : nodes) {
