@@ -43,7 +43,6 @@ import org.spout.api.exception.CommandException;
  * @author Windwaker
  */
 public class PermissionsCommands {
-	private final WindPerms plugin = WindPerms.getInstance();
 	private final UserManager userManager = Permissions.getUserManager();
 	private final GroupManager groupManager = Permissions.getGroupManager();
 
@@ -371,11 +370,11 @@ public class PermissionsCommands {
 	}
 
 	private void printInfo(CommandSource source) {
-		source.sendMessage(ChatColor.BRIGHT_GREEN + "WindPerms " + plugin.getDescription().getVersion());
+		source.sendMessage(ChatColor.BRIGHT_GREEN + "WindPerms " + Permissions.getPlugin().getDescription().getVersion());
 		source.sendMessage(ChatColor.BRIGHT_GREEN + "Copyright (c) 2012 Walker Crouse, http://windwaker.net/");
-		source.sendMessage(ChatColor.BRIGHT_GREEN + "Implementing SpoutAPI v" + Spout.getAPIVersion());
-		source.sendMessage(ChatColor.BRIGHT_GREEN + "There are " + plugin.getGroupManager().getGroups().size() + " unique groups registered.");
-		source.sendMessage(ChatColor.BRIGHT_GREEN + "There are " + plugin.getUserManager().getUsers().size() + " unique users registered.");
+		source.sendMessage(ChatColor.BRIGHT_GREEN + "Powered by Spout " + Spout.getEngine().getVersion() + " (Implementing SpoutAPI " + Spout.getAPIVersion() + " )");
+		source.sendMessage(ChatColor.BRIGHT_GREEN + "There are " + Permissions.getGroupManager().getGroups().size() + " unique groups registered.");
+		source.sendMessage(ChatColor.BRIGHT_GREEN + "There are " + Permissions.getUserManager().getUsers().size() + " unique users registered.");
 	}
 
 	private void printHelp(CommandSource source) {

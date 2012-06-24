@@ -21,6 +21,8 @@
  */
 package net.windwaker.permissions.api;
 
+import org.spout.api.plugin.PluginDescriptionFile;
+
 /**
  * Represents the Permissions platform.
  * @author Windwaker
@@ -39,6 +41,14 @@ public class Permissions {
 	 */
 	public static void setPlugin(PermissionsPlugin plugin) {
 		instance = plugin;
+	}
+
+	/**
+	 * Gets the running plugin.
+	 * @return plugin
+	 */
+	public static PermissionsPlugin getPlugin() {
+		return instance;
 	}
 
 	/**

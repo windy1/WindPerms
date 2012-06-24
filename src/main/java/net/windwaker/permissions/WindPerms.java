@@ -43,27 +43,20 @@ import org.spout.api.command.annotated.SimpleInjector;
  */
 public class WindPerms extends PermissionsPlugin {
 	private final PermissionsLogger logger = Permissions.getLogger();
-	private static WindPerms instance;
-	private Connection connection;
 	private GroupManager groupManager;
 	private UserManager userManager;
 
-	public WindPerms() {
-		instance = this;
-	}
-
 	@Override
 	public void onLoad() {
+
 		// Set plugin of platform
 		Permissions.setPlugin(this);
 
 		// Load data
 		Settings settings = new Settings();
 		settings.load();
-		if (Settings.SQL_ENABLED.getBoolean()) {
-			connectToDatabase();
-		}
 
+		// Create managers
 		groupManager = settings.createGroupManager();
 		groupManager.load();
 
@@ -73,6 +66,7 @@ public class WindPerms extends PermissionsPlugin {
 
 	@Override
 	public void onEnable() {
+
 		// Register events
 		Spout.getEventManager().registerEvents(new PermissionsHandler(), this);
 
@@ -83,12 +77,9 @@ public class WindPerms extends PermissionsPlugin {
 		logger.info("WindPerms " + getDescription().getVersion() + " enabled.");
 	}
 
-	public void connectToDatabase() {
-	}
-
 	@Override
 	public void onDisable() {
-		logger.info("disabled");
+		logger.info("WindPerms " + getDescription().getVersion() + " disabled.");
 	}
 
 	@Override
@@ -99,13 +90,5 @@ public class WindPerms extends PermissionsPlugin {
 	@Override
 	public UserManager getUserManager() {
 		return userManager;
-	}
-
-	public static WindPerms getInstance() {
-		return instance;
-	}
-
-	public Connection getConnection() {
-		return connection;
 	}
 }
