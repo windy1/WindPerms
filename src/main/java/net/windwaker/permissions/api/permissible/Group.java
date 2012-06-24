@@ -61,7 +61,7 @@ public class Group extends Permissible {
 	 * @param group to inherit
 	 */
 	public void setInheritedGroup(Group group, boolean inherit) {
-		if (group.isAssignableFrom(this)) {
+		if (group.isAssignableFrom(this) && inherit) {
 			throw new HierarchicalException("Group " + group.getName() + " already inherits " + name + ". Two groups may not inherit each other.");
 		}
 		inherited.put(group, inherit);
