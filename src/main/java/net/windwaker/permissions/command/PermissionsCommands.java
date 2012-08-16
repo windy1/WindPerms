@@ -30,8 +30,8 @@ import net.windwaker.permissions.api.UserManager;
 import net.windwaker.permissions.api.permissible.Group;
 import net.windwaker.permissions.api.permissible.User;
 
-import org.spout.api.ChatColor;
 import org.spout.api.Spout;
+import org.spout.api.chat.style.ChatStyle;
 import org.spout.api.command.CommandContext;
 import org.spout.api.command.CommandSource;
 import org.spout.api.command.annotated.Command;
@@ -64,13 +64,13 @@ public class PermissionsCommands {
 
 			if (args.getString(0).equalsIgnoreCase("add")) {
 				userManager.addUser(args.getString(1));
-				source.sendMessage(ChatColor.BRIGHT_GREEN + "Added user " + args.getString(1));
+				source.sendMessage(ChatStyle.BRIGHT_GREEN + "Added user " + args.getString(1));
 				return;
 			}
 
 			if (args.getString(0).equalsIgnoreCase("remove")) {
 				userManager.removeUser(args.getString(1));
-				source.sendMessage(ChatColor.BRIGHT_GREEN + "Removed user " + args.getString(1));
+				source.sendMessage(ChatStyle.BRIGHT_GREEN + "Removed user " + args.getString(1));
 				return;
 			}
 		}
@@ -115,12 +115,12 @@ public class PermissionsCommands {
 	}
 
 	private void printUserHelp(CommandSource source) {
-		source.sendMessage(ChatColor.BRIGHT_GREEN + "----------" + ChatColor.WHITE + " [" + ChatColor.CYAN + "Permissions - Users" + ChatColor.WHITE + "] " + ChatColor.BRIGHT_GREEN + "----------");
-		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN + "/pr -user" + ChatColor.BRIGHT_GREEN + " : Shows this menu.");
-		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN + "/pr -user info <user>" + ChatColor.BRIGHT_GREEN + " : View a users information.");
-		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN + "/pr -user set <group|perm|build> <user> <true|false|group|permissionNode> [true|false|other]" + ChatColor.BRIGHT_GREEN + " : Set various flag for the user.");
-		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN + "/pr -user <add|remove> <user>" + ChatColor.BRIGHT_GREEN + " : Add or remove a user.");
-		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN + "/pr -user check <perm> <user> <permissionNode>" + ChatColor.BRIGHT_GREEN + " : Checks various flags for user.");
+		source.sendMessage(ChatStyle.BRIGHT_GREEN + "----------" + ChatStyle.WHITE + " [" + ChatStyle.CYAN + "Permissions - Users" + ChatStyle.WHITE + "] " + ChatStyle.BRIGHT_GREEN + "----------");
+		source.sendMessage(ChatStyle.BRIGHT_GREEN + "- " + ChatStyle.CYAN + "/pr -user" + ChatStyle.BRIGHT_GREEN + " : Shows this menu.");
+		source.sendMessage(ChatStyle.BRIGHT_GREEN + "- " + ChatStyle.CYAN + "/pr -user info <user>" + ChatStyle.BRIGHT_GREEN + " : View a users information.");
+		source.sendMessage(ChatStyle.BRIGHT_GREEN + "- " + ChatStyle.CYAN + "/pr -user set <group|perm|build> <user> <true|false|group|permissionNode> [true|false|other]" + ChatStyle.BRIGHT_GREEN + " : Set various flag for the user.");
+		source.sendMessage(ChatStyle.BRIGHT_GREEN + "- " + ChatStyle.CYAN + "/pr -user <add|remove> <user>" + ChatStyle.BRIGHT_GREEN + " : Add or remove a user.");
+		source.sendMessage(ChatStyle.BRIGHT_GREEN + "- " + ChatStyle.CYAN + "/pr -user check <perm> <user> <permissionNode>" + ChatStyle.BRIGHT_GREEN + " : Checks various flags for user.");
 	}
 
 	private void printUserInfo(CommandSource source, String username) throws CommandException {
@@ -129,9 +129,9 @@ public class PermissionsCommands {
 			throw new CommandException(username + " does not exist!");
 		}
 
-		source.sendMessage(ChatColor.BRIGHT_GREEN + "----------" + ChatColor.WHITE + " [" + ChatColor.CYAN + user.getName() + ChatColor.WHITE + "] " + ChatColor.BRIGHT_GREEN + "----------");
+		source.sendMessage(ChatStyle.BRIGHT_GREEN + "----------" + ChatStyle.WHITE + " [" + ChatStyle.CYAN + user.getName() + ChatStyle.WHITE + "] " + ChatStyle.BRIGHT_GREEN + "----------");
 		String groupName = user.getGroup() != null ? user.getGroup().getName() : "None";
-		source.sendMessage(ChatColor.BRIGHT_GREEN + "- Group: " + ChatColor.CYAN + groupName);
+		source.sendMessage(ChatStyle.BRIGHT_GREEN + "- Group: " + ChatStyle.CYAN + groupName);
 	}
 
 	private void setGroup(CommandSource source, String username, String groupName) throws CommandException {
@@ -146,7 +146,7 @@ public class PermissionsCommands {
 		}
 
 		user.setGroup(group);
-		source.sendMessage(ChatColor.BRIGHT_GREEN + username + " is now in group: " + group.getName());
+		source.sendMessage(ChatStyle.BRIGHT_GREEN + username + " is now in group: " + group.getName());
 	}
 
 	private void setUserPermission(CommandSource source, String username, String node, String bool) throws CommandException {
@@ -162,7 +162,7 @@ public class PermissionsCommands {
 
 		user.setPermission(node, state);
 		String has = state ? "has" : "does not have";
-		source.sendMessage(ChatColor.BRIGHT_GREEN + user.getName() + " now " + has + " permission for " + node);
+		source.sendMessage(ChatStyle.BRIGHT_GREEN + user.getName() + " now " + has + " permission for " + node);
 	}
 
 	private void checkUserPermission(CommandSource source, String username, String node) throws CommandException {
@@ -172,7 +172,7 @@ public class PermissionsCommands {
 		}
 
 		String has = user.hasPermission(node) ? "has" : "does not have";
-		source.sendMessage(ChatColor.BRIGHT_GREEN + "User " + username + " " + has + " permission for " + node);
+		source.sendMessage(ChatStyle.BRIGHT_GREEN + "User " + username + " " + has + " permission for " + node);
 	}
 
 	@Command(aliases = {"-group", "-g"}, desc = "Modifies a group", usage = "<info|set|add|remove|check|help> [inherit|default|perm|build] [group] [bool:build|bool:default|group|perm|identifier] [bool:inherit|bool:permState]", min = 0, max = 5)
@@ -193,13 +193,13 @@ public class PermissionsCommands {
 
 			if (args.getString(0).equalsIgnoreCase("add")) {
 				groupManager.addGroup(args.getString(1));
-				source.sendMessage(ChatColor.BRIGHT_GREEN + "Added group " + args.getString(1));
+				source.sendMessage(ChatStyle.BRIGHT_GREEN + "Added group " + args.getString(1));
 				return;
 			}
 
 			if (args.getString(0).equalsIgnoreCase("remove")) {
 				groupManager.removeGroup(args.getString(1));
-				source.sendMessage(ChatColor.BRIGHT_GREEN + "Removed group " + args.getString(1));
+				source.sendMessage(ChatStyle.BRIGHT_GREEN + "Removed group " + args.getString(1));
 				return;
 			}
 		}
@@ -259,12 +259,12 @@ public class PermissionsCommands {
 	}
 
 	private void printGroupHelp(CommandSource source) {
-		source.sendMessage(ChatColor.BRIGHT_GREEN + "----------" + ChatColor.WHITE + " [" + ChatColor.CYAN + "Permissions - Groups" + ChatColor.WHITE + "] " + ChatColor.BRIGHT_GREEN + "----------");
-		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN + "/pr -group help" + ChatColor.BRIGHT_GREEN + " : Shows this menu.");
-		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN + "/pr -group info <user>" + ChatColor.BRIGHT_GREEN + " : Check a users info.");
-		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN + "/pr -group set <inherit|default|perm|build> <group> <true|false|inheritedGroup|permissionNode> [true|false|other]" + ChatColor.BRIGHT_GREEN + " : Set various flags for user.");
-		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN + "/pr -group <add|remove> <group>" + ChatColor.BRIGHT_GREEN + " : Add or remove a group.");
-		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN + "/pr -group check <inherit|perm> <group> <inheritedGroup|permissionNode>" + ChatColor.BRIGHT_GREEN + " : Check various flags.");
+		source.sendMessage(ChatStyle.BRIGHT_GREEN + "----------" + ChatStyle.WHITE + " [" + ChatStyle.CYAN + "Permissions - Groups" + ChatStyle.WHITE + "] " + ChatStyle.BRIGHT_GREEN + "----------");
+		source.sendMessage(ChatStyle.BRIGHT_GREEN + "- " + ChatStyle.CYAN + "/pr -group help" + ChatStyle.BRIGHT_GREEN + " : Shows this menu.");
+		source.sendMessage(ChatStyle.BRIGHT_GREEN + "- " + ChatStyle.CYAN + "/pr -group info <user>" + ChatStyle.BRIGHT_GREEN + " : Check a users info.");
+		source.sendMessage(ChatStyle.BRIGHT_GREEN + "- " + ChatStyle.CYAN + "/pr -group set <inherit|default|perm|build> <group> <true|false|inheritedGroup|permissionNode> [true|false|other]" + ChatStyle.BRIGHT_GREEN + " : Set various flags for user.");
+		source.sendMessage(ChatStyle.BRIGHT_GREEN + "- " + ChatStyle.CYAN + "/pr -group <add|remove> <group>" + ChatStyle.BRIGHT_GREEN + " : Add or remove a group.");
+		source.sendMessage(ChatStyle.BRIGHT_GREEN + "- " + ChatStyle.CYAN + "/pr -group check <inherit|perm> <group> <inheritedGroup|permissionNode>" + ChatStyle.BRIGHT_GREEN + " : Check various flags.");
 	}
 
 	private void printGroupInfo(CommandSource source, String name) throws CommandException {
@@ -273,8 +273,8 @@ public class PermissionsCommands {
 			throw new CommandException(name + " doesn't exist!");
 		}
 
-		source.sendMessage(ChatColor.BRIGHT_GREEN + "----------" + ChatColor.WHITE + " [" + ChatColor.CYAN + group.getName() + ChatColor.WHITE + "] " + ChatColor.BRIGHT_GREEN + "----------");
-		source.sendMessage(ChatColor.BRIGHT_GREEN + "- Default: " + ChatColor.CYAN + group.isDefault());
+		source.sendMessage(ChatStyle.BRIGHT_GREEN + "----------" + ChatStyle.WHITE + " [" + ChatStyle.CYAN + group.getName() + ChatStyle.WHITE + "] " + ChatStyle.BRIGHT_GREEN + "----------");
+		source.sendMessage(ChatStyle.BRIGHT_GREEN + "- Default: " + ChatStyle.CYAN + group.isDefault());
 	}
 
 	private void setInherit(CommandSource source, String groupName, String inheritedName, String bool) throws CommandException {
@@ -295,7 +295,7 @@ public class PermissionsCommands {
 
 		group.setInheritedGroup(inherited, inherit);
 		String out = inherit ? "does" : "does not";
-		source.sendMessage(ChatColor.BRIGHT_GREEN + group.getName() + " now " + out + " inherits " + inherited.getName());
+		source.sendMessage(ChatStyle.BRIGHT_GREEN + group.getName() + " now " + out + " inherits " + inherited.getName());
 	}
 
 	private void setDefault(CommandSource source, String groupName, String bool) throws CommandException {
@@ -310,7 +310,7 @@ public class PermissionsCommands {
 		}
 
 		group.setDefault(def);
-		source.sendMessage(ChatColor.BRIGHT_GREEN + group.getName() + "'s default state is now set to " + def);
+		source.sendMessage(ChatStyle.BRIGHT_GREEN + group.getName() + "'s default state is now set to " + def);
 	}
 
 	private void setGroupPermission(CommandSource source, String groupName, String node, String bool) throws CommandException {
@@ -326,7 +326,7 @@ public class PermissionsCommands {
 
 		group.setPermission(node, state);
 		String has = state ? "has" : "does not have";
-		source.sendMessage(ChatColor.BRIGHT_GREEN + group.getName() + " now " + has + " permissions for " + node);
+		source.sendMessage(ChatStyle.BRIGHT_GREEN + group.getName() + " now " + has + " permissions for " + node);
 	}
 
 	private void checkInherit(CommandSource source, String groupName, String inheritedName) throws CommandException {
@@ -343,9 +343,9 @@ public class PermissionsCommands {
 		Map<Group, Boolean> inheritance = group.getInheritedGroups();
 		if (inheritance.containsKey(inherited)) {
 			String does = inheritance.get(inherited) ? "does" : "does not";
-			source.sendMessage(ChatColor.BRIGHT_GREEN + "Group " + groupName + " " + does + " inherit " + inheritedName);
+			source.sendMessage(ChatStyle.BRIGHT_GREEN + "Group " + groupName + " " + does + " inherit " + inheritedName);
 		} else {
-			source.sendMessage(ChatColor.BRIGHT_GREEN + "Group " + inherited + " has not been assigned to group " + groupName);
+			source.sendMessage(ChatStyle.BRIGHT_GREEN + "Group " + inherited + " has not been assigned to group " + groupName);
 		}
 	}
 
@@ -356,7 +356,7 @@ public class PermissionsCommands {
 		}
 
 		String has = group.hasPermission(node) ? "has" : "does not have";
-		source.sendMessage(ChatColor.BRIGHT_GREEN + "Group " + groupName + " " + has + " permissions for " + node);
+		source.sendMessage(ChatStyle.BRIGHT_GREEN + "Group " + groupName + " " + has + " permissions for " + node);
 	}
 
 	@Command(aliases = {"-help", "-h"}, desc = "Prints general help")
@@ -370,18 +370,18 @@ public class PermissionsCommands {
 	}
 
 	private void printInfo(CommandSource source) {
-		source.sendMessage(ChatColor.BRIGHT_GREEN + "WindPerms " + Permissions.getPlugin().getDescription().getVersion());
-		source.sendMessage(ChatColor.BRIGHT_GREEN + "Copyright (c) 2012 Walker Crouse, http://windwaker.net/");
-		source.sendMessage(ChatColor.BRIGHT_GREEN + "Powered by Spout " + Spout.getEngine().getVersion() + " (Implementing SpoutAPI " + Spout.getAPIVersion() + " )");
-		source.sendMessage(ChatColor.BRIGHT_GREEN + "There are " + Permissions.getGroupManager().getGroups().size() + " unique groups registered.");
-		source.sendMessage(ChatColor.BRIGHT_GREEN + "There are " + Permissions.getUserManager().getUsers().size() + " unique users registered.");
+		source.sendMessage(ChatStyle.BRIGHT_GREEN + "WindPerms " + Permissions.getPlugin().getDescription().getVersion());
+		source.sendMessage(ChatStyle.BRIGHT_GREEN + "Copyright (c) 2012 Walker Crouse, http://windwaker.net/");
+		source.sendMessage(ChatStyle.BRIGHT_GREEN + "Powered by Spout " + Spout.getEngine().getVersion() + " (Implementing SpoutAPI " + Spout.getAPIVersion() + " )");
+		source.sendMessage(ChatStyle.BRIGHT_GREEN + "There are " + Permissions.getGroupManager().getGroups().size() + " unique groups registered.");
+		source.sendMessage(ChatStyle.BRIGHT_GREEN + "There are " + Permissions.getUserManager().getUsers().size() + " unique users registered.");
 	}
 
 	private void printHelp(CommandSource source) {
-		source.sendMessage(ChatColor.BRIGHT_GREEN + "----------" + ChatColor.WHITE + " [" + ChatColor.CYAN + "Permissions" + ChatColor.WHITE + "] " + ChatColor.BRIGHT_GREEN + "----------");
-		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN + "/pr -group" + ChatColor.BRIGHT_GREEN + " : View help for modifying groups.");
-		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN + "/pr -user" + ChatColor.BRIGHT_GREEN + " : View help for modifying users.");
-		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN + "/pr -help" + ChatColor.BRIGHT_GREEN + " : View this menu.");
-		source.sendMessage(ChatColor.BRIGHT_GREEN + "- " + ChatColor.CYAN + "/pr -version" + ChatColor.BRIGHT_GREEN + " : View information about this plugin.");
+		source.sendMessage(ChatStyle.BRIGHT_GREEN + "----------" + ChatStyle.WHITE + " [" + ChatStyle.CYAN + "Permissions" + ChatStyle.WHITE + "] " + ChatStyle.BRIGHT_GREEN + "----------");
+		source.sendMessage(ChatStyle.BRIGHT_GREEN + "- " + ChatStyle.CYAN + "/pr -group" + ChatStyle.BRIGHT_GREEN + " : View help for modifying groups.");
+		source.sendMessage(ChatStyle.BRIGHT_GREEN + "- " + ChatStyle.CYAN + "/pr -user" + ChatStyle.BRIGHT_GREEN + " : View help for modifying users.");
+		source.sendMessage(ChatStyle.BRIGHT_GREEN + "- " + ChatStyle.CYAN + "/pr -help" + ChatStyle.BRIGHT_GREEN + " : View this menu.");
+		source.sendMessage(ChatStyle.BRIGHT_GREEN + "- " + ChatStyle.CYAN + "/pr -version" + ChatStyle.BRIGHT_GREEN + " : View information about this plugin.");
 	}
 }
