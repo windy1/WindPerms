@@ -45,14 +45,14 @@ public class Settings extends ConfigurationHolderConfiguration {
 	public static final ConfigurationHolder USE_WILDCARD = new ConfigurationHolder(true, "use-wildcard");
 	public static final ConfigurationHolder SQL_ENABLED = new ConfigurationHolder(false, "sql", "enabled");
 	public static final ConfigurationHolder SQL_PROTOCOL = new ConfigurationHolder("mysql", "sql", "protocol");
-	public static final ConfigurationHolder SQL_HOST = new ConfigurationHolder("184.168.194.134", "sql", "host");
-	public static final ConfigurationHolder SQL_DATABASE_NAME = new ConfigurationHolder("w1ndwaker", "sql", "database-name");
-	public static final ConfigurationHolder SQL_USERNAME = new ConfigurationHolder("w1ndwaker", "sql", "username");
-	public static final ConfigurationHolder SQL_PASSWORD = new ConfigurationHolder("WalkerCrouse!1", "sql", "password");
+	public static final ConfigurationHolder SQL_HOST = new ConfigurationHolder("spout.org", "sql", "host");
+	public static final ConfigurationHolder SQL_DATABASE_NAME = new ConfigurationHolder("spout", "sql", "database-name");
+	public static final ConfigurationHolder SQL_USERNAME = new ConfigurationHolder("spouty", "sql", "username");
+	public static final ConfigurationHolder SQL_PASSWORD = new ConfigurationHolder("unleashtheflow", "sql", "password");
 	private static final PermissionsLogger logger = Permissions.getLogger();
 
 	public Settings() {
-		super(new YamlConfiguration(new File("plugins/Permissions/config.yml")));
+		super(new YamlConfiguration(new File("plugins/WindPerms/config.yml")));
 	}
 
 	@Override

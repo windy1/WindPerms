@@ -57,7 +57,6 @@ public class PermissionsHandler implements Listener {
 	 */
 	@EventHandler(order = Order.EARLIEST)
 	public void checkGroup(PermissionGetGroupsEvent event) {
-
 		// Get the user
 		User user = userManager.getUser(event.getSubject().getName());
 		if (user == null) {
@@ -82,7 +81,6 @@ public class PermissionsHandler implements Listener {
 	 */
 	@EventHandler(order = Order.EARLIEST)
 	public void checkGroup(PermissionGroupEvent event) {
-
 		// Get the user
 		User user = userManager.getUser(event.getSubject().getName());
 		if (user == null) {
@@ -111,7 +109,6 @@ public class PermissionsHandler implements Listener {
 	 */
 	@EventHandler(order = Order.EARLIEST)
 	public void checkNode(PermissionNodeEvent event) {
-
 		// Get the subject - hasPermission(String node) can be called on a group or a user
 		String name = event.getSubject().getName();
 		Permissible subject = groupManager.getGroup(name) != null ? groupManager.getGroup(name) : userManager.getUser(name);
@@ -144,12 +141,14 @@ public class PermissionsHandler implements Listener {
 	 */
 	@EventHandler(order = Order.EARLIEST)
 	public void checkData(RetrieveDataEvent event) {
+		// Gets the subject (group or user)
 		String name = event.getSubject().getName();
 		Permissible subject = groupManager.getGroup(name) != null ? groupManager.getGroup(name) : userManager.getUser(name);
 		if (subject == null) {
 			return;
 		}
 
+		// Set the data if we have some
 		String node = event.getNode();
 		if (subject.hasMetadata(node)) {
 			event.setResult(subject.getMetadata(node));
@@ -169,7 +168,6 @@ public class PermissionsHandler implements Listener {
 			logger.info(playerName + " returned, found Permissions profile.");
 			return;
 		}
-
 		logger.info(playerName + " does not have a Permissions profile, creating...");
 		userManager.addUser(playerName);
 	}

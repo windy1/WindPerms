@@ -24,28 +24,20 @@
  * License and see <http://www.spout.org/SpoutDevLicenseV1.txt> for the full license,
  * including the MIT license.
  */
-package net.windwaker.permissions.command;
+package net.windwaker.permissions.util;
 
-import net.windwaker.permissions.command.sub.GroupCommand;
-import net.windwaker.permissions.command.sub.HelpCommand;
-import net.windwaker.permissions.command.sub.UserCommand;
-import net.windwaker.permissions.command.sub.VersionCommand;
-
-import org.spout.api.command.CommandContext;
+import org.spout.api.chat.style.ChatStyle;
 import org.spout.api.command.CommandSource;
-import org.spout.api.command.annotated.Command;
-import org.spout.api.command.annotated.CommandPermissions;
-import org.spout.api.command.annotated.NestedCommand;
-import org.spout.api.exception.CommandException;
 
-/**
- * Handles all commands starting with 'permissions'
- * @author Windwaker
- */
-public class PermissionsCommand {
-	@Command(aliases = {"permissions", "pr"}, desc = "General permissions command.")
-	@CommandPermissions("permissions.command.permissions")
-	@NestedCommand(value = {GroupCommand.class, UserCommand.class, HelpCommand.class, VersionCommand.class})
-	public void permissions(CommandContext args, CommandSource source) throws CommandException {
+public class MessageUtil {
+	private MessageUtil() {
+	}
+
+	public static void tip(CommandSource source, String tip) {
+		source.sendMessage(ChatStyle.YELLOW, "Tip: ", ChatStyle.ITALIC, tip);
+	}
+
+	public static void title(CommandSource source, String title) {
+		source.sendMessage(ChatStyle.BRIGHT_GREEN, "----------", ChatStyle.WHITE, " [", ChatStyle.CYAN, ChatStyle.BOLD, title, ChatStyle.RESET, "] ", ChatStyle.BRIGHT_GREEN, "----------");
 	}
 }

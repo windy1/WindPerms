@@ -21,8 +21,6 @@
  */
 package net.windwaker.permissions;
 
-import java.sql.Connection;
-
 import net.windwaker.permissions.api.GroupManager;
 import net.windwaker.permissions.api.Permissions;
 import net.windwaker.permissions.api.PermissionsLogger;

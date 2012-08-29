@@ -32,7 +32,6 @@ public class Permissions {
 	private static final PermissionsLogger logger = new PermissionsLogger();
 
 	private Permissions() {
-
 	}
 
 	/**

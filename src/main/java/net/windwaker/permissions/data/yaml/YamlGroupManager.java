@@ -45,7 +45,7 @@ import org.spout.api.util.config.yaml.YamlConfiguration;
  */
 public class YamlGroupManager implements GroupManager {
 	private final PermissionsLogger logger = Permissions.getLogger();
-	private final YamlConfiguration data = new YamlConfiguration(new File("plugins/Permissions/groups.yml"));
+	private final YamlConfiguration data = new YamlConfiguration(new File("plugins/WindPerms/groups.yml"));
 	private final Set<Group> groups = new HashSet<Group>();
 
 	@Override
@@ -70,11 +70,9 @@ public class YamlGroupManager implements GroupManager {
 
 				// Set some values.
 				group.setDefault(data.getNode(path + "/default").getBoolean());
-				group.setUniversal(data.getNode(path + "/universal").getBoolean());
 
 				// Load permissions, data, and worlds
 				loadPermissions(group);
-				loadWorlds(group);
 				loadData(group);
 
 				// Turn auto-save back on and add the group.
@@ -100,17 +98,6 @@ public class YamlGroupManager implements GroupManager {
 		Set<String> nodes = data.getNode(path + "/permissions").getKeys(false);
 		for (String node : nodes) {
 			group.setPermission(node, data.getNode(path + "/permissions/" + node).getBoolean());
-		}
-	}
-
-	private void loadWorlds(Group group) {
-		String path = "groups/" + group.getName();
-		List<String> worldNames = data.getNode(path + "/worlds").getStringList();
-		for (String worldName : worldNames) {
-			World world = Spout.getEngine().getWorld(worldName);
-			if (world != null) {
-				group.addWorld(world);
-			}
 		}
 	}
 
@@ -140,8 +127,6 @@ public class YamlGroupManager implements GroupManager {
 			saveInheritance(group);
 			savePermissions(group);
 			saveData(group);
-			data.getNode(path + "/universal").setValue(group.isUniversal());
-			data.getNode(path + "/worlds").setValue(group.getWorlds());
 			data.getNode(path + "/default").setValue(group.isDefault());
 			data.save();
 		} catch (ConfigurationException e) {

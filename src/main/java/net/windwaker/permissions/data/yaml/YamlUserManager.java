@@ -43,7 +43,7 @@ import org.spout.api.util.config.yaml.YamlConfiguration;
  */
 public class YamlUserManager implements UserManager {
 	private final PermissionsLogger logger = Permissions.getLogger();
-	private static final YamlConfiguration data = new YamlConfiguration(new File("plugins/Permissions/users.yml"));
+	private static final YamlConfiguration data = new YamlConfiguration(new File("plugins/WindPerms/users.yml"));
 	private final Set<User> users = new HashSet<User>();
 
 	@Override
