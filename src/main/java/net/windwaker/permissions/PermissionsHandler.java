@@ -35,9 +35,8 @@ import org.spout.api.event.Listener;
 import org.spout.api.event.Order;
 import org.spout.api.event.Result;
 import org.spout.api.event.player.PlayerLoginEvent;
-import org.spout.api.event.server.data.RetrieveDataEvent;
-import org.spout.api.event.server.permissions.PermissionGetGroupsEvent;
-import org.spout.api.event.server.permissions.PermissionGroupEvent;
+import org.spout.api.event.server.RetrieveDataEvent;
+import org.spout.api.event.server.permissions.PermissionGroupsEvent;
 import org.spout.api.event.server.permissions.PermissionNodeEvent;
 
 /**
@@ -51,12 +50,12 @@ public class PermissionsHandler implements Listener {
 	private final PermissionsLogger logger = Permissions.getLogger();
 
 	/**
-	 * Catches the PermissionsGetGroupsEvent and sets the result to the subjects group.
+	 * Catches the PermissionsGroupsEvent and sets the result to the subjects group.
 	 * This is invoked when PermissionsSubject.getGroups() is called.
 	 * @param event of invocation
 	 */
 	@EventHandler(order = Order.EARLIEST)
-	public void checkGroup(PermissionGetGroupsEvent event) {
+	public void groups(PermissionGroupsEvent event) {
 		// Get the user
 		User user = userManager.getUser(event.getSubject().getName());
 		if (user == null) {
@@ -75,40 +74,12 @@ public class PermissionsHandler implements Listener {
 	}
 
 	/**
-	 * Catches the PermissionsGroupEvent and sets the result to whether or not the subject is in the group.
-	 * This is invoked when PermissionsSubject.isInGroup(String group) is called.
-	 * @param event of invocation
-	 */
-	@EventHandler(order = Order.EARLIEST)
-	public void checkGroup(PermissionGroupEvent event) {
-		// Get the user
-		User user = userManager.getUser(event.getSubject().getName());
-		if (user == null) {
-			return;
-		}
-
-		// Get the users group
-		Group group = user.getGroup();
-		if (group == null) {
-			return;
-		}
-
-		// Return whether the user is in the group queried
-		String name = event.getGroup();
-		if (group.getName().equalsIgnoreCase(name)) {
-			event.setResult(true);
-		} else {
-			event.setResult(false);
-		}
-	}
-
-	/**
 	 * Catches the PermissionNodeEvent and sets the result to whether or not the subject has the permission node.
 	 * This is invoked when PermissionsSubject.hasPermission(String node) is called.
 	 * @param event of invocation
 	 */
 	@EventHandler(order = Order.EARLIEST)
-	public void checkNode(PermissionNodeEvent event) {
+	public void node(PermissionNodeEvent event) {
 		// Get the subject - hasPermission(String node) can be called on a group or a user
 		String name = event.getSubject().getName();
 		Permissible subject = groupManager.getGroup(name) != null ? groupManager.getGroup(name) : userManager.getUser(name);
@@ -140,7 +111,7 @@ public class PermissionsHandler implements Listener {
 	 * @param event of invocation
 	 */
 	@EventHandler(order = Order.EARLIEST)
-	public void checkData(RetrieveDataEvent event) {
+	public void retrieveData(RetrieveDataEvent event) {
 		// Gets the subject (group or user)
 		String name = event.getSubject().getName();
 		Permissible subject = groupManager.getGroup(name) != null ? groupManager.getGroup(name) : userManager.getUser(name);
