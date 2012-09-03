@@ -41,17 +41,25 @@ import org.spout.api.command.annotated.SimpleInjector;
  */
 public class WindPerms extends PermissionsPlugin {
 	private final PermissionsLogger logger = Permissions.getLogger();
+	private Settings settings;
 	private GroupManager groupManager;
 	private UserManager userManager;
 
 	@Override
-	public void onLoad() {
+	public void onReload() {
+		settings.load();
+		groupManager.load();
+		userManager.load();
+	}
+
+	@Override
+	public void onEnable() {
 
 		// Set plugin of platform
 		Permissions.setPlugin(this);
 
 		// Load data
-		Settings settings = new Settings();
+		settings = new Settings();
 		settings.load();
 
 		// Create managers
@@ -60,10 +68,6 @@ public class WindPerms extends PermissionsPlugin {
 
 		userManager = settings.createUserManager();
 		userManager.load();
-	}
-
-	@Override
-	public void onEnable() {
 
 		// Register events
 		Spout.getEventManager().registerEvents(new PermissionsHandler(), this);

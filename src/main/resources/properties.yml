@@ -5,3 +5,4 @@ author: Windwaker
 website: http://github.com/W1ndwaker/WindPerms
 main: net.windwaker.permissions.WindPerms
 platform: BOTH
+reload: true
