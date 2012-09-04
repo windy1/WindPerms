@@ -58,10 +58,6 @@ public abstract class Permissible {
 		return inheritedNodes;
 	}
 
-	public void setInheritedPermission(String node, boolean state) {
-		inheritedNodes.put(node, state);
-	}
-
 	/**
 	 * Gets all permissions of subject.
 	 * @return all permissions
@@ -111,15 +107,6 @@ public abstract class Permissible {
 	 */
 	public void setInheritedMetadata(String node, DataValue value) {
 		inheritedMetadata.put(node, value);
-	}
-
-	/**
-	 * Adds an inherited data entry
-	 * @param node
-	 * @param value
-	 */
-	public void setInheritedMetadata(String node, Object value) {
-		setInheritedMetadata(node, new DataValue(value));
 	}
 
 	/**

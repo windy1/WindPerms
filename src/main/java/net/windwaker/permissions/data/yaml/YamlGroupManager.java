@@ -51,6 +51,7 @@ public class YamlGroupManager implements GroupManager {
 			data.load();
 			data.setPathSeparator("/");
 			if (!data.getNode("groups").isAttached()) {
+				// load some defaults if the file is empty
 				addDefaults();
 			}
 
@@ -130,6 +131,10 @@ public class YamlGroupManager implements GroupManager {
 				group.setInheritedGroup(inherited, data.getNode(path + "/inherited/" + inheritedName).getBoolean());
 			}
 		}
+		// after all groups are inherited, make sure all their data is up to date
+		for (Group g : groups) {
+			g.reloadInheritance();
+		}
 	}
 
 	@Override
@@ -201,11 +206,7 @@ public class YamlGroupManager implements GroupManager {
 	public void addGroup(String name) {
 		try {
 			String path = "groups/" + name;
-			data.getNode(path + "/inherited/admin").setValue(false);
 			data.getNode(path + "/default").setValue(false);
-			data.getNode(path + "/permissions/foo.bar").setValue(false);
-			data.getNode(path + "/metadata/chat-format").setValue("[{{DARK_AQUA}}" + name + "{{WHITE}}] {NAME}: {MESSAGE}");
-			data.getNode(path + "/metadata/join-message-format").setValue("{{DARK_AQUA}}{NAME} {{GRAY}}has joined the game.");
 			data.save();
 			loadGroup(name);
 		} catch (ConfigurationException e) {

@@ -126,10 +126,8 @@ public class YamlUserManager implements UserManager {
 		loadPermissions(u);
 		loadData(u);
 		// Load group
-		Group group = groupManager.getGroup(data.getNode(path + "/group").getString());
-		if (group != null) {
-			u.setGroup(group);
-		}
+		Group group = groupManager.getGroup(data.getNode(path + "/group").getString(groupManager.getDefaultGroup().getName()));
+		u.setGroup(group);
 		// Turn auto-save back on and add user.
 		u.setAutoSave(true);
 		users.add(u);
@@ -156,7 +154,6 @@ public class YamlUserManager implements UserManager {
 		try {
 			String path = "users/" + username;
 			data.getNode(path + "/group").setValue(groupManager.getDefaultGroup().getName());
-			data.getNode(path + "/permissions/foo.bar").setValue(false);
 			data.save();
 			loadUser(username);
 		} catch (ConfigurationException e) {

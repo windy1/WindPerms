@@ -22,7 +22,6 @@
 package net.windwaker.permissions.api.permissible;
 
 import java.util.Map;
-import java.util.Set;
 
 import net.windwaker.permissions.api.Permissions;
 import net.windwaker.permissions.api.UserManager;
@@ -46,19 +45,27 @@ public class User extends Permissible {
 	 * @param group
 	 */
 	public void setGroup(Group group) {
-		// Set the group and inherit permission nodes.
 		this.group = group;
-		Set<Map.Entry<String, Boolean>> nodes = group.getPermissions().entrySet();
-		for (Map.Entry<String, Boolean> node : nodes) {
-			inheritedNodes.put(node.getKey(), node.getValue());
-		}
-		// Inherit metadata
-		Set<Map.Entry<String, DataValue>> data = group.getMetadataMap().entrySet();
-		for (Map.Entry<String, DataValue> d : data) {
-			inheritedMetadata.put(d.getKey(), d.getValue());
-		}
+		inherit(group);
 		if (autoSave) {
 			save();
+		}
+	}
+
+	private void inherit(Group group) {
+		// inherit nodes
+		for (Map.Entry<String, Boolean> node : group.getInheritedPermissions().entrySet()) {
+			inheritedNodes.put(node.getKey(), node.getValue());
+		}
+		for (Map.Entry<String, Boolean> node : group.getPermissions().entrySet()) {
+			inheritedNodes.put(node.getKey(), node.getValue());
+		}
+		// inherit data
+		for (Map.Entry<String, DataValue> data : group.getInheritedMetadataMap().entrySet()) {
+			inheritedMetadata.put(data.getKey(), data.getValue());
+		}
+		for (Map.Entry<String, DataValue> data : group.getMetadataMap().entrySet()) {
+			inheritedMetadata.put(data.getKey(), data.getValue());
 		}
 	}
 

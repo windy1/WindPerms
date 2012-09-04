@@ -23,10 +23,11 @@ package net.windwaker.permissions.api.permissible;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 import net.windwaker.permissions.api.GroupManager;
 import net.windwaker.permissions.api.Permissions;
+
+import org.spout.api.data.DataValue;
 
 /**
  * Represents a group of users.
@@ -35,10 +36,15 @@ import net.windwaker.permissions.api.Permissions;
 public class Group extends Permissible {
 	private final GroupManager groupManager = Permissions.getGroupManager();
 	private boolean def = false;
-	private final Map<Group, Boolean> inherited = new HashMap<Group, Boolean>();
+	private final Map<Group, Boolean> inheritedInheritedGroups = new HashMap<Group, Boolean>();
+	private final Map<Group, Boolean> inheritedGroups = new HashMap<Group, Boolean>();
 
 	public Group(String name) {
 		super(name);
+	}
+
+	public Map<Group, Boolean> getInheritedInheritedGroups() {
+		return inheritedInheritedGroups;
 	}
 
 	/**
@@ -46,7 +52,7 @@ public class Group extends Permissible {
 	 * @return inherited groups.
 	 */
 	public Map<Group, Boolean> getInheritedGroups() {
-		return inherited;
+		return inheritedGroups;
 	}
 
 	/**
@@ -54,18 +60,65 @@ public class Group extends Permissible {
 	 * @param group to inherit
 	 */
 	public void setInheritedGroup(Group group, boolean inherit) {
-		if (group.isAssignableFrom(this) && inherit) {
-			throw new IllegalStateException("Group " + group.getName() + " already inherits " + name + ". Two groups may not inherit each other.");
+		setInheritedGroup(group, inherit, true);
+	}
+
+	private void setInheritedGroup(Group group, boolean inherit, boolean direct) {
+		if (direct) {
+			// direct groups save to disk
+			inheritedGroups.put(group, inherit);
+		} else {
+			// inherited do not save to disk
+			inheritedInheritedGroups.put(group, inherit);
 		}
-		inherited.put(group, inherit);
-		Set<Map.Entry<String, Boolean>> nodes = group.getPermissions().entrySet();
-		for (Map.Entry<String, Boolean> node : nodes) {
-			if (!permissionNodes.containsKey(node.getKey()) && inherit) {
-				permissionNodes.put(node.getKey(), node.getValue());
-			}
+		if (inherit) {
+			inheritGroups(group);
+			// keep the nodes and data up to date
+			reloadInheritance();
 		}
 		if (autoSave) {
 			save();
+		}
+	}
+
+	private void inheritGroups(Group group) {
+		// no circle inheritance here
+		if (group.isAssignableFrom(this)) {
+			throw new IllegalStateException("Group " + group.getName() + " already inherits " + name + ". Two groups may not inherit each other.");
+		}
+		// inherit the groups inherited groups
+		for (Map.Entry<Group, Boolean> entry : group.getInheritedInheritedGroups().entrySet()) {
+			setInheritedGroup(entry.getKey(), entry.getValue(), false);
+		}
+		for (Map.Entry<Group, Boolean> entry : group.getInheritedGroups().entrySet()) {
+			setInheritedGroup(entry.getKey(), entry.getValue(), false);
+		}
+	}
+
+	public void reloadInheritance() {
+		reloadInheritance(inheritedInheritedGroups);
+		reloadInheritance(inheritedGroups);
+	}
+
+	private void reloadInheritance(Map<Group, Boolean> groupMap) {
+		for (Map.Entry<Group, Boolean> entry : groupMap.entrySet()) {
+			if (entry.getValue()) {
+				Group group = entry.getKey();
+				// inherit nodes
+				for (Map.Entry<String, Boolean> node : group.getInheritedPermissions().entrySet()) {
+					inheritedNodes.put(node.getKey(), node.getValue());
+				}
+				for (Map.Entry<String, Boolean> node : group.getPermissions().entrySet()) {
+					inheritedNodes.put(node.getKey(), node.getValue());
+				}
+				// inherit data
+				for (Map.Entry<String, DataValue> data : group.getInheritedMetadataMap().entrySet()) {
+					inheritedMetadata.put(data.getKey(), data.getValue());
+				}
+				for (Map.Entry<String, DataValue> data : group.getMetadataMap().entrySet()) {
+					inheritedMetadata.put(data.getKey(), data.getValue());
+				}
+			}
 		}
 	}
 
@@ -75,8 +128,10 @@ public class Group extends Permissible {
 	 * @return true if inherits
 	 */
 	public boolean isAssignableFrom(Group group) {
-		if (inherited.containsKey(group)) {
-			return inherited.get(group);
+		if (inheritedGroups.containsKey(group)) {
+			return inheritedGroups.get(group);
+		} else if (inheritedInheritedGroups.containsKey(group)) {
+			return inheritedInheritedGroups.get(group);
 		}
 		return false;
 	}
