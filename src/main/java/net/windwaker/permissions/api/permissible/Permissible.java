@@ -33,7 +33,9 @@ import org.spout.api.data.DataValue;
 public abstract class Permissible {
 	protected final String name;
 	protected final Map<String, Boolean> permissionNodes = new HashMap<String, Boolean>();
+	protected final Map<String, Boolean> inheritedNodes = new HashMap<String, Boolean>();
 	protected final Map<String, DataValue> metadata = new HashMap<String, DataValue>();
+	protected final Map<String, DataValue> inheritedMetadata = new HashMap<String, DataValue>();
 	protected boolean autoSave = true;
 
 	public Permissible(String name) {
@@ -49,7 +51,19 @@ public abstract class Permissible {
 	}
 
 	/**
-	 * Gets all permissions of subject, including any inherited.
+	 * Gets the inherited nodes of the subject.
+	 * @return
+	 */
+	public Map<String, Boolean> getInheritedPermissions() {
+		return inheritedNodes;
+	}
+
+	public void setInheritedPermission(String node, boolean state) {
+		inheritedNodes.put(node, state);
+	}
+
+	/**
+	 * Gets all permissions of subject.
 	 * @return all permissions
 	 */
 	public Map<String, Boolean> getPermissions() {
@@ -76,8 +90,36 @@ public abstract class Permissible {
 	public boolean hasPermission(String node) {
 		if (permissionNodes.containsKey(node)) {
 			return permissionNodes.get(node);
+		} else if (inheritedNodes.containsKey(node)) {
+			return inheritedNodes.get(node);
 		}
 		return false;
+	}
+
+	/**
+	 * Returns inherited data mapping.
+	 * @return data
+	 */
+	public Map<String, DataValue> getInheritedMetadataMap() {
+		return inheritedMetadata;
+	}
+
+	/**
+	 * Adds an inherited data entry
+	 * @param node
+	 * @param value
+	 */
+	public void setInheritedMetadata(String node, DataValue value) {
+		inheritedMetadata.put(node, value);
+	}
+
+	/**
+	 * Adds an inherited data entry
+	 * @param node
+	 * @param value
+	 */
+	public void setInheritedMetadata(String node, Object value) {
+		setInheritedMetadata(node, new DataValue(value));
 	}
 
 	/**
@@ -117,6 +159,8 @@ public abstract class Permissible {
 	public DataValue getMetadata(String node) {
 		if (metadata.containsKey(node)) {
 			return metadata.get(node);
+		} else if (inheritedMetadata.containsKey(node)) {
+			return inheritedMetadata.get(node);
 		}
 		return null;
 	}
@@ -127,7 +171,7 @@ public abstract class Permissible {
 	 * @return true if has data
 	 */
 	public boolean hasMetadata(String node) {
-		return metadata.containsKey(node) && metadata.get(node) != null;
+		return getMetadata(node) != null;
 	}
 
 	/**

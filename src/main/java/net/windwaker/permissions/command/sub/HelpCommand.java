@@ -27,8 +27,8 @@ import org.spout.api.command.CommandSource;
 import org.spout.api.command.annotated.Command;
 import org.spout.api.exception.CommandException;
 
-import static net.windwaker.permissions.util.MessageUtil.title;
 import static net.windwaker.permissions.util.MessageUtil.tip;
+import static net.windwaker.permissions.util.MessageUtil.title;
 
 public class HelpCommand {
 	@Command(aliases = {"help", "?"}, desc = "Prints basic help.", min = 0, max = 2)

@@ -22,9 +22,7 @@
 package net.windwaker.permissions.data.yaml;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -33,10 +31,8 @@ import net.windwaker.permissions.api.Permissions;
 import net.windwaker.permissions.api.PermissionsLogger;
 import net.windwaker.permissions.api.permissible.Group;
 
-import org.spout.api.Spout;
 import org.spout.api.data.DataValue;
 import org.spout.api.exception.ConfigurationException;
-import org.spout.api.geo.World;
 import org.spout.api.util.config.yaml.YamlConfiguration;
 
 /**
@@ -54,6 +50,10 @@ public class YamlGroupManager implements GroupManager {
 
 			data.load();
 			data.setPathSeparator("/");
+			if (!data.getNode("groups").isAttached()) {
+				addDefaults();
+			}
+
 			Set<String> names = data.getNode("groups").getKeys(false);
 			if (!names.isEmpty()) {
 				logger.info("Loading group data...");
@@ -61,23 +61,7 @@ public class YamlGroupManager implements GroupManager {
 
 			// Load groups
 			for (String name : names) {
-				// Create new group
-				String path = "groups/" + name;
-				Group group = new Group(name);
-
-				// Turn off auto-save for loading.
-				group.setAutoSave(false);
-
-				// Set some values.
-				group.setDefault(data.getNode(path + "/default").getBoolean());
-
-				// Load permissions, data, and worlds
-				loadPermissions(group);
-				loadData(group);
-
-				// Turn auto-save back on and add the group.
-				group.setAutoSave(true);
-				groups.add(group);
+				loadGroup(name);
 			}
 
 			// Load inheritance - must be loaded after all other groups are loaded.
@@ -90,6 +74,34 @@ public class YamlGroupManager implements GroupManager {
 			}
 		} catch (ConfigurationException e) {
 			logger.severe("Failed to load group data: " + e.getMessage());
+		}
+	}
+
+	private void addDefaults() {
+		try {
+			data.getNode("groups/guest/inherited/user").setValue(false);
+			data.getNode("groups/guest/default").setValue(true);
+			data.getNode("groups/guest/permissions/foo.bar").setValue(false);
+			data.getNode("groups/guest/metadata/chat-format").setValue("[{{PURPLE}}Guest{{WHITE}}] {NAME}: {MESSAGE}");
+			data.getNode("groups/guest/metadata/join-message-format").setValue("{{PURPLE}}{NAME} {{GRAY}}has joined the game.");
+			data.getNode("groups/user/inherited/guest").setValue(true);
+			data.getNode("groups/user/default").setValue(false);
+			data.getNode("groups/user/permissions/foo.bar").setValue(false);
+			data.getNode("groups/user/metadata/chat-format").setValue("[{{BLUE}}User{{WHITE}}] {NAME}: {MESSAGE}");
+			data.getNode("groups/user/metadata/join-message-format").setValue("{{BLUE}}{NAME} {{GRAY}}has joined the game.");
+			data.getNode("groups/mod/inherited/user").setValue(true);
+			data.getNode("groups/mod/default").setValue(false);
+			data.getNode("groups/mod/permissions/foo.bar").setValue(false);
+			data.getNode("groups/mod/metadata/chat-format").setValue("[{{DARK_GREEN}}{{BOLD}}Moderator{{RESET}}] {NAME}: {MESSAGE}");
+			data.getNode("groups/mod/metadata/join-message-format").setValue("{{DARK_GREEN}}{{BOLD}}{NAME} {{RESET}}{{GRAY}}has joined the game.");
+			data.getNode("groups/admin/inherited/mod").setValue(true);
+			data.getNode("groups/admin/default").setValue(false);
+			data.getNode("groups/admin/permissions/foo.bar").setValue(true);
+			data.getNode("groups/admin/metadata/chat-format").setValue("[{{DARK_RED}}{{BOLD}}Administrator{{RESET}}] {NAME}: {MESSAGE}");
+			data.getNode("groups/admin/metadata/join-message-format").setValue("{{DARK_RED}}{{BOLD}}{NAME} {{RESET}}{{GRAY}}has joined the game.");
+			data.save();
+		} catch (ConfigurationException e) {
+			logger.severe("Failed to add defaults: " + e.getMessage());
 		}
 	}
 
@@ -134,11 +146,28 @@ public class YamlGroupManager implements GroupManager {
 		}
 	}
 
+	@Override
+	public void loadGroup(String group) {
+		// Create new group
+		String path = "groups/" + group;
+		Group g = new Group(group);
+		// Turn off auto-save for loading.
+		g.setAutoSave(false);
+		// Set some values.
+		g.setDefault(data.getNode(path + "/default").getBoolean());
+		// Load permissions, data, and worlds
+		loadPermissions(g);
+		loadData(g);
+		// Turn auto-save back on and add the group.
+		g.setAutoSave(true);
+		groups.add(g);
+	}
+
 	private void saveInheritance(Group group) {
 		String path = "groups/" + group.getName();
 		Map<Group, Boolean> groupMap = group.getInheritedGroups();
 		for (Map.Entry<Group, Boolean> entry : groupMap.entrySet()) {
-			data.getNode(path + "/inherited/" + entry.getKey()).setValue(entry.getValue());
+			data.getNode(path + "/inherited/" + entry.getKey().getName()).setValue(entry.getValue());
 		}
 	}
 
@@ -159,20 +188,26 @@ public class YamlGroupManager implements GroupManager {
 	}
 
 	@Override
+	public Group getDefaultGroup() {
+		for (Group group : groups) {
+			if (group.isDefault()) {
+				return group;
+			}
+		}
+		return null;
+	}
+
+	@Override
 	public void addGroup(String name) {
 		try {
-			groups.add(new Group(name));
 			String path = "groups/" + name;
 			data.getNode(path + "/inherited/admin").setValue(false);
 			data.getNode(path + "/default").setValue(false);
-			data.getNode(path + "/universal").setValue(false);
-			data.getNode(path + "/worlds").setValue(Arrays.asList("world"));
 			data.getNode(path + "/permissions/foo.bar").setValue(false);
-			data.getNode(path + "/permissions/baz.qux").setValue(false);
-			data.getNode(path + "/metadata/build").setValue(true);
-			data.getNode(path + "/metadata/prefix").setValue("&f");
-			data.getNode(path + "/metadata/suffix").setValue("&f");
+			data.getNode(path + "/metadata/chat-format").setValue("[{{DARK_AQUA}}" + name + "{{WHITE}}] {NAME}: {MESSAGE}");
+			data.getNode(path + "/metadata/join-message-format").setValue("{{DARK_AQUA}}{NAME} {{GRAY}}has joined the game.");
 			data.save();
+			loadGroup(name);
 		} catch (ConfigurationException e) {
 			logger.severe("Failed to add group " + name + ": " + e.getMessage());
 		}

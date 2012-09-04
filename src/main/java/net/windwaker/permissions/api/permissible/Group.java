@@ -21,17 +21,12 @@
  */
 package net.windwaker.permissions.api.permissible;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import net.windwaker.permissions.api.GroupManager;
 import net.windwaker.permissions.api.Permissions;
-import net.windwaker.permissions.exception.HierarchicalException;
-
-import org.spout.api.geo.World;
 
 /**
  * Represents a group of users.
@@ -60,17 +55,15 @@ public class Group extends Permissible {
 	 */
 	public void setInheritedGroup(Group group, boolean inherit) {
 		if (group.isAssignableFrom(this) && inherit) {
-			throw new HierarchicalException("Group " + group.getName() + " already inherits " + name + ". Two groups may not inherit each other.");
+			throw new IllegalStateException("Group " + group.getName() + " already inherits " + name + ". Two groups may not inherit each other.");
 		}
 		inherited.put(group, inherit);
-
 		Set<Map.Entry<String, Boolean>> nodes = group.getPermissions().entrySet();
 		for (Map.Entry<String, Boolean> node : nodes) {
 			if (!permissionNodes.containsKey(node.getKey()) && inherit) {
 				permissionNodes.put(node.getKey(), node.getValue());
 			}
 		}
-
 		if (autoSave) {
 			save();
 		}

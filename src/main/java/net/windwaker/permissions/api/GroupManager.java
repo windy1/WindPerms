@@ -54,6 +54,18 @@ public interface GroupManager {
 	public void saveGroup(Group group);
 
 	/**
+	 * Loads a group from disk.
+	 * @param group
+	 */
+	public void loadGroup(String group);
+
+	/**
+	 * Gets the default group.
+	 * @return
+	 */
+	public Group getDefaultGroup();
+
+	/**
 	 * Gets a group from said name
 	 * @param name
 	 * @return group

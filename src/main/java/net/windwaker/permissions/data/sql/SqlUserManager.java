@@ -36,22 +36,33 @@ import net.windwaker.permissions.api.permissible.User;
  *            ------------------------------
  */
 public class SqlUserManager implements UserManager {
+	@Override
 	public void load() {
 	}
 
+	@Override
 	public void addUser(String username) {
 	}
 
+	@Override
 	public void removeUser(String username) {
 	}
 
+	@Override
 	public void saveUser(User user) {
 	}
 
+	@Override
+	public void loadUser(String user) {
+		//To change body of implemented methods use File | Settings | File Templates.
+	}
+
+	@Override
 	public User getUser(String name) {
 		return null;
 	}
 
+	@Override
 	public Set<User> getUsers() {
 		return null;
 	}

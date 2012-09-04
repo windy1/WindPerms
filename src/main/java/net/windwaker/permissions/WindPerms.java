@@ -54,28 +54,22 @@ public class WindPerms extends PermissionsPlugin {
 
 	@Override
 	public void onEnable() {
-
 		// Set plugin of platform
 		Permissions.setPlugin(this);
-
 		// Load data
 		settings = new Settings();
 		settings.load();
-
-		// Create managers
+		// Create group manager
 		groupManager = settings.createGroupManager();
 		groupManager.load();
-
+		// Create user manager
 		userManager = settings.createUserManager();
 		userManager.load();
-
 		// Register events
 		Spout.getEventManager().registerEvents(new PermissionsHandler(), this);
-
 		// Register commands
 		CommandRegistrationsFactory<Class<?>> commandRegFactory = new AnnotatedCommandRegistrationFactory(new SimpleInjector(), new SimpleAnnotatedCommandExecutorFactory());
 		getEngine().getRootCommand().addSubCommands(this, PermissionsCommand.class, commandRegFactory);
-
 		logger.info("WindPerms " + getDescription().getVersion() + " enabled.");
 	}
 

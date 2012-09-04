@@ -61,13 +61,11 @@ public class PermissionsHandler implements Listener {
 		if (user == null) {
 			return;
 		}
-
 		// Get the users group
 		Group group = user.getGroup();
 		if (group == null) {
 			return;
 		}
-
 		// Return the group
 		String[] name = {group.getName()};
 		event.setGroups(name);
@@ -82,11 +80,12 @@ public class PermissionsHandler implements Listener {
 	public void node(PermissionNodeEvent event) {
 		// Get the subject - hasPermission(String node) can be called on a group or a user
 		String name = event.getSubject().getName();
+		System.out.println("Name: " + name);
 		Permissible subject = groupManager.getGroup(name) != null ? groupManager.getGroup(name) : userManager.getUser(name);
 		if (subject == null) {
 			return;
 		}
-
+		System.out.println("Subject not null");
 		/*
 		 * Get the node and all parent nodes of the events.
 		 *	For instance, if 'foo.bar.baz' is queried, 
@@ -96,13 +95,16 @@ public class PermissionsHandler implements Listener {
 		 * If one node is found, return. We only need one node to grant permission.
 		 */
 		for (String node : event.getNodes()) {
+			System.out.println("For: " + node);
 			if (subject.hasPermission(node) || (subject.hasPermission("*") && Settings.USE_WILDCARD.getBoolean())) {
+				System.out.println("Has permission");
 				event.setResult(Result.ALLOW);
 				return;
 			} else {
 				event.setResult(Result.DENY);
 			}
 		}
+		System.out.println("No matching node found");
 	}
 
 	/**
@@ -118,7 +120,6 @@ public class PermissionsHandler implements Listener {
 		if (subject == null) {
 			return;
 		}
-
 		// Set the data if we have some
 		String node = event.getNode();
 		if (subject.hasMetadata(node)) {

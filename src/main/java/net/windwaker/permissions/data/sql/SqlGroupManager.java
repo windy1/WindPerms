@@ -36,22 +36,38 @@ import net.windwaker.permissions.api.permissible.Group;
  *            ------------------------------
  */
 public class SqlGroupManager implements GroupManager {
+	@Override
 	public void load() {
 	}
 
+	@Override
 	public void addGroup(String name) {
 	}
 
+	@Override
 	public void removeGroup(String name) {
 	}
 
+	@Override
 	public void saveGroup(Group group) {
 	}
 
+	@Override
+	public void loadGroup(String group) {
+		//To change body of implemented methods use File | Settings | File Templates.
+	}
+
+	@Override
+	public Group getDefaultGroup() {
+		return null;
+	}
+
+	@Override
 	public Group getGroup(String name) {
 		return null;
 	}
 
+	@Override
 	public Set<Group> getGroups() {
 		return null;
 	}

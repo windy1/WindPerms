@@ -54,6 +54,12 @@ public interface UserManager {
 	public void saveUser(User user);
 
 	/**
+	 * Load a user from disk.
+	 * @param user
+	 */
+	public void loadUser(String user);
+
+	/**
 	 * Gets a user from said name
 	 * @param name
 	 * @return user

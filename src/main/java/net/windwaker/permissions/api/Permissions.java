@@ -21,8 +21,6 @@
  */
 package net.windwaker.permissions.api;
 
-import org.spout.api.plugin.PluginDescriptionFile;
-
 /**
  * Represents the Permissions platform.
  * @author Windwaker

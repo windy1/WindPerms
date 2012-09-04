@@ -45,14 +45,18 @@ public class YamlUserManager implements UserManager {
 	private final PermissionsLogger logger = Permissions.getLogger();
 	private static final YamlConfiguration data = new YamlConfiguration(new File("plugins/WindPerms/users.yml"));
 	private final Set<User> users = new HashSet<User>();
+	private final GroupManager groupManager = Permissions.getGroupManager();
 
 	@Override
 	public void load() {
 		try {
 
-			GroupManager groupManager = Permissions.getGroupManager();
 			data.load();
 			data.setPathSeparator("/");
+			if (!data.getNode("users").isAttached()) {
+				addDefaults();
+			}
+
 			Set<String> names = data.getNode("users").getKeys(false);
 			if (!names.isEmpty()) {
 				logger.info("Loading user data...");
@@ -60,27 +64,7 @@ public class YamlUserManager implements UserManager {
 
 			// Load users
 			for (String name : names) {
-
-				// Create new user
-				String path = "users/" + name;
-				User user = new User(name);
-
-				// Turn off auto-saving for the user while loading - data will not save to disk.
-				user.setAutoSave(false);
-
-				// Load permissions and data
-				loadPermissions(user);
-				loadData(user);
-
-				// Load group
-				Group group = groupManager.getGroup(data.getNode(path + "/group").getString());
-				if (group != null) {
-					user.setGroup(group);
-				}
-
-				// Turn auto-save back on and add user.
-				user.setAutoSave(true);
-				users.add(user);
+				loadUser(name);
 			}
 
 			if (!names.isEmpty()) {
@@ -88,6 +72,16 @@ public class YamlUserManager implements UserManager {
 			}
 		} catch (ConfigurationException e) {
 			logger.severe("Failed to load user data: " + e.getMessage());
+		}
+	}
+
+	private void addDefaults() {
+		try {
+			data.getNode("users/Notch/group").setValue("admin");
+			data.getNode("users/Notch/permissions/foo.bar").setValue(false);
+			data.save();
+		} catch (ConfigurationException e) {
+			logger.severe("Failed to add defaults: " + e.getMessage());
 		}
 	}
 
@@ -121,6 +115,26 @@ public class YamlUserManager implements UserManager {
 		}
 	}
 
+	@Override
+	public void loadUser(String user) {
+		// Create new user
+		String path = "users/" + user;
+		User u = new User(user);
+		// Turn off auto-saving for the user while loading - data will not save to disk.
+		u.setAutoSave(false);
+		// Load permissions and data
+		loadPermissions(u);
+		loadData(u);
+		// Load group
+		Group group = groupManager.getGroup(data.getNode(path + "/group").getString());
+		if (group != null) {
+			u.setGroup(group);
+		}
+		// Turn auto-save back on and add user.
+		u.setAutoSave(true);
+		users.add(u);
+	}
+
 	private void savePermissions(User user) {
 		String path = "users/" + user.getName();
 		Set<Map.Entry<String, Boolean>> perms = user.getPermissions().entrySet();
@@ -140,15 +154,11 @@ public class YamlUserManager implements UserManager {
 	@Override
 	public void addUser(String username) {
 		try {
-			users.add(new User(username));
 			String path = "users/" + username;
-			data.getNode(path + "/group").setValue("default");
+			data.getNode(path + "/group").setValue(groupManager.getDefaultGroup().getName());
 			data.getNode(path + "/permissions/foo.bar").setValue(false);
-			data.getNode(path + "/permissions/baz.qux").setValue(false);
-			data.getNode(path + "/metadata/build").setValue(true);
-			data.getNode(path + "/metadata/prefix").setValue("&f");
-			data.getNode(path + "/metadata/suffix").setValue("&f");
 			data.save();
+			loadUser(username);
 		} catch (ConfigurationException e) {
 			logger.severe("Failed to add user " + username + ": " + e.getMessage());
 		}
