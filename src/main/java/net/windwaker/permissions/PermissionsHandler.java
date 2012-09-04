@@ -80,7 +80,6 @@ public class PermissionsHandler implements Listener {
 	public void node(PermissionNodeEvent event) {
 		// Get the subject - hasPermission(String node) can be called on a group or a user
 		String name = event.getSubject().getName();
-		System.out.println("Name: " + name);
 		Permissible subject = groupManager.getGroup(name) != null ? groupManager.getGroup(name) : userManager.getUser(name);
 		if (subject == null) {
 			return;
