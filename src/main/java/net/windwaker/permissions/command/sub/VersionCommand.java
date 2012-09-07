@@ -30,6 +30,9 @@ import org.spout.api.command.CommandSource;
 import org.spout.api.command.annotated.Command;
 import org.spout.api.exception.CommandException;
 
+/**
+ * Handles 'pr version' command.
+ */
 public class VersionCommand {
 	@Command(aliases = {"version", "v"}, desc = "Prints the version info")
 	public void version(CommandContext args, CommandSource source) throws CommandException {

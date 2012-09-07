@@ -42,27 +42,44 @@ import org.spout.api.util.config.yaml.YamlConfiguration;
  * @author Windwaker
  */
 public class Settings extends ConfigurationHolderConfiguration {
-	public static final ConfigurationHolder USE_WILDCARD = new ConfigurationHolder(true, "use-wildcard");
+	/**
+	 * Whether to use the wildcard node ('*') for giving {@link net.windwaker.permissions.api.permissible.Group}s or {@link net.windwaker.permissions.api.permissible.User}s all permissions.
+	 */
+	public static final ConfigurationHolder WILDCARD_ENABLED = new ConfigurationHolder(true, "wildcard-enabled");
+	/**
+	 * Whether to use SQL for the {@link GroupManager} and {@link UserManager}
+	 */
 	public static final ConfigurationHolder SQL_ENABLED = new ConfigurationHolder(false, "sql", "enabled");
+	/**
+	 * The protocol of the server's SQL database.
+	 */
 	public static final ConfigurationHolder SQL_PROTOCOL = new ConfigurationHolder("mysql", "sql", "protocol");
+	/**
+	 * The host of the SQL database.
+	 */
 	public static final ConfigurationHolder SQL_HOST = new ConfigurationHolder("spout.org", "sql", "host");
+	/**
+	 * Name of the SQL database
+	 */
 	public static final ConfigurationHolder SQL_DATABASE_NAME = new ConfigurationHolder("spout", "sql", "database-name");
+	/**
+	 * Username for the SQL database
+	 */
 	public static final ConfigurationHolder SQL_USERNAME = new ConfigurationHolder("spouty", "sql", "username");
+	/**
+	 * Password for the SQL database
+	 */
 	public static final ConfigurationHolder SQL_PASSWORD = new ConfigurationHolder("unleashtheflow", "sql", "password");
+	/**
+	 * Instance of the {@link PermissionsLogger}
+	 */
 	private static final PermissionsLogger logger = Permissions.getLogger();
 
+	/**
+	 * Constructs a new Settings configuration at 'plugins/WindPerms/config.yml'
+	 */
 	public Settings() {
-		super(new YamlConfiguration(new File("plugins/WindPerms/config.yml")));
-	}
-
-	@Override
-	public void load() {
-		try {
-			super.load();
-			super.save();
-		} catch (ConfigurationException e) {
-			logger.severe("Failed to load configuration: " + e.getMessage());
-		}
+		super(new YamlConfiguration(new File(Permissions.getPlugin().getDataFolder(), "config.yml")));
 	}
 
 	/**
@@ -85,5 +102,15 @@ public class Settings extends ConfigurationHolderConfiguration {
 			return new SqlUserManager();
 		}
 		return new YamlUserManager();
+	}
+
+	@Override
+	public void load() {
+		try {
+			super.load();
+			super.save();
+		} catch (ConfigurationException e) {
+			logger.severe("Failed to load configuration: " + e.getMessage());
+		}
 	}
 }

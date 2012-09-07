@@ -40,9 +40,21 @@ import org.spout.api.command.annotated.SimpleInjector;
  * @author Windwaker
  */
 public class WindPerms extends PermissionsPlugin {
+	/**
+	 * The instance of the logger
+	 */
 	private final PermissionsLogger logger = Permissions.getLogger();
+	/**
+	 * Represents the general settings of the plugin.
+	 */
 	private Settings settings;
+	/**
+	 * Represents the {@link GroupManager} of the plugin.
+	 */
 	private GroupManager groupManager;
+	/**
+	 * Represents the {@link UserManager} of the plugin.
+	 */
 	private UserManager userManager;
 
 	@Override

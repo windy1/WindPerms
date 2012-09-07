@@ -33,9 +33,19 @@ import org.spout.api.data.DataValue;
  * @author Windwaker
  */
 public class User extends Permissible {
+	/**
+	 * The instance of the {@link UserManager}
+	 */
 	private final UserManager userManager = Permissions.getUserManager();
+	/**
+	 * The {@link Group} the user is in.
+	 */
 	private Group group;
 
+	/**
+	 * Constructs a new user with the specified name.
+	 * @param name
+	 */
 	public User(String name) {
 		super(name);
 	}
@@ -80,11 +90,5 @@ public class User extends Permissible {
 	@Override
 	public void save() {
 		userManager.saveUser(this);
-	}
-
-	@Override
-	public String toString() {
-		String groupName = group != null ? group.getName() : "None";
-		return "PermissionsUser{name=" + name + ",group=" + groupName + "}";
 	}
 }

@@ -34,17 +34,37 @@ import org.spout.api.data.DataValue;
  * @author Windwaker
  */
 public class Group extends Permissible {
+	/**
+	 * Instance of the {@link GroupManager}
+	 */
 	private final GroupManager groupManager = Permissions.getGroupManager();
+	/**
+	 * Whether the group is the default group
+	 */
 	private boolean def = false;
-	private final Map<Group, Boolean> inheritedInheritedGroups = new HashMap<Group, Boolean>();
+	/**
+	 * The indirectly inherited group map. This map is not saved to disk.
+	 */
+	private final Map<Group, Boolean> indirectInheritedGroups = new HashMap<Group, Boolean>();
+	/**
+	 * The directly inherited group map. This map is saved to disk.
+	 */
 	private final Map<Group, Boolean> inheritedGroups = new HashMap<Group, Boolean>();
 
+	/**
+	 * Constructs a new Group with the specified name.
+	 * @param name
+	 */
 	public Group(String name) {
 		super(name);
 	}
 
-	public Map<Group, Boolean> getInheritedInheritedGroups() {
-		return inheritedInheritedGroups;
+	/**
+	 * Gets groups that were not inherited indirectly
+	 * @return map of groups
+	 */
+	public Map<Group, Boolean> getIndirectInheritedGroups() {
+		return indirectInheritedGroups;
 	}
 
 	/**
@@ -69,7 +89,7 @@ public class Group extends Permissible {
 			inheritedGroups.put(group, inherit);
 		} else {
 			// inherited do not save to disk
-			inheritedInheritedGroups.put(group, inherit);
+			indirectInheritedGroups.put(group, inherit);
 		}
 		if (inherit) {
 			inheritGroups(group);
@@ -87,7 +107,7 @@ public class Group extends Permissible {
 			throw new IllegalStateException("Group " + group.getName() + " already inherits " + name + ". Two groups may not inherit each other.");
 		}
 		// inherit the groups inherited groups
-		for (Map.Entry<Group, Boolean> entry : group.getInheritedInheritedGroups().entrySet()) {
+		for (Map.Entry<Group, Boolean> entry : group.getIndirectInheritedGroups().entrySet()) {
 			setInheritedGroup(entry.getKey(), entry.getValue(), false);
 		}
 		for (Map.Entry<Group, Boolean> entry : group.getInheritedGroups().entrySet()) {
@@ -95,8 +115,11 @@ public class Group extends Permissible {
 		}
 	}
 
+	/**
+	 * Reloads all inheritance data including permission nodes and data
+	 */
 	public void reloadInheritance() {
-		reloadInheritance(inheritedInheritedGroups);
+		reloadInheritance(indirectInheritedGroups);
 		reloadInheritance(inheritedGroups);
 	}
 
@@ -130,8 +153,8 @@ public class Group extends Permissible {
 	public boolean isAssignableFrom(Group group) {
 		if (inheritedGroups.containsKey(group)) {
 			return inheritedGroups.get(group);
-		} else if (inheritedInheritedGroups.containsKey(group)) {
-			return inheritedInheritedGroups.get(group);
+		} else if (indirectInheritedGroups.containsKey(group)) {
+			return indirectInheritedGroups.get(group);
 		}
 		return false;
 	}
@@ -158,10 +181,5 @@ public class Group extends Permissible {
 	@Override
 	public void save() {
 		groupManager.saveGroup(this);
-	}
-
-	@Override
-	public String toString() {
-		return "PermissionsGroup{name=" + name + ",default=" + def + "}";
 	}
 }

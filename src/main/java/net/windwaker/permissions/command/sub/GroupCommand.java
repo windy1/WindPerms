@@ -37,7 +37,7 @@ import org.spout.api.exception.CommandException;
 import static net.windwaker.permissions.util.MessageUtil.title;
 
 /**
- * Handles all commands starting with 'user'.
+ * Handles all commands starting with 'group'.
  * @author Windwaker
  */
 public class GroupCommand {

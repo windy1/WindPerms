@@ -30,6 +30,9 @@ import org.spout.api.exception.CommandException;
 import static net.windwaker.permissions.util.MessageUtil.tip;
 import static net.windwaker.permissions.util.MessageUtil.title;
 
+/**
+ * Handles all 'pr help' commands.
+ */
 public class HelpCommand {
 	@Command(aliases = {"help", "?"}, desc = "Prints basic help.", min = 0, max = 2)
 	public void help(CommandContext args, CommandSource source) throws CommandException {

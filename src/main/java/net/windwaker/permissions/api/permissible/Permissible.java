@@ -21,8 +21,11 @@
  */
 package net.windwaker.permissions.api.permissible;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.spout.api.data.DataValue;
 
@@ -182,4 +185,14 @@ public abstract class Permissible {
 	 * Saves the entity to disk.
 	 */
 	public abstract void save();
+
+	@Override
+	public boolean equals(Object obj) {
+		return obj instanceof Permissible && ((Permissible) obj).getName().equalsIgnoreCase(name);
+	}
+
+	@Override
+	public int hashCode() {
+		return name.hashCode();
+	}
 }

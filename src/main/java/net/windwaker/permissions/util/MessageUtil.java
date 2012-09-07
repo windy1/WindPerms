@@ -29,14 +29,27 @@ package net.windwaker.permissions.util;
 import org.spout.api.chat.style.ChatStyle;
 import org.spout.api.command.CommandSource;
 
+/**
+ * Message helpers for commands.
+ */
 public class MessageUtil {
 	private MessageUtil() {
 	}
 
+	/**
+	 * Sends a tip to the source
+	 * @param source
+	 * @param tip
+	 */
 	public static void tip(CommandSource source, String tip) {
 		source.sendMessage(ChatStyle.YELLOW, "Tip: ", ChatStyle.ITALIC, tip);
 	}
 
+	/**
+	 * Sends a title bar of the specified title to the source
+	 * @param source
+	 * @param title
+	 */
 	public static void title(CommandSource source, String title) {
 		source.sendMessage(ChatStyle.BRIGHT_GREEN, "----------", ChatStyle.WHITE, " [", ChatStyle.CYAN, ChatStyle.BOLD, title, ChatStyle.RESET, "] ", ChatStyle.BRIGHT_GREEN, "----------");
 	}

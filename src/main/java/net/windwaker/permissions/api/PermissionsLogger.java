@@ -31,7 +31,6 @@ import org.spout.api.Spout;
  */
 public class PermissionsLogger {
 	protected PermissionsLogger() {
-
 	}
 
 	/**

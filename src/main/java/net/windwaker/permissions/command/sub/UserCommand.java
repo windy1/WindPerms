@@ -35,6 +35,9 @@ import org.spout.api.exception.CommandException;
 
 import static net.windwaker.permissions.util.MessageUtil.title;
 
+/**
+ * Handles all 'pr user' commands.
+ */
 public class UserCommand {
 	private final UserManager userManager = Permissions.getUserManager();
 
