@@ -56,13 +56,6 @@ public class User extends Permissible {
 	 */
 	public void setGroup(Group group) {
 		this.group = group;
-		inherit(group);
-		if (autoSave) {
-			save();
-		}
-	}
-
-	private void inherit(Group group) {
 		// inherit nodes
 		for (Map.Entry<String, Boolean> node : group.getInheritedPermissions().entrySet()) {
 			inheritedNodes.put(node.getKey(), node.getValue());
@@ -76,6 +69,9 @@ public class User extends Permissible {
 		}
 		for (Map.Entry<String, DataValue> data : group.getMetadataMap().entrySet()) {
 			inheritedMetadata.put(data.getKey(), data.getValue());
+		}
+		if (autoSave) {
+			save();
 		}
 	}
 

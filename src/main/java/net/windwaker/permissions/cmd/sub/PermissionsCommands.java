@@ -19,7 +19,7 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package net.windwaker.permissions.command.sub;
+package net.windwaker.permissions.cmd.sub;
 
 import net.windwaker.permissions.api.Permissions;
 
@@ -28,13 +28,15 @@ import org.spout.api.chat.style.ChatStyle;
 import org.spout.api.command.CommandContext;
 import org.spout.api.command.CommandSource;
 import org.spout.api.command.annotated.Command;
+import org.spout.api.command.annotated.CommandPermissions;
 import org.spout.api.exception.CommandException;
 
-/**
- * Handles 'pr version' command.
- */
-public class VersionCommand {
+import static net.windwaker.permissions.util.MessageUtil.tip;
+import static net.windwaker.permissions.util.MessageUtil.title;
+
+public class PermissionsCommands {
 	@Command(aliases = {"version", "v"}, desc = "Prints the version info")
+	@CommandPermissions("windperms.version")
 	public void version(CommandContext args, CommandSource source) throws CommandException {
 		source.sendMessage(ChatStyle.BRIGHT_GREEN, "WindPerms ", Permissions.getPlugin().getDescription().getVersion());
 		source.sendMessage(ChatStyle.BRIGHT_GREEN, "Copyright (c) 2012 Walker Crouse, http://windwaker.net/");

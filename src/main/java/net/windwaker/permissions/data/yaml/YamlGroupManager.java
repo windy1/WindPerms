@@ -133,7 +133,7 @@ public class YamlGroupManager implements GroupManager {
 		}
 		// after all groups are inherited, make sure all their data is up to date
 		for (Group g : groups) {
-			g.reloadInheritance();
+			g.inheritAll();
 		}
 	}
 

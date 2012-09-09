@@ -94,7 +94,7 @@ public class Group extends Permissible {
 		if (inherit) {
 			inheritGroups(group);
 			// keep the nodes and data up to date
-			reloadInheritance();
+			inheritAll();
 		}
 		if (autoSave) {
 			save();
@@ -118,12 +118,12 @@ public class Group extends Permissible {
 	/**
 	 * Reloads all inheritance data including permission nodes and data
 	 */
-	public void reloadInheritance() {
-		reloadInheritance(indirectInheritedGroups);
-		reloadInheritance(inheritedGroups);
+	public void inheritAll() {
+		inheritAll(indirectInheritedGroups);
+		inheritAll(inheritedGroups);
 	}
 
-	private void reloadInheritance(Map<Group, Boolean> groupMap) {
+	private void inheritAll(Map<Group, Boolean> groupMap) {
 		for (Map.Entry<Group, Boolean> entry : groupMap.entrySet()) {
 			if (entry.getValue()) {
 				Group group = entry.getKey();
