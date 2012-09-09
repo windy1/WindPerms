@@ -30,6 +30,7 @@ import org.spout.api.chat.style.ChatStyle;
 import org.spout.api.command.CommandContext;
 import org.spout.api.command.CommandSource;
 import org.spout.api.command.annotated.Command;
+import org.spout.api.command.annotated.CommandPermissions;
 import org.spout.api.exception.CommandException;
 
 import static net.windwaker.permissions.util.MessageUtil.title;
@@ -49,17 +50,17 @@ public class GroupCommands {
 	}
 
 	@Command(aliases = {"mk", "make", "add", "create"}, usage = "<group>", desc = "Creates a new group.", min = 1, max = 1)
+	@CommandPermissions("windperms.group.add")
 	public void add(CommandContext args, CommandSource source) throws CommandException {
 		String name = args.getString(0);
-		checkPermission(source, "windperms.group.add" + name);
 		groupManager.addGroup(name);
 		source.sendMessage(ChatStyle.BRIGHT_GREEN, "Added group '", name, "'.");
 	}
 
 	@Command(aliases = {"rm", "remove", "del", "delete"}, usage = "<group>", desc = "Remove a group.", min = 1, max = 1)
+	@CommandPermissions("windperms.group.remove")
 	public void remove(CommandContext args, CommandSource source) throws CommandException {
 		String name = args.getString(0);
-		checkPermission(source, "windperms.group.remove" + name);
 		groupManager.removeGroup(name);
 		source.sendMessage(ChatStyle.BRIGHT_GREEN, "Removed group '", name, "'.");
 	}
@@ -72,7 +73,10 @@ public class GroupCommands {
 		ChatArguments message = new ChatArguments(ChatStyle.BRIGHT_GREEN);
 		if (property.equalsIgnoreCase("default")) {
 			checkPermission(source, "windperms.group.set.default." + groupName);
-			Boolean def = getBoolean(args, 2);
+			Boolean def = true;
+			if (args.length() == 3) {
+				def = getBoolean(args, 2);
+			}
 			group.setDefault(def);
 			message.append("Set default state of group '", groupName, "' to ", def.toString());
 		} else if (property.equalsIgnoreCase("inherit")) {

@@ -31,6 +31,7 @@ import org.spout.api.chat.style.ChatStyle;
 import org.spout.api.command.CommandContext;
 import org.spout.api.command.CommandSource;
 import org.spout.api.command.annotated.Command;
+import org.spout.api.command.annotated.CommandPermissions;
 import org.spout.api.exception.CommandException;
 
 import static net.windwaker.permissions.cmd.CommandUtil.getBoolean;
@@ -53,17 +54,17 @@ public class UserCommands {
 	}
 
 	@Command(aliases = {"mk", "make", "create", "add"}, usage = "<user>", desc = "Add a new user.", min = 1, max = 1)
+	@CommandPermissions("windchat.user.add")
 	public void add(CommandContext args, CommandSource source) throws CommandException {
 		String name = args.getString(0);
-		checkPermission(source, "windperms.user.add." + name);
 		userManager.addUser(name);
 		source.sendMessage(ChatStyle.BRIGHT_GREEN, "Added user '", name, "'.");
 	}
 
 	@Command(aliases = {"rm", "remove", "del", "delete"}, usage = "<user>", desc = "Remove a user.", min = 1, max = 1)
+	@CommandPermissions("windchat.user.remove")
 	public void remove(CommandContext args, CommandSource source) throws CommandException {
 		String name = args.getString(0);
-		checkPermission(source, "windperms.user.remove." + name);
 		userManager.removeUser(name);
 		source.sendMessage(ChatStyle.BRIGHT_GREEN, "Removed user '", name, "'.");
 	}
