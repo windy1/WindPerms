@@ -1,4 +1,4 @@
-/* Copyright (c) 2012 Walker Crouse, http://windwaker.net/
+/* Copyright (c) 2012 Walker Crouse, <http://windwaker.net/>
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -39,7 +39,7 @@ public class PermissionsCommands {
 	@CommandPermissions("windperms.version")
 	public void version(CommandContext args, CommandSource source) throws CommandException {
 		source.sendMessage(ChatStyle.BRIGHT_GREEN, "WindPerms ", Permissions.getPlugin().getDescription().getVersion());
-		source.sendMessage(ChatStyle.BRIGHT_GREEN, "Copyright (c) 2012 Walker Crouse, http://windwaker.net/");
+		source.sendMessage(ChatStyle.BRIGHT_GREEN, "Copyright (c) 2012 Walker Crouse, <http://windwaker.net/>");
 		source.sendMessage(ChatStyle.BRIGHT_GREEN, "Powered by", ChatStyle.CYAN, " Spout ", Spout.getEngine().getVersion(), ChatStyle.BRIGHT_GREEN, " (Implementing", ChatStyle.CYAN, " SpoutAPI ", Spout.getAPIVersion(), ChatStyle.BRIGHT_GREEN, ")");
 		source.sendMessage(ChatStyle.BRIGHT_GREEN, "There are ", Permissions.getGroupManager().getGroups().size(), " unique groups registered.");
 		source.sendMessage(ChatStyle.BRIGHT_GREEN, "There are ", Permissions.getUserManager().getUsers().size(), " unique users registered.");
