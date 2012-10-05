@@ -34,7 +34,7 @@ if (subject.hasPermission("foo.bar") {
 }
 ```
 
-Checking if someone/something is in a specified group:
+**Checking if someone/something is in a specified group:**
 ```java
 if (subject.isInGroup("admin") {
     // the subject is an 'admin' in WindChat
@@ -52,6 +52,7 @@ To fetch data from this table we do something similar to the following...
 if (subject.hasData("build") && subject.getData("build").getBoolean()) {
     // the subject is allowed to build and has 'build: true' in their data table
 }
+```
 
 Users inherit their data from their groups but is overridden by conflicting data values in their table. For instance, if the group 'admin' had the value `build: true` any users in that group would now also have `build: true`. However, if that user specifically overrides that value in their user data, WindPerms will use the user's version. The same principle goes for any inherited data such as permission nodes. Also note that none of these methods have setters, this is because the user is meant to set this value in WindPerms and not the developer; if you find yourself needing to set data, you are doing something wrong.
 
