@@ -30,14 +30,14 @@ For Developers
 **Checking if someone/something has permission:**
 ```java
 if (subject.hasPermission("foo.bar") {
-    // subject has the permission node for 'foo.bar' in WindChat
+    // subject has the permission node for 'foo.bar' in WindPerms
 }
 ```
 
 **Checking if someone/something is in a specified group:**
 ```java
 if (subject.isInGroup("admin") {
-    // the subject is an 'admin' in WindChat
+    // the subject is an 'admin' in WindPerms
 }
 ```
 
