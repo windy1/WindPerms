@@ -19,7 +19,7 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package net.windwaker.permissions.data;
+package net.windwaker.permissions.io;
 
 import java.io.File;
 
@@ -27,10 +27,10 @@ import net.windwaker.permissions.WindPerms;
 import net.windwaker.permissions.api.GroupManager;
 import net.windwaker.permissions.api.PermissionsLogger;
 import net.windwaker.permissions.api.UserManager;
-import net.windwaker.permissions.data.sql.SqlGroupManager;
-import net.windwaker.permissions.data.sql.SqlUserManager;
-import net.windwaker.permissions.data.yaml.YamlGroupManager;
-import net.windwaker.permissions.data.yaml.YamlUserManager;
+import net.windwaker.permissions.io.sql.SqlGroupManager;
+import net.windwaker.permissions.io.sql.SqlUserManager;
+import net.windwaker.permissions.io.yaml.YamlGroupManager;
+import net.windwaker.permissions.io.yaml.YamlUserManager;
 
 import org.spout.api.exception.ConfigurationException;
 import org.spout.api.util.config.ConfigurationHolder;

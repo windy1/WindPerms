@@ -27,7 +27,7 @@ import net.windwaker.permissions.api.UserManager;
 import net.windwaker.permissions.api.permissible.Group;
 import net.windwaker.permissions.api.permissible.Permissible;
 import net.windwaker.permissions.api.permissible.User;
-import net.windwaker.permissions.data.Settings;
+import net.windwaker.permissions.io.Settings;
 
 import org.spout.api.event.EventHandler;
 import org.spout.api.event.Listener;

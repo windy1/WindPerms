@@ -25,7 +25,7 @@ import net.windwaker.permissions.api.GroupManager;
 import net.windwaker.permissions.api.PermissionsLogger;
 import net.windwaker.permissions.api.UserManager;
 import net.windwaker.permissions.cmd.CommandUtil;
-import net.windwaker.permissions.data.Settings;
+import net.windwaker.permissions.io.Settings;
 
 import org.spout.api.Engine;
 import org.spout.api.Server;
