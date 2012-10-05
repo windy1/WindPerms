@@ -22,54 +22,39 @@
 package net.windwaker.permissions;
 
 import net.windwaker.permissions.api.GroupManager;
-import net.windwaker.permissions.api.Permissions;
 import net.windwaker.permissions.api.PermissionsLogger;
-import net.windwaker.permissions.api.PermissionsPlugin;
 import net.windwaker.permissions.api.UserManager;
 import net.windwaker.permissions.cmd.CommandUtil;
 import net.windwaker.permissions.data.Settings;
 
+import org.spout.api.Engine;
+import org.spout.api.Server;
 import org.spout.api.Spout;
 import org.spout.api.command.CommandRegistrationsFactory;
 import org.spout.api.command.annotated.AnnotatedCommandRegistrationFactory;
 import org.spout.api.command.annotated.SimpleAnnotatedCommandExecutorFactory;
 import org.spout.api.command.annotated.SimpleInjector;
+import org.spout.api.entity.Player;
+import org.spout.api.plugin.CommonPlugin;
+import org.spout.api.plugin.Platform;
 
 /**
  * Implementation of PermissionsPlugin
  * @author Windwaker
  */
-public class WindPerms extends PermissionsPlugin {
-	/**
-	 * The instance of the logger
-	 */
-	private final PermissionsLogger logger = Permissions.getLogger();
-	/**
-	 * Represents the general settings of the plugin.
-	 */
+public class WindPerms extends CommonPlugin {
+	private final PermissionsLogger logger = PermissionsLogger.getInstance();
+	private PermissionsHandler handler;
 	private Settings settings;
-	/**
-	 * Represents the {@link GroupManager} of the plugin.
-	 */
 	private GroupManager groupManager;
-	/**
-	 * Represents the {@link UserManager} of the plugin.
-	 */
 	private UserManager userManager;
 
-	@Override
-	public void onReload() {
-		settings.load();
-		groupManager.load();
-		userManager.load();
-	}
-
-	@Override
-	public void onEnable() {
-		// Set plugin of platform
-		Permissions.setPlugin(this);
+	/**
+	 * Loads all data within the plugin.
+	 */
+	public void load() {
 		// Load data
-		settings = new Settings();
+		settings = new Settings(this);
 		settings.load();
 		// Create group manager
 		groupManager = settings.createGroupManager();
@@ -78,25 +63,69 @@ public class WindPerms extends PermissionsPlugin {
 		userManager = settings.createUserManager();
 		userManager.load();
 		// Register events
-		Spout.getEventManager().registerEvents(new PermissionsHandler(), this);
+		handler = new PermissionsHandler(this);
 		// Register commands
-		CommandRegistrationsFactory<Class<?>> commandRegFactory = new AnnotatedCommandRegistrationFactory(new SimpleInjector(), new SimpleAnnotatedCommandExecutorFactory());
+		CommandRegistrationsFactory<Class<?>> commandRegFactory = new AnnotatedCommandRegistrationFactory(new SimpleInjector(this), new SimpleAnnotatedCommandExecutorFactory());
+		getEngine().getRootCommand().removeChildren(this);
 		getEngine().getRootCommand().addSubCommands(this, CommandUtil.class, commandRegFactory);
+		// Load all online players
+		Engine engine = getEngine();
+		Platform platform = engine.getPlatform();
+		if (platform == Platform.SERVER || platform == Platform.PROXY) {
+			for (Player player : ((Server) engine).getOnlinePlayers()) {
+				userManager.addUser(player.getName());
+			}
+		}
+	}
+
+	/**
+	 * Saves all data in the plugin.
+	 */
+	public void save() {
+		// Save all data
+		settings.save();
+		groupManager.save();
+		userManager.save();
+	}
+
+	/**
+	 * Gets the {@link GroupManager} of WindPerms
+	 *
+	 * @return group manager
+	 */
+	public GroupManager getGroupManager() {
+		return groupManager;
+	}
+
+	/**
+	 * Gets the {@link UserManager} of WindPerms
+	 *
+	 * @return user manager
+	 */
+	public UserManager getUserManager() {
+		return userManager;
+	}
+
+	@Override
+	public void onReload() {
+		// Load data directly from disk
+		load();
+		logger.info("WindPerms " + getDescription().getVersion() + " reloaded.");
+	}
+
+	@Override
+	public void onEnable() {
+		// Load data
+		load();
+		// Register events
+		Spout.getEventManager().registerEvents(handler, this);
 		logger.info("WindPerms " + getDescription().getVersion() + " enabled.");
 	}
 
 	@Override
 	public void onDisable() {
+		// Save data
+		save();
 		logger.info("WindPerms " + getDescription().getVersion() + " disabled.");
-	}
-
-	@Override
-	public GroupManager getGroupManager() {
-		return groupManager;
-	}
-
-	@Override
-	public UserManager getUserManager() {
-		return userManager;
 	}
 }

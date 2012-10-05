@@ -41,6 +41,10 @@ public class SqlUserManager implements UserManager {
 	}
 
 	@Override
+	public void save() {
+	}
+
+	@Override
 	public void addUser(String username) {
 	}
 

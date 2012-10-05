@@ -30,7 +30,18 @@ import org.spout.api.Spout;
  * @author Windwaker
  */
 public class PermissionsLogger {
-	protected PermissionsLogger() {
+	private static PermissionsLogger instance = new PermissionsLogger();
+
+	private PermissionsLogger() {
+	}
+
+	/**
+	 * Returns the singleton instance of the logger
+	 *
+	 * @return instance of this logger
+	 */
+	public static PermissionsLogger getInstance() {
+		return instance;
 	}
 
 	/**

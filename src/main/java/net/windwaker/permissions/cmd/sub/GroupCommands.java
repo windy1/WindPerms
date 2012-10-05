@@ -21,8 +21,8 @@
  */
 package net.windwaker.permissions.cmd.sub;
 
+import net.windwaker.permissions.WindPerms;
 import net.windwaker.permissions.api.GroupManager;
-import net.windwaker.permissions.api.Permissions;
 import net.windwaker.permissions.api.permissible.Group;
 
 import org.spout.api.chat.ChatArguments;
@@ -39,11 +39,15 @@ import static net.windwaker.permissions.cmd.CommandUtil.getBoolean;
 import static net.windwaker.permissions.cmd.CommandUtil.getGroup;
 
 public class GroupCommands {
-	private final GroupManager groupManager = Permissions.getGroupManager();
+	private final GroupManager groupManager;
+
+	public GroupCommands(WindPerms plugin) {
+		groupManager = plugin.getGroupManager();
+	}
 
 	@Command(aliases = {"info", "information"}, usage = "<group>", desc = "Get general info about a group.", min = 1, max = 1)
 	public void info(CommandContext args, CommandSource source) throws CommandException {
-		Group group = getGroup(args, 0);
+		Group group = getGroup(groupManager, args, 0);
 		checkPermission(source, "windperms.group.info." + group.getName());
 		title(source, group.getName());
 		source.sendMessage(ChatStyle.BRIGHT_GREEN, "Default: ", ChatStyle.CYAN, group.isDefault());
@@ -68,7 +72,7 @@ public class GroupCommands {
 	@Command(aliases = "set", usage = "<default|inherit|perm> <group> <value...>", desc = "Set a property for a group.", min = 3, max = 4)
 	public void set(CommandContext args, CommandSource source) throws CommandException {
 		String property = args.getString(0);
-		Group group = getGroup(args, 1);
+		Group group = getGroup(groupManager, args, 1);
 		String groupName = group.getName();
 		ChatArguments message = new ChatArguments(ChatStyle.BRIGHT_GREEN);
 		if (property.equalsIgnoreCase("default")) {
@@ -81,7 +85,7 @@ public class GroupCommands {
 			message.append("Set default state of group '", groupName, "' to ", def.toString());
 		} else if (property.equalsIgnoreCase("inherit")) {
 			checkPermission(source, "windperms.group.set.inherit." + groupName);
-			Group inherited = getGroup(args, 2);
+			Group inherited = getGroup(groupManager, args, 2);
 			Boolean inherit = true;
 			if (args.length() == 4) {
 				inherit = getBoolean(args, 3);

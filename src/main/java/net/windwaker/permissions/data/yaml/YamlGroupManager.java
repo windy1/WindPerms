@@ -26,8 +26,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import net.windwaker.permissions.WindPerms;
 import net.windwaker.permissions.api.GroupManager;
-import net.windwaker.permissions.api.Permissions;
 import net.windwaker.permissions.api.PermissionsLogger;
 import net.windwaker.permissions.api.permissible.Group;
 
@@ -40,9 +40,14 @@ import org.spout.api.util.config.yaml.YamlConfiguration;
  * @author Windwaker
  */
 public class YamlGroupManager implements GroupManager {
-	private final PermissionsLogger logger = Permissions.getLogger();
+	private final PermissionsLogger logger = PermissionsLogger.getInstance();
 	private final YamlConfiguration data = new YamlConfiguration(new File("plugins/WindPerms/groups.yml"));
 	private final Set<Group> groups = new HashSet<Group>();
+	private final WindPerms plugin;
+
+	public YamlGroupManager(WindPerms plugin) {
+		this.plugin = plugin;
+	}
 
 	@Override
 	public void load() {
@@ -75,6 +80,13 @@ public class YamlGroupManager implements GroupManager {
 			}
 		} catch (ConfigurationException e) {
 			logger.severe("Failed to load group data: " + e.getMessage());
+		}
+	}
+
+	@Override
+	public void save() {
+		for (Group group : groups) {
+			saveGroup(group);
 		}
 	}
 
@@ -155,7 +167,7 @@ public class YamlGroupManager implements GroupManager {
 	public void loadGroup(String group) {
 		// Create new group
 		String path = "groups/" + group;
-		Group g = new Group(group);
+		Group g = new Group(plugin, group);
 		// Turn off auto-save for loading.
 		g.setAutoSave(false);
 		// Set some values.

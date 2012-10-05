@@ -24,8 +24,8 @@ package net.windwaker.permissions.api.permissible;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.windwaker.permissions.WindPerms;
 import net.windwaker.permissions.api.GroupManager;
-import net.windwaker.permissions.api.Permissions;
 
 import org.spout.api.data.DataValue;
 
@@ -34,29 +34,18 @@ import org.spout.api.data.DataValue;
  * @author Windwaker
  */
 public class Group extends Permissible {
-	/**
-	 * Instance of the {@link GroupManager}
-	 */
-	private final GroupManager groupManager = Permissions.getGroupManager();
-	/**
-	 * Whether the group is the default group
-	 */
+	private final GroupManager groupManager;
 	private boolean def = false;
-	/**
-	 * The indirectly inherited group map. This map is not saved to disk.
-	 */
 	private final Map<Group, Boolean> indirectInheritedGroups = new HashMap<Group, Boolean>();
-	/**
-	 * The directly inherited group map. This map is saved to disk.
-	 */
 	private final Map<Group, Boolean> inheritedGroups = new HashMap<Group, Boolean>();
 
 	/**
 	 * Constructs a new Group with the specified name.
 	 * @param name
 	 */
-	public Group(String name) {
+	public Group(WindPerms plugin, String name) {
 		super(name);
+		groupManager = plugin.getGroupManager();
 	}
 
 	/**

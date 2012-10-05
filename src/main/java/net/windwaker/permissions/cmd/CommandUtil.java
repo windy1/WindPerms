@@ -21,8 +21,8 @@
  */
 package net.windwaker.permissions.cmd;
 
+import net.windwaker.permissions.WindPerms;
 import net.windwaker.permissions.api.GroupManager;
-import net.windwaker.permissions.api.Permissions;
 import net.windwaker.permissions.api.UserManager;
 import net.windwaker.permissions.api.permissible.Group;
 import net.windwaker.permissions.api.permissible.User;
@@ -40,14 +40,8 @@ import org.spout.api.exception.CommandException;
  * Holds cmd nesters and static util methods for cmd handling.
  */
 public class CommandUtil {
-	/**
-	 * An instance of the {@link GroupManager}
-	 */
-	private static final GroupManager groupManager = Permissions.getGroupManager();
-	/**
-	 * And instance of the {@link UserManager}
-	 */
-	private static final UserManager userManager = Permissions.getUserManager();
+	public CommandUtil(WindPerms plugin) {
+	}
 
 	/**
 	 * Gets a group from the given {@link CommandContext} and the index to get it from.
@@ -56,7 +50,7 @@ public class CommandUtil {
 	 * @return group
 	 * @throws CommandException is group is null
 	 */
-	public static Group getGroup(CommandContext args, int index) throws CommandException {
+	public static Group getGroup(GroupManager groupManager, CommandContext args, int index) throws CommandException {
 		Group group = groupManager.getGroup(args.getString(index));
 		if (group == null) {
 			throw new CommandException("Group not found!");
@@ -71,7 +65,7 @@ public class CommandUtil {
 	 * @return user
 	 * @throws CommandException if user is null
 	 */
-	public static User getUser(CommandContext args, int index) throws CommandException {
+	public static User getUser(UserManager userManager, CommandContext args, int index) throws CommandException {
 		User user = userManager.getUser(args.getString(index));
 		if (user == null) {
 			throw new CommandException("User not found!");

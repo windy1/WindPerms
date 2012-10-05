@@ -26,8 +26,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import net.windwaker.permissions.WindPerms;
 import net.windwaker.permissions.api.GroupManager;
-import net.windwaker.permissions.api.Permissions;
 import net.windwaker.permissions.api.PermissionsLogger;
 import net.windwaker.permissions.api.UserManager;
 import net.windwaker.permissions.api.permissible.Group;
@@ -42,10 +42,16 @@ import org.spout.api.util.config.yaml.YamlConfiguration;
  * @author Windwaker
  */
 public class YamlUserManager implements UserManager {
-	private final PermissionsLogger logger = Permissions.getLogger();
-	private static final YamlConfiguration data = new YamlConfiguration(new File("plugins/WindPerms/users.yml"));
+	private final PermissionsLogger logger = PermissionsLogger.getInstance();
+	private final YamlConfiguration data = new YamlConfiguration(new File("plugins/WindPerms/users.yml"));
 	private final Set<User> users = new HashSet<User>();
-	private final GroupManager groupManager = Permissions.getGroupManager();
+	private final WindPerms plugin;
+	private final GroupManager groupManager;
+
+	public YamlUserManager(WindPerms plugin) {
+		this.plugin = plugin;
+		groupManager = plugin.getGroupManager();
+	}
 
 	@Override
 	public void load() {
@@ -72,6 +78,13 @@ public class YamlUserManager implements UserManager {
 			}
 		} catch (ConfigurationException e) {
 			logger.severe("Failed to load user data: " + e.getMessage());
+		}
+	}
+
+	@Override
+	public void save() {
+		for (User user : users) {
+			saveUser(user);
 		}
 	}
 
@@ -119,7 +132,7 @@ public class YamlUserManager implements UserManager {
 	public void loadUser(String user) {
 		// Create new user
 		String path = "users/" + user;
-		User u = new User(user);
+		User u = new User(plugin, user);
 		// Turn off auto-saving for the user while loading - data will not save to disk.
 		u.setAutoSave(false);
 		// Load permissions and data

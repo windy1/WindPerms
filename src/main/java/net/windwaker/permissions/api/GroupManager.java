@@ -36,6 +36,11 @@ public interface GroupManager {
 	public void load();
 
 	/**
+	 * Saves all group data
+	 */
+	public void save();
+
+	/**
 	 * Adds a group
 	 * @param name
 	 */

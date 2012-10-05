@@ -21,7 +21,7 @@
  */
 package net.windwaker.permissions.cmd.sub;
 
-import net.windwaker.permissions.api.Permissions;
+import net.windwaker.permissions.WindPerms;
 
 import org.spout.api.Spout;
 import org.spout.api.chat.style.ChatStyle;
@@ -31,17 +31,20 @@ import org.spout.api.command.annotated.Command;
 import org.spout.api.command.annotated.CommandPermissions;
 import org.spout.api.exception.CommandException;
 
-import static net.windwaker.permissions.util.MessageUtil.tip;
-import static net.windwaker.permissions.util.MessageUtil.title;
-
 public class PermissionsCommands {
+	private final WindPerms plugin;
+
+	public PermissionsCommands(WindPerms plugin) {
+		this.plugin = plugin;
+	}
+
 	@Command(aliases = {"version", "v"}, desc = "Prints the version info")
 	@CommandPermissions("windperms.version")
 	public void version(CommandContext args, CommandSource source) throws CommandException {
-		source.sendMessage(ChatStyle.BRIGHT_GREEN, "WindPerms ", Permissions.getPlugin().getDescription().getVersion());
+		source.sendMessage(ChatStyle.BRIGHT_GREEN, "WindPerms ", plugin.getDescription().getVersion());
 		source.sendMessage(ChatStyle.BRIGHT_GREEN, "Copyright (c) 2012 Walker Crouse, <http://windwaker.net/>");
 		source.sendMessage(ChatStyle.BRIGHT_GREEN, "Powered by", ChatStyle.CYAN, " Spout ", Spout.getEngine().getVersion(), ChatStyle.BRIGHT_GREEN, " (Implementing", ChatStyle.CYAN, " SpoutAPI ", Spout.getAPIVersion(), ChatStyle.BRIGHT_GREEN, ")");
-		source.sendMessage(ChatStyle.BRIGHT_GREEN, "There are ", Permissions.getGroupManager().getGroups().size(), " unique groups registered.");
-		source.sendMessage(ChatStyle.BRIGHT_GREEN, "There are ", Permissions.getUserManager().getUsers().size(), " unique users registered.");
+		source.sendMessage(ChatStyle.BRIGHT_GREEN, "There are ", plugin.getGroupManager().getGroups().size(), " unique groups registered.");
+		source.sendMessage(ChatStyle.BRIGHT_GREEN, "There are ", plugin.getUserManager().getUsers().size(), " unique users registered.");
 	}
 }

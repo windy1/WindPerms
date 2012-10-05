@@ -41,6 +41,10 @@ public class SqlGroupManager implements GroupManager {
 	}
 
 	@Override
+	public void save() {
+	}
+
+	@Override
 	public void addGroup(String name) {
 	}
 
@@ -54,7 +58,6 @@ public class SqlGroupManager implements GroupManager {
 
 	@Override
 	public void loadGroup(String group) {
-		//To change body of implemented methods use File | Settings | File Templates.
 	}
 
 	@Override

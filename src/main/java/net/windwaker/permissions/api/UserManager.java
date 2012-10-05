@@ -36,6 +36,11 @@ public interface UserManager {
 	public void load();
 
 	/**
+	 * Saves all user data.
+	 */
+	public void save();
+
+	/**
 	 * Adds a user
 	 * @param username
 	 */

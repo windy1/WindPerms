@@ -23,7 +23,7 @@ package net.windwaker.permissions.api.permissible;
 
 import java.util.Map;
 
-import net.windwaker.permissions.api.Permissions;
+import net.windwaker.permissions.WindPerms;
 import net.windwaker.permissions.api.UserManager;
 
 import org.spout.api.data.DataValue;
@@ -33,21 +33,16 @@ import org.spout.api.data.DataValue;
  * @author Windwaker
  */
 public class User extends Permissible {
-	/**
-	 * The instance of the {@link UserManager}
-	 */
-	private final UserManager userManager = Permissions.getUserManager();
-	/**
-	 * The {@link Group} the user is in.
-	 */
+	private final UserManager userManager;
 	private Group group;
 
 	/**
 	 * Constructs a new user with the specified name.
 	 * @param name
 	 */
-	public User(String name) {
+	public User(WindPerms plugin, String name) {
 		super(name);
+		userManager = plugin.getUserManager();
 	}
 
 	/**

@@ -23,8 +23,8 @@ package net.windwaker.permissions.data;
 
 import java.io.File;
 
+import net.windwaker.permissions.WindPerms;
 import net.windwaker.permissions.api.GroupManager;
-import net.windwaker.permissions.api.Permissions;
 import net.windwaker.permissions.api.PermissionsLogger;
 import net.windwaker.permissions.api.UserManager;
 import net.windwaker.permissions.data.sql.SqlGroupManager;
@@ -70,38 +70,40 @@ public class Settings extends ConfigurationHolderConfiguration {
 	 * Password for the SQL database
 	 */
 	public static final ConfigurationHolder SQL_PASSWORD = new ConfigurationHolder("unleashtheflow", "sql", "password");
-	/**
-	 * Instance of the {@link PermissionsLogger}
-	 */
-	private static final PermissionsLogger logger = Permissions.getLogger();
+
+	private final PermissionsLogger logger = PermissionsLogger.getInstance();
+	private final WindPerms plugin;
 
 	/**
 	 * Constructs a new Settings configuration at 'plugins/WindPerms/config.yml'
 	 */
-	public Settings() {
-		super(new YamlConfiguration(new File(Permissions.getPlugin().getDataFolder(), "config.yml")));
+	public Settings(WindPerms plugin) {
+		super(new YamlConfiguration(new File(plugin.getDataFolder(), "config.yml")));
+		this.plugin = plugin;
 	}
 
 	/**
 	 * Creates a group manager from the specified settings.
+	 *
 	 * @return a new GroupManager
 	 */
 	public GroupManager createGroupManager() {
 		if (SQL_ENABLED.getBoolean()) {
 			return new SqlGroupManager();
 		}
-		return new YamlGroupManager();
+		return new YamlGroupManager(plugin);
 	}
 
 	/**
 	 * Creates a user manager from the specified settings.
+	 *
 	 * @return a new UserManager
 	 */
 	public UserManager createUserManager() {
 		if (SQL_ENABLED.getBoolean()) {
 			return new SqlUserManager();
 		}
-		return new YamlUserManager();
+		return new YamlUserManager(plugin);
 	}
 
 	@Override
@@ -111,6 +113,15 @@ public class Settings extends ConfigurationHolderConfiguration {
 			super.save();
 		} catch (ConfigurationException e) {
 			logger.severe("Failed to load configuration: " + e.getMessage());
+		}
+	}
+
+	@Override
+	public void save() {
+		try {
+			super.save();
+		} catch (ConfigurationException e) {
+			logger.severe("Failed to save configuration: " + e.getMessage());
 		}
 	}
 }
