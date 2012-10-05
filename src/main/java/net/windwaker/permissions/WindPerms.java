@@ -53,21 +53,15 @@ public class WindPerms extends CommonPlugin {
 	 * Loads all data within the plugin.
 	 */
 	public void load() {
-		// Load data
+		// Create and load data
 		settings = new Settings(this);
 		settings.load();
-		// Create group manager
+		// Create and load group manager
 		groupManager = settings.createGroupManager();
 		groupManager.load();
-		// Create user manager
+		// Create and load user manager
 		userManager = settings.createUserManager();
 		userManager.load();
-		// Register events
-		handler = new PermissionsHandler(this);
-		// Register commands
-		CommandRegistrationsFactory<Class<?>> commandRegFactory = new AnnotatedCommandRegistrationFactory(new SimpleInjector(this), new SimpleAnnotatedCommandExecutorFactory());
-		getEngine().getRootCommand().removeChildren(this);
-		getEngine().getRootCommand().addSubCommands(this, CommandUtil.class, commandRegFactory);
 		// Load all online players
 		Engine engine = getEngine();
 		Platform platform = engine.getPlatform();
@@ -76,6 +70,12 @@ public class WindPerms extends CommonPlugin {
 				userManager.addUser(player.getName());
 			}
 		}
+		// Create new listener
+		handler = new PermissionsHandler(this);
+		// De-register and register commands
+		CommandRegistrationsFactory<Class<?>> commandRegFactory = new AnnotatedCommandRegistrationFactory(new SimpleInjector(this), new SimpleAnnotatedCommandExecutorFactory());
+		getEngine().getRootCommand().removeChildren(this);
+		getEngine().getRootCommand().addSubCommands(this, CommandUtil.class, commandRegFactory);
 	}
 
 	/**
@@ -114,9 +114,13 @@ public class WindPerms extends CommonPlugin {
 	}
 
 	@Override
-	public void onEnable() {
+	public void onLoad() {
 		// Load data
 		load();
+	}
+
+	@Override
+	public void onEnable() {
 		// Register events
 		Spout.getEventManager().registerEvents(handler, this);
 		logger.info("WindPerms " + getDescription().getVersion() + " enabled.");
