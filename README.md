@@ -8,7 +8,7 @@ WindPerms
 
 About
 =====
-WindPerms is a plugin for the Spout platform, developed by SpoutDev that provides permissible actions between player's on a Spout server.
+WindPerms is a plugin for the Spout platform that provides permissible actions between player's on a Spout server.
 Further details can been seen [here][Home].
 Copyright (c) 2012 Walker Crouse <http://windwaker.net/>
 
