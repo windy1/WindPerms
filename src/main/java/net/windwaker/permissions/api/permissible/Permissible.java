@@ -52,7 +52,7 @@ public abstract class Permissible {
 
 	/**
 	 * Gets the inherited nodes of the subject.
-	 * @return
+	 * @return inherited nodes
 	 */
 	public Map<String, Boolean> getInheritedPermissions() {
 		return inheritedNodes;
@@ -68,8 +68,8 @@ public abstract class Permissible {
 
 	/**
 	 * Sets a permissions state for the subject
-	 * @param node
-	 * @param state
+	 * @param node to set
+	 * @param state of node
 	 */
 	public void setPermission(String node, boolean state) {
 		permissionNodes.put(node, state);
@@ -80,7 +80,7 @@ public abstract class Permissible {
 
 	/**
 	 * Whether or not the subject has permissions for said node.
-	 * @param node
+	 * @param node to check
 	 * @return true if permission
 	 */
 	public boolean hasPermission(String node) {
@@ -101,15 +101,6 @@ public abstract class Permissible {
 	}
 
 	/**
-	 * Adds an inherited data entry
-	 * @param node
-	 * @param value
-	 */
-	public void setInheritedMetadata(String node, DataValue value) {
-		inheritedMetadata.put(node, value);
-	}
-
-	/**
 	 * Returns data mapping of entity.
 	 * @return data
 	 */
@@ -119,8 +110,8 @@ public abstract class Permissible {
 
 	/**
 	 * Adds a data entry.
-	 * @param node
-	 * @param value
+	 * @param node to set
+	 * @param value to set for node
 	 */
 	public void setMetadata(String node, DataValue value) {
 		metadata.put(node, value);
@@ -131,8 +122,8 @@ public abstract class Permissible {
 
 	/**
 	 * Adds a data entry
-	 * @param node
-	 * @param value
+	 * @param node to set
+	 * @param value to set for node
 	 */
 	public void setMetadata(String node, Object value) {
 		setMetadata(node, new DataValue(value));
@@ -140,8 +131,8 @@ public abstract class Permissible {
 
 	/**
 	 * Gets an entry from given node.
-	 * @param node
-	 * @returnn data value.
+	 * @param node to set
+	 * @return data value.
 	 */
 	public DataValue getMetadata(String node) {
 		if (metadata.containsKey(node)) {
@@ -154,7 +145,7 @@ public abstract class Permissible {
 
 	/**
 	 * If the entity has an data entry for given node.
-	 * @param node
+	 * @param node to check
 	 * @return true if has data
 	 */
 	public boolean hasMetadata(String node) {
@@ -163,7 +154,7 @@ public abstract class Permissible {
 
 	/**
 	 * Sets whether or not the entity should save to disk automatically.
-	 * @param autoSave
+	 * @param autoSave whether this should auto-save to disk when modified.
 	 */
 	public void setAutoSave(boolean autoSave) {
 		this.autoSave = autoSave;
@@ -171,10 +162,9 @@ public abstract class Permissible {
 
 	/**
 	 * Whether or not the entity auto-saves.
-	 * @param autoSave
 	 * @return true if auto-saves.
 	 */
-	public boolean isAutoSave(boolean autoSave) {
+	public boolean isAutoSave() {
 		return autoSave;
 	}
 

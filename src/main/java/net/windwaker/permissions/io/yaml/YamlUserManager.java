@@ -141,6 +141,7 @@ public class YamlUserManager implements UserManager {
 		// Load group
 		Group group = groupManager.getGroup(data.getNode(path + "/group").getString(groupManager.getDefaultGroup().getName()));
 		u.setGroup(group);
+		group.addUser(u);
 		// Turn auto-save back on and add user.
 		u.setAutoSave(true);
 		users.add(u);

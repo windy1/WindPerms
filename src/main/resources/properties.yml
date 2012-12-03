@@ -4,5 +4,5 @@ description: WindPerms is a plugin for the Spout server that provides permissibl
 author: Windwaker
 website: http://github.com/W1ndwaker/WindPerms
 main: net.windwaker.permissions.WindPerms
-platform: BOTH
+platform: SERVER
 reload: true

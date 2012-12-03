@@ -50,23 +50,40 @@ public class User extends Permissible {
 	 * @param group
 	 */
 	public void setGroup(Group group) {
+
+		// Update group references to user
+		if (this.group != null) {
+			this.group.removeUser(this);
+		}
 		this.group = group;
+		group.addUser(this);
+
+		// inherit the group's data
+		inherit(group);
+
+		// Save
+		if (autoSave) {
+			save();
+		}
+	}
+
+	public void inherit(Group group) {
 		// inherit nodes
 		for (Map.Entry<String, Boolean> node : group.getInheritedPermissions().entrySet()) {
 			inheritedNodes.put(node.getKey(), node.getValue());
 		}
+
 		for (Map.Entry<String, Boolean> node : group.getPermissions().entrySet()) {
 			inheritedNodes.put(node.getKey(), node.getValue());
 		}
+
 		// inherit data
 		for (Map.Entry<String, DataValue> data : group.getInheritedMetadataMap().entrySet()) {
 			inheritedMetadata.put(data.getKey(), data.getValue());
 		}
+
 		for (Map.Entry<String, DataValue> data : group.getMetadataMap().entrySet()) {
 			inheritedMetadata.put(data.getKey(), data.getValue());
-		}
-		if (autoSave) {
-			save();
 		}
 	}
 

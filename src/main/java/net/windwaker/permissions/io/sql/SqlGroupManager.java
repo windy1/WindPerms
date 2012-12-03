@@ -74,4 +74,8 @@ public class SqlGroupManager implements GroupManager {
 	public Set<Group> getGroups() {
 		return null;
 	}
+
+	@Override
+	public void reloadInheritance() {
+	}
 }

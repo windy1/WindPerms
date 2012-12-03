@@ -82,4 +82,9 @@ public interface GroupManager {
 	 * @return all groups.
 	 */
 	public Set<Group> getGroups();
+
+	/**
+	 * Reloads the inheritance ladder
+	 */
+	public void reloadInheritance();
 }

@@ -61,7 +61,7 @@ public class PermissionsHandler implements Listener {
 	 * @param event of invocation
 	 */
 	@EventHandler(order = Order.EARLIEST)
-	public void groups(PermissionGroupsEvent event) {
+	public void getGroups(PermissionGroupsEvent event) {
 		// Get the user
 		User user = userManager.getUser(event.getSubject().getName());
 		if (user == null) {
@@ -83,7 +83,7 @@ public class PermissionsHandler implements Listener {
 	 * @param event of invocation
 	 */
 	@EventHandler(order = Order.EARLIEST)
-	public void node(PermissionNodeEvent event) {
+	public void getNodes(PermissionNodeEvent event) {
 		// Get the subject - hasPermission(String node) can be called on a group or a user
 		String name = event.getSubject().getName();
 		Permissible subject = groupManager.getGroup(name) != null ? groupManager.getGroup(name) : userManager.getUser(name);

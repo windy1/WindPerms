@@ -30,6 +30,7 @@ import net.windwaker.permissions.WindPerms;
 import net.windwaker.permissions.api.GroupManager;
 import net.windwaker.permissions.api.PermissionsLogger;
 import net.windwaker.permissions.api.permissible.Group;
+import net.windwaker.permissions.api.permissible.User;
 
 import org.spout.api.data.DataValue;
 import org.spout.api.exception.ConfigurationException;
@@ -144,9 +145,7 @@ public class YamlGroupManager implements GroupManager {
 			}
 		}
 		// after all groups are inherited, make sure all their data is up to date
-		for (Group g : groups) {
-			g.inheritAll();
-		}
+		reloadInheritance();
 	}
 
 	@Override
@@ -254,5 +253,17 @@ public class YamlGroupManager implements GroupManager {
 	@Override
 	public Set<Group> getGroups() {
 		return groups;
+	}
+
+	@Override
+	public void reloadInheritance() {
+		for (Group group : groups) {
+			group.reloadInheritance();
+		}
+		for (Group group : groups) {
+			for (User user : group.getUsers()) {
+				user.inherit(group);
+			}
+		}
 	}
 }
