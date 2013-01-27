@@ -103,7 +103,7 @@ public class PermissionsHandler implements Listener {
 				event.setResult(Result.ALLOW);
 				return;
 			} else {
-				event.setResult(Result.DENY);
+				event.setResult(Result.DEFAULT);
 			}
 		}
 	}
