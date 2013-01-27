@@ -101,7 +101,7 @@ public class CommandUtil {
 	 * @param source
 	 */
 	@Command(aliases = {"pr", "permissions", "wp", "windperms"}, desc = "General WindPerms commands.")
-	@NestedCommand(commands = PermissionsCommands.class)
+	@NestedCommand(value = PermissionsCommands.class)
 	public void permissions(CommandContext args, CommandSource source) {
 	}
 
@@ -111,7 +111,7 @@ public class CommandUtil {
 	 * @param source
 	 */
 	@Command(aliases = {"group", "g"}, desc = "Modifies a group")
-	@NestedCommand(commands = GroupCommands.class)
+	@NestedCommand(value = GroupCommands.class)
 	public void group(CommandContext args, CommandSource source) {
 	}
 
@@ -121,7 +121,7 @@ public class CommandUtil {
 	 * @param source
 	 */
 	@Command(aliases = {"user", "u"}, desc = "Modify Permissions users.", usage = "<info|set|add|remove|check> [group|perm|build] [user] [group:groupName|perm:node|bool:build|identifier] [bool]", min = 0, max = 5)
-	@NestedCommand(commands = UserCommands.class)
+	@NestedCommand(value = UserCommands.class)
 	public void user(CommandContext args, CommandSource source) {
 	}
 }
