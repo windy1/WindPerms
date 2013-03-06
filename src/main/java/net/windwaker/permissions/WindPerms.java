@@ -36,7 +36,7 @@ import org.spout.api.command.annotated.SimpleAnnotatedCommandExecutorFactory;
 import org.spout.api.command.annotated.SimpleInjector;
 import org.spout.api.entity.Player;
 import org.spout.api.plugin.CommonPlugin;
-import org.spout.api.plugin.Platform;
+import org.spout.api.Platform;
 
 /**
  * Implementation of PermissionsPlugin
@@ -64,8 +64,7 @@ public class WindPerms extends CommonPlugin {
 		userManager.load();
 		// Load all online players
 		Engine engine = getEngine();
-		Platform platform = engine.getPlatform();
-		if (platform == Platform.SERVER || platform == Platform.PROXY) {
+		if (engine instanceof Server) {
 			for (Player player : ((Server) engine).getOnlinePlayers()) {
 				userManager.addUser(player.getName());
 			}
@@ -73,7 +72,7 @@ public class WindPerms extends CommonPlugin {
 		// Create new listener
 		handler = new PermissionsHandler(this);
 		// De-register and register commands
-		CommandRegistrationsFactory<Class<?>> commandRegFactory = new AnnotatedCommandRegistrationFactory(new SimpleInjector(this), new SimpleAnnotatedCommandExecutorFactory());
+		CommandRegistrationsFactory<Class<?>> commandRegFactory = new AnnotatedCommandRegistrationFactory(engine, new SimpleInjector(this), new SimpleAnnotatedCommandExecutorFactory());
 		getEngine().getRootCommand().removeChildren(this);
 		getEngine().getRootCommand().addSubCommands(this, CommandUtil.class, commandRegFactory);
 	}
