@@ -32,7 +32,7 @@ import org.spout.api.command.CommandSource;
 /**
  * Message helpers for commands.
  */
-public class MessageUtil {
+public final class MessageUtil {
 	private MessageUtil() {
 	}
 

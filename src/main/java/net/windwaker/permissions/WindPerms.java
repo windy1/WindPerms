@@ -28,7 +28,6 @@ import net.windwaker.permissions.io.Settings;
 
 import org.spout.api.Engine;
 import org.spout.api.Server;
-import org.spout.api.Spout;
 import org.spout.api.command.CommandRegistrationsFactory;
 import org.spout.api.command.annotated.AnnotatedCommandRegistrationFactory;
 import org.spout.api.command.annotated.SimpleAnnotatedCommandExecutorFactory;
@@ -49,7 +48,7 @@ public class WindPerms extends CommonPlugin {
 	/**
 	 * Loads all data within the plugin.
 	 */
-	public void load() {
+	private void load() {
 		// Create and load data
 		settings = new Settings(this);
 		settings.load();
@@ -77,7 +76,7 @@ public class WindPerms extends CommonPlugin {
 	/**
 	 * Saves all data in the plugin.
 	 */
-	public void save() {
+	private void save() {
 		// Save all data
 		settings.save();
 		groupManager.save();
@@ -118,7 +117,7 @@ public class WindPerms extends CommonPlugin {
 	@Override
 	public void onEnable() {
 		// Register events
-		Spout.getEventManager().registerEvents(handler, this);
+		getEngine().getEventManager().registerEvents(handler, this);
 		getLogger().info("WindPerms " + getDescription().getVersion() + " enabled.");
 	}
 
