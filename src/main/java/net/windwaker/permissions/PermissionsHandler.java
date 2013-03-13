@@ -21,8 +21,9 @@
  */
 package net.windwaker.permissions;
 
+import java.util.logging.Logger;
+
 import net.windwaker.permissions.api.GroupManager;
-import net.windwaker.permissions.api.PermissionsLogger;
 import net.windwaker.permissions.api.UserManager;
 import net.windwaker.permissions.api.permissible.Group;
 import net.windwaker.permissions.api.permissible.Permissible;
@@ -47,7 +48,6 @@ public class PermissionsHandler implements Listener {
 	private final WindPerms plugin;
 	private final UserManager userManager;
 	private final GroupManager groupManager;
-	private final PermissionsLogger logger = PermissionsLogger.getInstance();
 
 	public PermissionsHandler(WindPerms plugin) {
 		this.plugin = plugin;
@@ -137,6 +137,7 @@ public class PermissionsHandler implements Listener {
 	public void playerLogin(PlayerLoginEvent event) {
 		String playerName = event.getPlayer().getName();
 		User user = userManager.getUser(playerName);
+		Logger logger = plugin.getLogger();
 		if (user != null) {
 			logger.info(playerName + " returned, found Permissions profile.");
 			return;

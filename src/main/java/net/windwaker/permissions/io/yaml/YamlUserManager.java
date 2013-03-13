@@ -25,10 +25,10 @@ import java.io.File;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import net.windwaker.permissions.WindPerms;
 import net.windwaker.permissions.api.GroupManager;
-import net.windwaker.permissions.api.PermissionsLogger;
 import net.windwaker.permissions.api.UserManager;
 import net.windwaker.permissions.api.permissible.Group;
 import net.windwaker.permissions.api.permissible.User;
@@ -42,7 +42,6 @@ import org.spout.api.util.config.yaml.YamlConfiguration;
  * @author Windwaker
  */
 public class YamlUserManager implements UserManager {
-	private final PermissionsLogger logger = PermissionsLogger.getInstance();
 	private final YamlConfiguration data = new YamlConfiguration(new File("plugins/WindPerms/users.yml"));
 	private final Set<User> users = new HashSet<User>();
 	private final WindPerms plugin;
@@ -65,7 +64,7 @@ public class YamlUserManager implements UserManager {
 
 			Set<String> names = data.getNode("users").getKeys(false);
 			if (!names.isEmpty()) {
-				logger.info("Loading user data...");
+				plugin.getLogger().info("Loading user data...");
 			}
 
 			// Load users
@@ -74,10 +73,10 @@ public class YamlUserManager implements UserManager {
 			}
 
 			if (!names.isEmpty()) {
-				logger.info("User data loaded. " + users.size() + " unique users loaded!");
+				plugin.getLogger().info("User data loaded. " + users.size() + " unique users loaded!");
 			}
 		} catch (ConfigurationException e) {
-			logger.severe("Failed to load user data: " + e.getMessage());
+			plugin.getLogger().severe("Failed to load user data: " + e.getMessage());
 		}
 	}
 
@@ -94,7 +93,7 @@ public class YamlUserManager implements UserManager {
 			data.getNode("users/Notch/permissions/foo.bar").setValue(false);
 			data.save();
 		} catch (ConfigurationException e) {
-			logger.severe("Failed to add defaults: " + e.getMessage());
+			plugin.getLogger().severe("Failed to add defaults: " + e.getMessage());
 		}
 	}
 
@@ -124,7 +123,7 @@ public class YamlUserManager implements UserManager {
 			data.getNode(path + "/group").setValue(groupName);
 			data.save();
 		} catch (ConfigurationException e) {
-			logger.severe("Failed to save user: " + user.getName() + ": " + e.getMessage());
+			plugin.getLogger().severe("Failed to save user: " + user.getName() + ": " + e.getMessage());
 		}
 	}
 
@@ -171,7 +170,7 @@ public class YamlUserManager implements UserManager {
 			data.save();
 			loadUser(username);
 		} catch (ConfigurationException e) {
-			logger.severe("Failed to add user " + username + ": " + e.getMessage());
+			plugin.getLogger().severe("Failed to add user " + username + ": " + e.getMessage());
 		}
 	}
 
@@ -186,7 +185,7 @@ public class YamlUserManager implements UserManager {
 			data.getNode("users/" + username).setValue(null);
 			data.save();
 		} catch (ConfigurationException e) {
-			logger.severe("Failed to remove user " + username + ": " + e.getMessage());
+			plugin.getLogger().severe("Failed to remove user " + username + ": " + e.getMessage());
 		}
 	}
 

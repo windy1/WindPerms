@@ -28,7 +28,6 @@ import java.util.Set;
 
 import net.windwaker.permissions.WindPerms;
 import net.windwaker.permissions.api.GroupManager;
-import net.windwaker.permissions.api.PermissionsLogger;
 import net.windwaker.permissions.api.permissible.Group;
 import net.windwaker.permissions.api.permissible.User;
 
@@ -41,7 +40,6 @@ import org.spout.api.util.config.yaml.YamlConfiguration;
  * @author Windwaker
  */
 public class YamlGroupManager implements GroupManager {
-	private final PermissionsLogger logger = PermissionsLogger.getInstance();
 	private final YamlConfiguration data = new YamlConfiguration(new File("plugins/WindPerms/groups.yml"));
 	private final Set<Group> groups = new HashSet<Group>();
 	private final WindPerms plugin;
@@ -63,7 +61,7 @@ public class YamlGroupManager implements GroupManager {
 
 			Set<String> names = data.getNode("groups").getKeys(false);
 			if (!names.isEmpty()) {
-				logger.info("Loading group data...");
+				plugin.getLogger().info("Loading group data...");
 			}
 
 			// Load groups
@@ -77,10 +75,10 @@ public class YamlGroupManager implements GroupManager {
 			}
 
 			if (!names.isEmpty()) {
-				logger.info("Group data loaded. " + groups.size() + " unique groups loaded!");
+				plugin.getLogger().info("Group data loaded. " + groups.size() + " unique groups loaded!");
 			}
 		} catch (ConfigurationException e) {
-			logger.severe("Failed to load group data: " + e.getMessage());
+			plugin.getLogger().severe("Failed to load group data: " + e.getMessage());
 		}
 	}
 
@@ -115,7 +113,7 @@ public class YamlGroupManager implements GroupManager {
 			data.getNode("groups/admin/metadata/join-message-format").setValue("{{DARK_RED}}{{BOLD}}{NAME} {{RESET}}{{GRAY}}has joined the game.");
 			data.save();
 		} catch (ConfigurationException e) {
-			logger.severe("Failed to add defaults: " + e.getMessage());
+			plugin.getLogger().severe("Failed to add defaults: " + e.getMessage());
 		}
 	}
 
@@ -158,7 +156,7 @@ public class YamlGroupManager implements GroupManager {
 			data.getNode(path + "/default").setValue(group.isDefault());
 			data.save();
 		} catch (ConfigurationException e) {
-			logger.severe("Failed to save group " + group.getName() + ": " + e.getMessage());
+			plugin.getLogger().severe("Failed to save group " + group.getName() + ": " + e.getMessage());
 		}
 	}
 
@@ -221,7 +219,7 @@ public class YamlGroupManager implements GroupManager {
 			data.save();
 			loadGroup(name);
 		} catch (ConfigurationException e) {
-			logger.severe("Failed to add group " + name + ": " + e.getMessage());
+			plugin.getLogger().severe("Failed to add group " + name + ": " + e.getMessage());
 		}
 	}
 
@@ -236,7 +234,7 @@ public class YamlGroupManager implements GroupManager {
 			data.getNode("groups/" + name).setValue(null);
 			data.save();
 		} catch (ConfigurationException e) {
-			logger.severe("Failed to remove group " + name + ": " + e.getMessage());
+			plugin.getLogger().severe("Failed to remove group " + name + ": " + e.getMessage());
 		}
 	}
 

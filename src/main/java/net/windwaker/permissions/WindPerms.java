@@ -22,7 +22,6 @@
 package net.windwaker.permissions;
 
 import net.windwaker.permissions.api.GroupManager;
-import net.windwaker.permissions.api.PermissionsLogger;
 import net.windwaker.permissions.api.UserManager;
 import net.windwaker.permissions.cmd.CommandUtil;
 import net.windwaker.permissions.io.Settings;
@@ -36,14 +35,12 @@ import org.spout.api.command.annotated.SimpleAnnotatedCommandExecutorFactory;
 import org.spout.api.command.annotated.SimpleInjector;
 import org.spout.api.entity.Player;
 import org.spout.api.plugin.CommonPlugin;
-import org.spout.api.Platform;
 
 /**
  * Implementation of PermissionsPlugin
  * @author Windwaker
  */
 public class WindPerms extends CommonPlugin {
-	private final PermissionsLogger logger = PermissionsLogger.getInstance();
 	private PermissionsHandler handler;
 	private Settings settings;
 	private GroupManager groupManager;
@@ -109,7 +106,7 @@ public class WindPerms extends CommonPlugin {
 	public void onReload() {
 		// Load data directly from disk
 		load();
-		logger.info("WindPerms " + getDescription().getVersion() + " reloaded.");
+		getLogger().info("WindPerms " + getDescription().getVersion() + " reloaded.");
 	}
 
 	@Override
@@ -122,13 +119,13 @@ public class WindPerms extends CommonPlugin {
 	public void onEnable() {
 		// Register events
 		Spout.getEventManager().registerEvents(handler, this);
-		logger.info("WindPerms " + getDescription().getVersion() + " enabled.");
+		getLogger().info("WindPerms " + getDescription().getVersion() + " enabled.");
 	}
 
 	@Override
 	public void onDisable() {
 		// Save data
 		save();
-		logger.info("WindPerms " + getDescription().getVersion() + " disabled.");
+		getLogger().info("WindPerms " + getDescription().getVersion() + " disabled.");
 	}
 }

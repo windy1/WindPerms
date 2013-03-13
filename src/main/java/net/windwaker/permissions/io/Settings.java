@@ -25,7 +25,6 @@ import java.io.File;
 
 import net.windwaker.permissions.WindPerms;
 import net.windwaker.permissions.api.GroupManager;
-import net.windwaker.permissions.api.PermissionsLogger;
 import net.windwaker.permissions.api.UserManager;
 import net.windwaker.permissions.io.sql.SqlGroupManager;
 import net.windwaker.permissions.io.sql.SqlUserManager;
@@ -71,7 +70,6 @@ public class Settings extends ConfigurationHolderConfiguration {
 	 */
 	public static final ConfigurationHolder SQL_PASSWORD = new ConfigurationHolder("unleashtheflow", "sql", "password");
 
-	private final PermissionsLogger logger = PermissionsLogger.getInstance();
 	private final WindPerms plugin;
 
 	/**
@@ -112,7 +110,7 @@ public class Settings extends ConfigurationHolderConfiguration {
 			super.load();
 			super.save();
 		} catch (ConfigurationException e) {
-			logger.severe("Failed to load configuration: " + e.getMessage());
+			plugin.getLogger().severe("Failed to load configuration: " + e.getMessage());
 		}
 	}
 
@@ -121,7 +119,7 @@ public class Settings extends ConfigurationHolderConfiguration {
 		try {
 			super.save();
 		} catch (ConfigurationException e) {
-			logger.severe("Failed to save configuration: " + e.getMessage());
+			plugin.getLogger().severe("Failed to save configuration: " + e.getMessage());
 		}
 	}
 }
