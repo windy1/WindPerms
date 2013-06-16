@@ -1,4 +1,5 @@
-/* Copyright (c) 2012 Walker Crouse, <http://windwaker.net/>
+/*
+ * Copyright (c) 2012-2013 ${developer}, <http://windwaker.me>
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -19,15 +20,15 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package net.windwaker.permissions.api.permissible;
+package me.windwaker.permissions.api.permissible;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import net.windwaker.permissions.WindPerms;
-import net.windwaker.permissions.api.GroupManager;
+import me.windwaker.permissions.WindPerms;
+import me.windwaker.permissions.api.GroupManager;
 
 import org.spout.api.data.DataValue;
 

@@ -1,4 +1,5 @@
-/* Copyright (c) 2012 Walker Crouse, <http://windwaker.net/>
+/*
+ * Copyright (c) 2012-2013 ${developer}, <http://windwaker.me>
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -19,22 +20,20 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package net.windwaker.permissions;
+package me.windwaker.permissions;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 
-import net.windwaker.permissions.api.GroupManager;
-import net.windwaker.permissions.api.UserManager;
-import net.windwaker.permissions.cmd.sub.GroupCommands;
-import net.windwaker.permissions.cmd.sub.PermissionsCommands;
-import net.windwaker.permissions.cmd.sub.UserCommands;
-import net.windwaker.permissions.io.Settings;
+import me.windwaker.permissions.api.GroupManager;
+import me.windwaker.permissions.api.UserManager;
+import me.windwaker.permissions.cmd.sub.GroupCommands;
+import me.windwaker.permissions.cmd.sub.PermissionsCommands;
+import me.windwaker.permissions.cmd.sub.UserCommands;
+import me.windwaker.permissions.io.Settings;
 import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 
 import org.spout.api.Engine;

@@ -1,4 +1,5 @@
-/* Copyright (c) 2012 Walker Crouse, <http://windwaker.net/>
+/*
+ * Copyright (c) 2012-2013 ${developer}, <http://windwaker.me>
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -19,77 +20,66 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package net.windwaker.permissions.api;
+package me.windwaker.permissions.api;
 
 import java.util.Set;
 
-import net.windwaker.permissions.api.permissible.Group;
+import me.windwaker.permissions.api.permissible.User;
 
 /**
- * Utility class for group management.
+ * Utility class for user management.
  * @author Windwaker
  */
-public interface GroupManager {
+public interface UserManager {
 	/**
-	 * Loads all group data
+	 * Loads all user data.
 	 */
 	public void load();
 
 	/**
-	 * Saves all group data
+	 * Saves all user data.
 	 */
 	public void save();
 
 	/**
-	 * Adds a group
+	 * Adds a user
+	 * @param username
+	 */
+	public void addUser(String username);
+
+	/**
+	 * Removes a user
+	 * @param username
+	 */
+	public void removeUser(String username);
+
+	/**
+	 * Saves a user from said name
+	 * @param user
+	 */
+	public void saveUser(User user);
+
+	/**
+	 * Load a user from disk.
+	 * @param user
+	 */
+	public void loadUser(String user);
+
+	/**
+	 * Gets a user from said name
 	 * @param name
+	 * @return user
 	 */
-	public void addGroup(String name);
+	public User getUser(String name);
 
 	/**
-	 * Removes a group
-	 * @param name
+	 * Gets all defined users.
+	 * @return all users.
 	 */
-	public void removeGroup(String name);
+	public Set<User> getUsers();
 
 	/**
-	 * Saves a group from said name
-	 * @param group
-	 */
-	public void saveGroup(Group group);
-
-	/**
-	 * Loads a group from disk.
-	 * @param group
-	 */
-	public void loadGroup(String group);
-
-	/**
-	 * Gets the default group.
-	 * @return
-	 */
-	public Group getDefaultGroup();
-
-	/**
-	 * Gets a group from said name
-	 * @param name
-	 * @return group
-	 */
-	public Group getGroup(String name);
-
-	/**
-	 * Gets all defined groups.
-	 * @return all groups.
-	 */
-	public Set<Group> getGroups();
-
-	/**
-	 * Reloads the inheritance ladder
-	 */
-	public void reloadInheritance();
-
-	/**
-	 * Clears all groups.
+	 * Clears all users.
 	 */
 	public void clear();
 }

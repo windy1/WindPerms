@@ -1,4 +1,5 @@
-/* Copyright (c) 2012 Walker Crouse, <http://windwaker.net/>
+/*
+ * Copyright (c) 2012-2013 ${developer}, <http://windwaker.me>
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -19,17 +20,17 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package net.windwaker.permissions.io;
+package me.windwaker.permissions.io;
 
 import java.io.File;
 
-import net.windwaker.permissions.WindPerms;
-import net.windwaker.permissions.api.GroupManager;
-import net.windwaker.permissions.api.UserManager;
-import net.windwaker.permissions.io.sql.SqlGroupManager;
-import net.windwaker.permissions.io.sql.SqlUserManager;
-import net.windwaker.permissions.io.yaml.YamlGroupManager;
-import net.windwaker.permissions.io.yaml.YamlUserManager;
+import me.windwaker.permissions.WindPerms;
+import me.windwaker.permissions.api.GroupManager;
+import me.windwaker.permissions.api.UserManager;
+import me.windwaker.permissions.io.sql.SqlGroupManager;
+import me.windwaker.permissions.io.sql.SqlUserManager;
+import me.windwaker.permissions.io.yaml.YamlGroupManager;
+import me.windwaker.permissions.io.yaml.YamlUserManager;
 
 import org.spout.api.exception.ConfigurationException;
 import org.spout.api.util.config.ConfigurationHolder;
@@ -42,7 +43,7 @@ import org.spout.api.util.config.yaml.YamlConfiguration;
  */
 public class Settings extends ConfigurationHolderConfiguration {
 	/**
-	 * Whether to use the wildcard node ('*') for giving {@link net.windwaker.permissions.api.permissible.Group}s or {@link net.windwaker.permissions.api.permissible.User}s all permissions.
+	 * Whether to use the wildcard node ('*') for giving {@link me.windwaker.permissions.api.permissible.Group}s or {@link me.windwaker.permissions.api.permissible.User}s all permissions.
 	 */
 	public static final ConfigurationHolder WILDCARD_ENABLED = new ConfigurationHolder(true, "wildcard-enabled");
 	/**

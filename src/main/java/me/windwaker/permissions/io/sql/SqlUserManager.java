@@ -1,4 +1,5 @@
-/* Copyright (c) 2012 Walker Crouse, <http://windwaker.net/>
+/*
+ * Copyright (c) 2012-2013 ${developer}, <http://windwaker.me>
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -19,23 +20,23 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package net.windwaker.permissions.io.sql;
+package me.windwaker.permissions.io.sql;
 
 import java.util.Set;
 
-import net.windwaker.permissions.api.GroupManager;
-import net.windwaker.permissions.api.permissible.Group;
+import me.windwaker.permissions.api.UserManager;
+import me.windwaker.permissions.api.permissible.User;
 
 /*
  *            ------------------------------
- * Table:     |     permissions_groups      |
+ * Table:     |     permissions_users       |
  *            ------------------------------
- * Fields:    |  name  |  def  |  per_world |
+ * Fields:    |    name     |     group     |
  *            ------------------------------
- * Data Type: |  text  |char(1)|   char(1)  |
+ * Data Type: |    text     |     text      |
  *            ------------------------------
  */
-public class SqlGroupManager implements GroupManager {
+public class SqlUserManager implements UserManager {
 	@Override
 	public void load() {
 	}
@@ -45,38 +46,30 @@ public class SqlGroupManager implements GroupManager {
 	}
 
 	@Override
-	public void addGroup(String name) {
+	public void addUser(String username) {
 	}
 
 	@Override
-	public void removeGroup(String name) {
+	public void removeUser(String username) {
 	}
 
 	@Override
-	public void saveGroup(Group group) {
+	public void saveUser(User user) {
 	}
 
 	@Override
-	public void loadGroup(String group) {
+	public void loadUser(String user) {
+		//To change body of implemented methods use File | Settings | File Templates.
 	}
 
 	@Override
-	public Group getDefaultGroup() {
+	public User getUser(String name) {
 		return null;
 	}
 
 	@Override
-	public Group getGroup(String name) {
+	public Set<User> getUsers() {
 		return null;
-	}
-
-	@Override
-	public Set<Group> getGroups() {
-		return null;
-	}
-
-	@Override
-	public void reloadInheritance() {
 	}
 
 	@Override

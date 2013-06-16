@@ -3,18 +3,18 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<!-- Project info -->
-	<groupId>net.windwaker</groupId>
+	<groupId>me.windwaker</groupId>
 	<artifactId>windperms</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>WindPerms</name>
 	<description>WindPerms is a plugin for the Spout server that provides permissible player actions for other plugins.</description>
-	<url>http://github.com/W1ndwaker/WindPerms/</url>
+	<url>http://windwaker.me</url>
 
 	<!-- Properties -->
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<mainClass>net.windwaker.permissions.WindPerms</mainClass>
+		<mainClass>me.windwaker.permissions.WindPerms</mainClass>
 		<spoutapi.version>dev-SNAPSHOT</spoutapi.version>
 	</properties>
 
@@ -81,6 +81,52 @@
 			</resource>
 		</resources>
 		<plugins>
+			<plugin>
+				<groupId>com.mycila.maven-license-plugin</groupId>
+				<artifactId>maven-license-plugin</artifactId>
+				<version>1.10.b1</version>
+				<executions>
+					<execution>
+						<configuration>
+							<properties>
+								<inceptionYear>2012</inceptionYear>
+								<currentYear>2013</currentYear>
+								<url>${project.url}</url>
+							</properties>
+							<quiet>true</quiet>
+							<encoding>UTF-8</encoding>
+							<strictCheck>true</strictCheck>
+							<header>${basedir}/HEADER.txt</header>
+							<mapping>
+								<java>SLASHSTAR_STYLE</java>
+							</mapping>
+							<keywords>
+								<keyword>${project.name}</keyword>
+								<keyword>license</keyword>
+							</keywords>
+							<includes>
+								<include>src/main/java/**</include>
+								<include>src/test/java/**</include>
+							</includes>
+						</configuration>
+						<phase>clean</phase>
+						<goals>
+							<goal>format</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.0</version>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+					<showWarnings>true</showWarnings>
+					<showDeprecation>true</showDeprecation>
+				</configuration>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
