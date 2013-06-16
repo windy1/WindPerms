@@ -5,7 +5,7 @@
 	<!-- Project info -->
 	<groupId>net.windwaker</groupId>
 	<artifactId>windperms</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.0.1</version>
 	<packaging>jar</packaging>
 	<name>WindPerms</name>
 	<description>WindPerms is a plugin for the Spout server that provides permissible player actions for other plugins.</description>
@@ -17,6 +17,18 @@
 		<mainClass>net.windwaker.permissions.WindPerms</mainClass>
 		<spoutapi.version>dev-SNAPSHOT</spoutapi.version>
 	</properties>
+
+	<!-- Distribution management -->
+	<distributionManagement>
+		<snapshotRepository>
+			<id>spout-snapshots</id>
+			<url>http://nexus.spout.org/content/groups/snapshots</url>
+		</snapshotRepository>
+		<repository>
+			<id>spout-releases</id>
+			<url>http://nexus.spout.org/content/groups/releases</url>
+		</repository>
+	</distributionManagement>
 
 	<!-- Source code access -->
 	<scm>
@@ -52,6 +64,11 @@
 			<artifactId>spoutapi</artifactId>
 			<version>${spoutapi.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.maven</groupId>
+			<artifactId>maven-artifact</artifactId>
+			<version>3.1.0-alpha-1</version>
+		</dependency>
 	</dependencies>
 
 	<!-- Build configuration -->
@@ -66,7 +83,6 @@
 					<include>*.yml</include>
 				</includes>
 			</resource>
-
 			<resource>
 				<targetPath>.</targetPath>
 				<filtering>false</filtering>
@@ -76,5 +92,28 @@
 				</includes>
 			</resource>
 		</resources>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>2.1</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+							<createDependencyReducedPom>false</createDependencyReducedPom>
+							<artifactSet>
+								<includes>
+									<include>org.apache.maven:maven-artifact</include>
+								</includes>
+							</artifactSet>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
 	</build>
 </project>

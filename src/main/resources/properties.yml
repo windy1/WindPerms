@@ -6,3 +6,9 @@ website: http://github.com/W1ndwaker/WindPerms
 main: ${mainClass}
 platform: SERVER
 reload: true
+data:
+  repo-url: http://nexus.spout.org
+  repo-id: releases
+  group-id: ${groupId}
+  artifact-id: ${artifactId}
+  update-version: LATEST
