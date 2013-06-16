@@ -1,14 +1,14 @@
-name: ${name}
-version: ${version}
-description: ${description}
+name: ${project.name}
+version: ${project.version}
+description: ${project.description}
 author: Walker Crouse
 website: http://github.com/W1ndwaker/WindPerms
-main: ${mainClass}
+main: ${project.mainClass}
 platform: SERVER
 reload: true
 data:
   repo-url: http://nexus.spout.org
-  repo-id: releases
-  group-id: ${groupId}
-  artifact-id: ${artifactId}
+  repo-id: public
+  group-id: ${project.groupId}
+  artifact-id: ${project.artifactId}
   update-version: LATEST

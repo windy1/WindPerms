@@ -18,18 +18,6 @@
 		<spoutapi.version>dev-SNAPSHOT</spoutapi.version>
 	</properties>
 
-	<!-- Distribution management -->
-	<distributionManagement>
-		<snapshotRepository>
-			<id>spout-snapshots</id>
-			<url>http://nexus.spout.org/content/groups/snapshots</url>
-		</snapshotRepository>
-		<repository>
-			<id>spout-releases</id>
-			<url>http://nexus.spout.org/content/groups/releases</url>
-		</repository>
-	</distributionManagement>
-
 	<!-- Source code access -->
 	<scm>
 		<developerConnection>scm:git:git@github.com:W1ndwaker/WindPerms.git</developerConnection>
