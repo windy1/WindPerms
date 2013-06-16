@@ -168,7 +168,7 @@ public class WindPerms extends Plugin {
 		String artifactId = getDescription().getData("artifact-id");
 		String updateVersion = getDescription().getData("update-version");
 		String path = repoUrl + "/service/local/artifact/maven/"
-				+ "content?r=" + repoId
+				+ "redirect?r=" + repoId
 				+ "&g=" + groupId
 				+ "&a=" + artifactId
 				+ "&v=" + updateVersion;
@@ -179,15 +179,17 @@ public class WindPerms extends Plugin {
 		try {
 			URI uri = new URI(path);
 			HttpURLConnection connection = (HttpURLConnection) uri.toURL().openConnection();
+			connection.setInstanceFollowRedirects(false);
 
-			// check if we can continue
+			// make sure the url should redirect
 			int response = connection.getResponseCode();
 			System.out.println("Response: " + response);
-			if (response != 200) return null;
+			if (response != 301) return null;
 
 			// get the version from the suggested filename
-			String v = connection.getHeaderField("Content-disposition");
-			v = v.substring(v.indexOf("\""), v.length() - 2).split("-")[1];
+			String v = connection.getHeaderField("Location");
+			System.out.println("Location: " + v);
+			v = v.substring(v.lastIndexOf('/')).split("-")[1];
 			System.out.println("Version: " + v);
 
 			// compare the suggested version with the current version
