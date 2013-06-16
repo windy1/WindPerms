@@ -8,7 +8,28 @@
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>WindPerms</name>
+	<description>WindPerms is a plugin for the Spout server that provides permissible player actions for other plugins.</description>
 	<url>http://github.com/W1ndwaker/WindPerms/</url>
+
+	<!-- Properties -->
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<mainClass>net.windwaker.permissions.WindPerms</mainClass>
+		<spoutapi.version>dev-SNAPSHOT</spoutapi.version>
+	</properties>
+
+	<!-- Source code access -->
+	<scm>
+		<developerConnection>scm:git:git@github.com:W1ndwaker/WindPerms.git</developerConnection>
+		<connection>scm:git:git://github.com/W1ndwaker/WindPerms.git</connection>
+		<url>http://github.com/W1ndwaker/WindPerms</url>
+	</scm>
+
+	<!-- Continuous integration -->
+	<ciManagement>
+		<system>jenkins</system>
+		<url>http://build.spout.org/</url>
+	</ciManagement>
 
 	<!-- Issue management -->
 	<issueManagement>
@@ -16,12 +37,13 @@
 		<url>https://github.com/W1ndwaker/WindPerms/issues/</url>
 	</issueManagement>
 
-	<!-- Properties -->
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<spoutapi.version>dev-SNAPSHOT</spoutapi.version>
-		<version>1.0.0</version>
-	</properties>
+	<!-- Repositories -->
+	<repositories>
+		<repository>
+			<id>spout-repo</id>
+			<url>http://repo.spout.org/</url>
+		</repository>
+	</repositories>
 
 	<!-- Dependencies -->
 	<dependencies>
@@ -32,32 +54,9 @@
 		</dependency>
 	</dependencies>
 
-	<!-- Credits -->
-	<developers>
-		<developer>
-			<id>windwaker</id>
-			<name>Windwaker</name>
-			<email>wjcrouse913@aim.com</email>
-		</developer>
-	</developers>
-
-	<!-- Continuous integration -->
-	<ciManagement>
-		<system>jenkins</system>
-		<url>http://build.spout.org/</url>
-	</ciManagement>
-
-	<!-- Repositories -->
-	<repositories>
-		<repository>
-			<id>spout-repo</id>
-			<url>http://repo.spout.org/</url>
-		</repository>
-	</repositories>
-
 	<!-- Build configuration -->
 	<build>
-		<defaultGoal>clean install</defaultGoal>
+		<defaultGoal>clean package install</defaultGoal>
 		<resources>
 			<resource>
 				<targetPath>.</targetPath>

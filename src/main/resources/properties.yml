@@ -1,8 +1,8 @@
-name: WindPerms
+name: ${name}
 version: ${version}
-description: WindPerms is a plugin for the Spout server that provides permissible player actions for other plugins.
-author: Windwaker
+description: ${description}
+author: Walker Crouse
 website: http://github.com/W1ndwaker/WindPerms
-main: net.windwaker.permissions.WindPerms
+main: ${mainClass}
 platform: SERVER
 reload: true

@@ -76,4 +76,9 @@ public interface UserManager {
 	 * @return all users.
 	 */
 	public Set<User> getUsers();
+
+	/**
+	 * Clears all users.
+	 */
+	public void clear();
 }

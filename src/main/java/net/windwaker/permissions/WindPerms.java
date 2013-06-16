@@ -23,23 +23,25 @@ package net.windwaker.permissions;
 
 import net.windwaker.permissions.api.GroupManager;
 import net.windwaker.permissions.api.UserManager;
-import net.windwaker.permissions.cmd.CommandUtil;
+import net.windwaker.permissions.cmd.sub.GroupCommands;
+import net.windwaker.permissions.cmd.sub.PermissionsCommands;
+import net.windwaker.permissions.cmd.sub.UserCommands;
 import net.windwaker.permissions.io.Settings;
 
 import org.spout.api.Engine;
 import org.spout.api.Server;
-import org.spout.api.command.CommandRegistrationsFactory;
-import org.spout.api.command.annotated.AnnotatedCommandRegistrationFactory;
-import org.spout.api.command.annotated.SimpleAnnotatedCommandExecutorFactory;
-import org.spout.api.command.annotated.SimpleInjector;
+import org.spout.api.Spout;
+import org.spout.api.command.Command;
+import org.spout.api.command.CommandManager;
+import org.spout.api.command.annotated.AnnotatedCommandExecutorFactory;
 import org.spout.api.entity.Player;
-import org.spout.api.plugin.CommonPlugin;
+import org.spout.api.plugin.Plugin;
 
 /**
  * Implementation of PermissionsPlugin
  * @author Windwaker
  */
-public class WindPerms extends CommonPlugin {
+public class WindPerms extends Plugin {
 	private PermissionsHandler handler;
 	private Settings settings;
 	private GroupManager groupManager;
@@ -49,6 +51,12 @@ public class WindPerms extends CommonPlugin {
 	 * Loads all data within the plugin.
 	 */
 	private void load() {
+		loadData();
+		loadPlayers();
+		handler = new PermissionsHandler(this);
+	}
+
+	private void loadData() {
 		// Create and load data
 		settings = new Settings(this);
 		settings.load();
@@ -58,19 +66,31 @@ public class WindPerms extends CommonPlugin {
 		// Create and load user manager
 		userManager = settings.createUserManager();
 		userManager.load();
-		// Load all online players
+	}
+
+	private void loadPlayers() {
 		Engine engine = getEngine();
 		if (engine instanceof Server) {
+			userManager.clear();
 			for (Player player : ((Server) engine).getOnlinePlayers()) {
 				userManager.addUser(player.getName());
 			}
 		}
-		// Create new listener
-		handler = new PermissionsHandler(this);
-		// De-register and register commands
-		CommandRegistrationsFactory<Class<?>> commandRegFactory = new AnnotatedCommandRegistrationFactory(engine, new SimpleInjector(this), new SimpleAnnotatedCommandExecutorFactory());
-		getEngine().getRootCommand().removeChildren(this);
-		getEngine().getRootCommand().addSubCommands(this, CommandUtil.class, commandRegFactory);
+	}
+
+	private void registerCommands() {
+		CommandManager cm = Spout.getCommandManager();
+		// register group commands
+		Command group = cm.getCommand("group").addAlias("g");
+		AnnotatedCommandExecutorFactory.create(new GroupCommands(this), group);
+
+		// register main commands
+		Command permissions = cm.getCommand("permissions").addAlias("pr", "windperms", "wp");
+		AnnotatedCommandExecutorFactory.create(new PermissionsCommands(this), permissions);
+
+		// register user commands
+		Command user = cm.getCommand("user").addAlias("u");
+		AnnotatedCommandExecutorFactory.create(new UserCommands(this), user);
 	}
 
 	/**
@@ -118,6 +138,7 @@ public class WindPerms extends CommonPlugin {
 	public void onEnable() {
 		// Register events
 		getEngine().getEventManager().registerEvents(handler, this);
+		registerCommands();
 		getLogger().info("WindPerms " + getDescription().getVersion() + " enabled.");
 	}
 

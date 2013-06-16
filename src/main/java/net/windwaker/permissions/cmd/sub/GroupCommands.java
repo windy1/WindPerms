@@ -25,18 +25,13 @@ import net.windwaker.permissions.WindPerms;
 import net.windwaker.permissions.api.GroupManager;
 import net.windwaker.permissions.api.permissible.Group;
 
-import org.spout.api.chat.ChatArguments;
-import org.spout.api.chat.style.ChatStyle;
-import org.spout.api.command.CommandContext;
+import org.spout.api.command.CommandArguments;
 import org.spout.api.command.CommandSource;
 import org.spout.api.command.annotated.Command;
-import org.spout.api.command.annotated.CommandPermissions;
+import org.spout.api.command.annotated.Permissible;
 import org.spout.api.exception.CommandException;
 
-import static net.windwaker.permissions.util.MessageUtil.title;
-import static net.windwaker.permissions.cmd.CommandUtil.checkPermission;
-import static net.windwaker.permissions.cmd.CommandUtil.getBoolean;
-import static net.windwaker.permissions.cmd.CommandUtil.getGroup;
+import static net.windwaker.permissions.cmd.CommandUtil.*;
 
 public class GroupCommands {
 	private final GroupManager groupManager;
@@ -46,61 +41,63 @@ public class GroupCommands {
 	}
 
 	@Command(aliases = {"info", "information"}, usage = "<group>", desc = "Get general info about a group.", min = 1, max = 1)
-	public void info(CommandContext args, CommandSource source) throws CommandException {
+	public void info(CommandSource source, CommandArguments args) throws CommandException {
 		Group group = getGroup(groupManager, args, 0);
-		checkPermission(source, "windperms.group.info." + group.getName());
-		title(source, group.getName());
-		source.sendMessage(ChatStyle.BRIGHT_GREEN, "Default: ", ChatStyle.CYAN, group.isDefault());
+		assertHasPermission(source, "windperms.group.info." + group.getName());
+		source.sendMessage("========== " + group.getName() + " ==========");
+		source.sendMessage("Default: " + group.isDefault());
 	}
 
 	@Command(aliases = {"mk", "make", "add", "create"}, usage = "<group>", desc = "Creates a new group.", min = 1, max = 1)
-	@CommandPermissions("windperms.group.add")
-	public void add(CommandContext args, CommandSource source) throws CommandException {
+	@Permissible("windperms.group.add")
+	public void add(CommandSource source, CommandArguments args) throws CommandException {
 		String name = args.getString(0);
 		groupManager.addGroup(name);
-		source.sendMessage(ChatStyle.BRIGHT_GREEN, "Added group '", name, "'.");
+		source.sendMessage("Added group '" + name + "'.");
 	}
 
 	@Command(aliases = {"rm", "remove", "del", "delete"}, usage = "<group>", desc = "Remove a group.", min = 1, max = 1)
-	@CommandPermissions("windperms.group.remove")
-	public void remove(CommandContext args, CommandSource source) throws CommandException {
+	@Permissible("windperms.group.remove")
+	public void remove(CommandSource source, CommandArguments args) throws CommandException {
 		String name = args.getString(0);
 		groupManager.removeGroup(name);
-		source.sendMessage(ChatStyle.BRIGHT_GREEN, "Removed group '", name, "'.");
+		source.sendMessage("Removed group '" + name + "'.");
 	}
 
 	@Command(aliases = "set", usage = "<default|inherit|perm> <group> <value...>", desc = "Set a property for a group.", min = 3, max = 4)
-	public void set(CommandContext args, CommandSource source) throws CommandException {
+	public void set(CommandSource source, CommandArguments args) throws CommandException {
 		String property = args.getString(0);
 		Group group = getGroup(groupManager, args, 1);
 		String groupName = group.getName();
-		ChatArguments message = new ChatArguments(ChatStyle.BRIGHT_GREEN);
+		String message;
 		if (property.equalsIgnoreCase("default")) {
-			checkPermission(source, "windperms.group.set.default." + groupName);
+			assertHasPermission(source, "windperms.group.set.default." + groupName);
 			Boolean def = true;
 			if (args.length() == 3) {
 				def = getBoolean(args, 2);
 			}
 			group.setDefault(def);
-			message.append("Set default state of group '", groupName, "' to ", def.toString());
+			message = "Set default state of group '" + groupName + "' to " + def.toString();
 		} else if (property.equalsIgnoreCase("inherit")) {
-			checkPermission(source, "windperms.group.set.inherit." + groupName);
+			assertHasPermission(source, "windperms.group.set.inherit." + groupName);
 			Group inherited = getGroup(groupManager, args, 2);
 			Boolean inherit = true;
 			if (args.length() == 4) {
 				inherit = getBoolean(args, 3);
 			}
 			group.setInheritedGroup(inherited, inherit);
-			message.append("Set the state of group '", groupName, "' inheriting group '", inherited.getName(), "' to ", inherit.toString());
+			message = "Set the state of group '" + groupName + "' inheriting group '" + inherited.getName() + "' to " + inherit.toString();
 		} else if (property.equalsIgnoreCase("perm")) {
-			checkPermission(source, "windperms.group.set.perm." + groupName);
+			assertHasPermission(source, "windperms.group.set.perm." + groupName);
 			String node = args.getString(2);
 			Boolean state = true;
 			if (args.length() == 4) {
 				state = getBoolean(args, 3);
 			}
 			group.setPermission(node, state);
-			message.append("Set the state of node '", node, "' to ", state.toString());
+			message = "Set the state of node '" + node + "' to " + state.toString();
+		} else {
+			throw new CommandException("Unknown argument: " + property);
 		}
 		source.sendMessage(message);
 	}

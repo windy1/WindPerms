@@ -21,36 +21,30 @@
  */
 package net.windwaker.permissions.cmd;
 
-import net.windwaker.permissions.WindPerms;
 import net.windwaker.permissions.api.GroupManager;
 import net.windwaker.permissions.api.UserManager;
 import net.windwaker.permissions.api.permissible.Group;
 import net.windwaker.permissions.api.permissible.User;
-import net.windwaker.permissions.cmd.sub.GroupCommands;
-import net.windwaker.permissions.cmd.sub.PermissionsCommands;
-import net.windwaker.permissions.cmd.sub.UserCommands;
 
-import org.spout.api.command.CommandContext;
+import org.spout.api.command.CommandArguments;
 import org.spout.api.command.CommandSource;
-import org.spout.api.command.annotated.Command;
-import org.spout.api.command.annotated.NestedCommand;
 import org.spout.api.exception.CommandException;
 
 /**
  * Holds cmd nesters and static util methods for cmd handling.
  */
-public class CommandUtil {
-	public CommandUtil(WindPerms plugin) {
+public final class CommandUtil {
+	private CommandUtil() {
 	}
 
 	/**
-	 * Gets a group from the given {@link CommandContext} and the index to get it from.
+	 * Gets a group from the given {@link CommandArguments} and the index to get it from.
 	 * @param args
 	 * @param index
 	 * @return group
 	 * @throws CommandException is group is null
 	 */
-	public static Group getGroup(GroupManager groupManager, CommandContext args, int index) throws CommandException {
+	public static Group getGroup(GroupManager groupManager, CommandArguments args, int index) throws CommandException {
 		Group group = groupManager.getGroup(args.getString(index));
 		if (group == null) {
 			throw new CommandException("Group not found!");
@@ -59,13 +53,13 @@ public class CommandUtil {
 	}
 
 	/**
-	 * Gets a user from the given {@link CommandContext} and the index to get it from.
+	 * Gets a user from the given {@link CommandArguments} and the index to get it from.
 	 * @param args
 	 * @param index
 	 * @return user
 	 * @throws CommandException if user is null
 	 */
-	public static User getUser(UserManager userManager, CommandContext args, int index) throws CommandException {
+	public static User getUser(UserManager userManager, CommandArguments args, int index) throws CommandException {
 		User user = userManager.getUser(args.getString(index));
 		if (user == null) {
 			throw new CommandException("User not found!");
@@ -74,12 +68,12 @@ public class CommandUtil {
 	}
 
 	/**
-	 * Gets a boolean value from the given {@link CommandContext} and the index to get it from.
+	 * Gets a boolean value from the given {@link CommandArguments} and the index to get it from.
 	 * @param args
 	 * @param index
 	 * @return boolean value
 	 */
-	public static boolean getBoolean(CommandContext args, int index) {
+	public static boolean getBoolean(CommandArguments args, int index) throws CommandException {
 		return Boolean.valueOf(args.getString(index));
 	}
 
@@ -89,39 +83,9 @@ public class CommandUtil {
 	 * @param node
 	 * @throws CommandException if source does not have permission
 	 */
-	public static void checkPermission(CommandSource source, String node) throws CommandException {
+	public static void assertHasPermission(CommandSource source, String node) throws CommandException {
 		if (!source.hasPermission(node)) {
 			throw new CommandException("You don't have permission to do that!");
 		}
-	}
-
-	/**
-	 * Nester for {@link PermissionsCommands}
-	 * @param args
-	 * @param source
-	 */
-	@Command(aliases = {"pr", "permissions", "wp", "windperms"}, desc = "General WindPerms commands.")
-	@NestedCommand(value = PermissionsCommands.class)
-	public void permissions(CommandContext args, CommandSource source) {
-	}
-
-	/**
-	 * Nester for {@link GroupCommands}
-	 * @param args
-	 * @param source
-	 */
-	@Command(aliases = {"group", "g"}, desc = "Modifies a group")
-	@NestedCommand(value = GroupCommands.class)
-	public void group(CommandContext args, CommandSource source) {
-	}
-
-	/**
-	 * Nester for {@link UserCommands}
-	 * @param args
-	 * @param source
-	 */
-	@Command(aliases = {"user", "u"}, desc = "Modify Permissions users.", usage = "<info|set|add|remove|check> [group|perm|build] [user] [group:groupName|perm:node|bool:build|identifier] [bool]", min = 0, max = 5)
-	@NestedCommand(value = UserCommands.class)
-	public void user(CommandContext args, CommandSource source) {
 	}
 }

@@ -78,4 +78,8 @@ public class SqlGroupManager implements GroupManager {
 	@Override
 	public void reloadInheritance() {
 	}
+
+	@Override
+	public void clear() {
+	}
 }

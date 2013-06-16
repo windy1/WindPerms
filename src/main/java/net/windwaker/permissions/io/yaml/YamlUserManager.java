@@ -203,4 +203,9 @@ public class YamlUserManager implements UserManager {
 	public Set<User> getUsers() {
 		return users;
 	}
+
+	@Override
+	public void clear() {
+		users.clear();
+	}
 }

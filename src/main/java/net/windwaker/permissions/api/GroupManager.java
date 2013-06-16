@@ -87,4 +87,9 @@ public interface GroupManager {
 	 * Reloads the inheritance ladder
 	 */
 	public void reloadInheritance();
+
+	/**
+	 * Clears all groups.
+	 */
+	public void clear();
 }

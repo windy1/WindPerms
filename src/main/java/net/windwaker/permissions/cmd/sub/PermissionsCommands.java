@@ -24,11 +24,10 @@ package net.windwaker.permissions.cmd.sub;
 import net.windwaker.permissions.WindPerms;
 
 import org.spout.api.Spout;
-import org.spout.api.chat.style.ChatStyle;
-import org.spout.api.command.CommandContext;
+import org.spout.api.command.CommandArguments;
 import org.spout.api.command.CommandSource;
 import org.spout.api.command.annotated.Command;
-import org.spout.api.command.annotated.CommandPermissions;
+import org.spout.api.command.annotated.Permissible;
 import org.spout.api.exception.CommandException;
 
 public class PermissionsCommands {
@@ -39,12 +38,12 @@ public class PermissionsCommands {
 	}
 
 	@Command(aliases = {"version", "v"}, desc = "Prints the version info")
-	@CommandPermissions("windperms.version")
-	public void version(CommandContext args, CommandSource source) throws CommandException {
-		source.sendMessage(ChatStyle.BRIGHT_GREEN, "WindPerms ", plugin.getDescription().getVersion());
-		source.sendMessage(ChatStyle.BRIGHT_GREEN, "Copyright (c) 2012 Walker Crouse, <http://windwaker.net/>");
-		source.sendMessage(ChatStyle.BRIGHT_GREEN, "Powered by", ChatStyle.CYAN, " Spout ", Spout.getEngine().getVersion(), ChatStyle.BRIGHT_GREEN, " (Implementing", ChatStyle.CYAN, " SpoutAPI ", Spout.getAPIVersion(), ChatStyle.BRIGHT_GREEN, ")");
-		source.sendMessage(ChatStyle.BRIGHT_GREEN, "There are ", plugin.getGroupManager().getGroups().size(), " unique groups registered.");
-		source.sendMessage(ChatStyle.BRIGHT_GREEN, "There are ", plugin.getUserManager().getUsers().size(), " unique users registered.");
+	@Permissible("windperms.version")
+	public void version(CommandSource source, CommandArguments args) throws CommandException {
+		source.sendMessage("WindPerms " + plugin.getDescription().getVersion());
+		source.sendMessage("Copyright (c) 2012 Walker Crouse, <http://windwaker.net/>");
+		source.sendMessage("Powered by Spout " + Spout.getEngine().getVersion() + " (Implementing SpoutAPI " + Spout.getAPIVersion() + ")");
+		source.sendMessage("There are " + plugin.getGroupManager().getGroups().size() + " unique groups registered.");
+		source.sendMessage("There are " + plugin.getUserManager().getUsers().size() + " unique users registered.");
 	}
 }

@@ -70,4 +70,8 @@ public class SqlUserManager implements UserManager {
 	public Set<User> getUsers() {
 		return null;
 	}
+
+	@Override
+	public void clear() {
+	}
 }

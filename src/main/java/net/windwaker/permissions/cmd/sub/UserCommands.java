@@ -26,20 +26,13 @@ import net.windwaker.permissions.api.GroupManager;
 import net.windwaker.permissions.api.UserManager;
 import net.windwaker.permissions.api.permissible.Group;
 import net.windwaker.permissions.api.permissible.User;
-
-import org.spout.api.chat.ChatArguments;
-import org.spout.api.chat.style.ChatStyle;
-import org.spout.api.command.CommandContext;
+import org.spout.api.command.CommandArguments;
 import org.spout.api.command.CommandSource;
 import org.spout.api.command.annotated.Command;
-import org.spout.api.command.annotated.CommandPermissions;
+import org.spout.api.command.annotated.Permissible;
 import org.spout.api.exception.CommandException;
 
-import static net.windwaker.permissions.cmd.CommandUtil.getBoolean;
-import static net.windwaker.permissions.cmd.CommandUtil.getGroup;
-import static net.windwaker.permissions.util.MessageUtil.title;
-import static net.windwaker.permissions.cmd.CommandUtil.checkPermission;
-import static net.windwaker.permissions.cmd.CommandUtil.getUser;
+import static net.windwaker.permissions.cmd.CommandUtil.*;
 
 public class UserCommands {
 	private final UserManager userManager;
@@ -51,51 +44,53 @@ public class UserCommands {
 	}
 
 	@Command(aliases = {"info", "information"}, usage = "<user>", desc = "Get general information about a user.", min = 1, max = 1)
-	public void info(CommandContext args, CommandSource source) throws CommandException {
+	public void info(CommandSource source, CommandArguments args) throws CommandException {
 		User user = getUser(userManager, args, 0);
 		String name = user.getName();
-		checkPermission(source, "windperms.user.info." + name);
-		title(source, name);
+		assertHasPermission(source, "windperms.user.info." + name);
+		source.sendMessage("========== " + name + " ==========");
 		String groupName = user.getGroup() != null ? user.getGroup().getName() : "Error: No group found!";
-		source.sendMessage(ChatStyle.BRIGHT_GREEN, "Group: ", ChatStyle.CYAN, groupName);
+		source.sendMessage("Group: " + groupName);
 	}
 
 	@Command(aliases = {"mk", "make", "create", "add"}, usage = "<user>", desc = "Add a new user.", min = 1, max = 1)
-	@CommandPermissions("windchat.user.add")
-	public void add(CommandContext args, CommandSource source) throws CommandException {
+	@Permissible("windchat.user.add")
+	public void add(CommandSource source, CommandArguments args) throws CommandException {
 		String name = args.getString(0);
 		userManager.addUser(name);
-		source.sendMessage(ChatStyle.BRIGHT_GREEN, "Added user '", name, "'.");
+		source.sendMessage("Added user '" + name + "'.");
 	}
 
 	@Command(aliases = {"rm", "remove", "del", "delete"}, usage = "<user>", desc = "Remove a user.", min = 1, max = 1)
-	@CommandPermissions("windchat.user.remove")
-	public void remove(CommandContext args, CommandSource source) throws CommandException {
+	@Permissible("windchat.user.remove")
+	public void remove(CommandSource source, CommandArguments args) throws CommandException {
 		String name = args.getString(0);
 		userManager.removeUser(name);
-		source.sendMessage(ChatStyle.BRIGHT_GREEN, "Removed user '", name, "'.");
+		source.sendMessage("Removed user '" + name + "'.");
 	}
 
 	@Command(aliases = "set", usage = "<group|perm> <user> <value...>", desc = "Set a property of a user.", min = 3, max = 4)
-	public void set(CommandContext args, CommandSource source) throws CommandException {
+	public void set(CommandSource source, CommandArguments args) throws CommandException {
 		String property = args.getString(0);
 		User user = getUser(userManager, args, 1);
 		String name = user.getName();
-		ChatArguments message = new ChatArguments(ChatStyle.BRIGHT_GREEN);
+		String message;
 		if (property.equalsIgnoreCase("group")) {
-			checkPermission(source, "windperms.user.set.group." + name);
+			assertHasPermission(source, "windperms.user.set.group." + name);
 			Group group = getGroup(groupManager, args, 2);
 			user.setGroup(group);
-			message.append(name, " is now in group '", group.getName(), "'.");
+			message = name + " is now in group '" + group.getName() + "'.";
 		} else if (property.equalsIgnoreCase("perm")) {
-			checkPermission(source, "windperms.user.set.perm." + name);
+			assertHasPermission(source, "windperms.user.set.perm." + name);
 			Boolean state = true;
 			if (args.length() == 4) {
 				state = getBoolean(args, 3);
 			}
 			String node = args.getString(2);
 			user.setPermission(node, state);
-			message.append("Set state of node '", node, "' to ", state.toString());
+			message = "Set state of node '" + node + "' to " + state.toString();
+		} else {
+			throw new CommandException("Unknown argument: " + property);
 		}
 		source.sendMessage(message);
 	}

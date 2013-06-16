@@ -264,4 +264,9 @@ public class YamlGroupManager implements GroupManager {
 			}
 		}
 	}
+
+	@Override
+	public void clear() {
+		groups.clear();
+	}
 }
