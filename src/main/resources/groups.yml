@@ -1,0 +1,37 @@
+groups:
+    guest:
+        inherited:
+            user: false
+        default: true
+        permissions:
+            foo.bar: false
+        metadata:
+            chat-format: '[Guest] {NAME}: {MESSAGE}'
+            join-message-format: '{NAME} has joined the game.'
+    user:
+        inherited:
+            guest: true
+        default: false
+        permissions:
+            foo.bar: false
+        metadata:
+            chat-format: '[User] {NAME}: {MESSAGE}'
+            join-message-format: '{NAME} has joined the game.'
+    mod:
+        inherited:
+            user: true
+        default: false
+        permissions:
+            foo.bar: false
+        metadata:
+            chat-format: '[Moderator] {NAME}: {MESSAGE}'
+            join-message-format: '{NAME} has joined the game.'
+    admin:
+        inherited:
+            mod: true
+        default: false
+        permissions:
+            foo.bar: true
+        metadata:
+            chat-format: '[Administrator] {NAME}: {MESSAGE}'
+            join-message-format: '{NAME} has joined the game.'

@@ -23,6 +23,7 @@
 package me.windwaker.permissions.io.yaml;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -31,7 +32,9 @@ import me.windwaker.permissions.WindPerms;
 import me.windwaker.permissions.api.GroupManager;
 import me.windwaker.permissions.api.permissible.Group;
 import me.windwaker.permissions.api.permissible.User;
+import org.apache.commons.io.FileUtils;
 
+import org.spout.api.Spout;
 import org.spout.api.data.DataValue;
 import org.spout.api.exception.ConfigurationException;
 import org.spout.api.util.config.yaml.YamlConfiguration;
@@ -41,12 +44,15 @@ import org.spout.api.util.config.yaml.YamlConfiguration;
  * @author Windwaker
  */
 public class YamlGroupManager implements GroupManager {
-	private final YamlConfiguration data = new YamlConfiguration(new File("plugins/WindPerms/groups.yml"));
+	private final File file;
+	private final YamlConfiguration data;
 	private final Set<Group> groups = new HashSet<Group>();
 	private final WindPerms plugin;
 
 	public YamlGroupManager(WindPerms plugin) {
 		this.plugin = plugin;
+		file = new File(plugin.getDataFolder(), "groups.yml");
+		data = new YamlConfiguration(file);
 	}
 
 	@Override
@@ -92,29 +98,12 @@ public class YamlGroupManager implements GroupManager {
 
 	private void addDefaults() {
 		try {
-			data.getNode("groups/guest/inherited/user").setValue(false);
-			data.getNode("groups/guest/default").setValue(true);
-			data.getNode("groups/guest/permissions/foo.bar").setValue(false);
-			data.getNode("groups/guest/metadata/chat-format").setValue("[{{PURPLE}}Guest{{WHITE}}] {NAME}: {MESSAGE}");
-			data.getNode("groups/guest/metadata/join-message-format").setValue("{{PURPLE}}{NAME} {{GRAY}}has joined the game.");
-			data.getNode("groups/user/inherited/guest").setValue(true);
-			data.getNode("groups/user/default").setValue(false);
-			data.getNode("groups/user/permissions/foo.bar").setValue(false);
-			data.getNode("groups/user/metadata/chat-format").setValue("[{{BLUE}}User{{WHITE}}] {NAME}: {MESSAGE}");
-			data.getNode("groups/user/metadata/join-message-format").setValue("{{BLUE}}{NAME} {{GRAY}}has joined the game.");
-			data.getNode("groups/mod/inherited/user").setValue(true);
-			data.getNode("groups/mod/default").setValue(false);
-			data.getNode("groups/mod/permissions/foo.bar").setValue(false);
-			data.getNode("groups/mod/metadata/chat-format").setValue("[{{DARK_GREEN}}{{BOLD}}Moderator{{RESET}}] {NAME}: {MESSAGE}");
-			data.getNode("groups/mod/metadata/join-message-format").setValue("{{DARK_GREEN}}{{BOLD}}{NAME} {{RESET}}{{GRAY}}has joined the game.");
-			data.getNode("groups/admin/inherited/mod").setValue(true);
-			data.getNode("groups/admin/default").setValue(false);
-			data.getNode("groups/admin/permissions/foo.bar").setValue(true);
-			data.getNode("groups/admin/metadata/chat-format").setValue("[{{DARK_RED}}{{BOLD}}Administrator{{RESET}}] {NAME}: {MESSAGE}");
-			data.getNode("groups/admin/metadata/join-message-format").setValue("{{DARK_RED}}{{BOLD}}{NAME} {{RESET}}{{GRAY}}has joined the game.");
-			data.save();
+			FileUtils.copyInputStreamToFile(Spout.getFileSystem().getResourceStream("file://WindPerms/groups.yml"), file);
+			data.load();
 		} catch (ConfigurationException e) {
 			plugin.getLogger().severe("Failed to add defaults: " + e.getMessage());
+		} catch (IOException e) {
+			plugin.getLogger().severe("Failed to copy defaults to configuration " + e.getMessage());
 		}
 	}
 

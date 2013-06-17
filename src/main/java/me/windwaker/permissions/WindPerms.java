@@ -45,6 +45,7 @@ import org.spout.api.command.annotated.AnnotatedCommandExecutorFactory;
 import org.spout.api.entity.Player;
 import org.spout.api.exception.SpoutRuntimeException;
 import org.spout.api.plugin.Plugin;
+import org.spout.api.plugin.PluginDescriptionFile;
 
 /**
  * Implementation of PermissionsPlugin
@@ -161,11 +162,12 @@ public class WindPerms extends Plugin {
 	@Override
 	public URI getUpdate() {
 		// create the URL
-		String repoUrl = getDescription().getData("repo-url");
-		String repoId = getDescription().getData("repo-id");
-		String groupId = getDescription().getData("group-id");
-		String artifactId = getDescription().getData("artifact-id");
-		String updateVersion = getDescription().getData("update-version");
+		PluginDescriptionFile pdf = getDescription();
+		String repoUrl = pdf.getData("repo-url");
+		String repoId = pdf.getData("repo-id");
+		String groupId = pdf.getData("group-id");
+		String artifactId = pdf.getData("artifact-id");
+		String updateVersion = pdf.getData("update-version");
 		String path = repoUrl + "/service/local/artifact/maven/"
 				+ "redirect?r=" + repoId
 				+ "&g=" + groupId
@@ -190,13 +192,15 @@ public class WindPerms extends Plugin {
 			System.out.println("Location: " + v);
 			v = v.substring(v.lastIndexOf('/')).split("-")[1];
 			System.out.println("Version: " + v);
+			String curr = pdf.getVersion().split("-")[0];
+			System.out.println("Current version: " + curr);
 
 			// compare the suggested version with the current version
 			DefaultArtifactVersion newest = new DefaultArtifactVersion(v);
-			DefaultArtifactVersion current = new DefaultArtifactVersion(getDescription().getVersion());
-			System.out.println("Newer version available: " + (newest.compareTo(current) > 0));
-			if (newest.compareTo(current) > 0) return uri;
-			return null;
+			DefaultArtifactVersion current = new DefaultArtifactVersion(curr);
+			boolean available = newest.compareTo(current) > 0;
+			System.out.println("Newer version available: " + available);
+			return available ? uri : null;
 		} catch (URISyntaxException e) {
 			throw new SpoutRuntimeException("Error creating update URI.", e);
 		} catch (MalformedURLException e) {

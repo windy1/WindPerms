@@ -23,6 +23,7 @@
 package me.windwaker.permissions.io.yaml;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -32,7 +33,9 @@ import me.windwaker.permissions.api.GroupManager;
 import me.windwaker.permissions.api.UserManager;
 import me.windwaker.permissions.api.permissible.Group;
 import me.windwaker.permissions.api.permissible.User;
+import org.apache.commons.io.FileUtils;
 
+import org.spout.api.Spout;
 import org.spout.api.data.DataValue;
 import org.spout.api.exception.ConfigurationException;
 import org.spout.api.util.config.yaml.YamlConfiguration;
@@ -42,7 +45,8 @@ import org.spout.api.util.config.yaml.YamlConfiguration;
  * @author Windwaker
  */
 public class YamlUserManager implements UserManager {
-	private final YamlConfiguration data = new YamlConfiguration(new File("plugins/WindPerms/users.yml"));
+	private final File file;
+	private final YamlConfiguration data;
 	private final Set<User> users = new HashSet<User>();
 	private final WindPerms plugin;
 	private final GroupManager groupManager;
@@ -50,6 +54,8 @@ public class YamlUserManager implements UserManager {
 	public YamlUserManager(WindPerms plugin) {
 		this.plugin = plugin;
 		groupManager = plugin.getGroupManager();
+		file = new File(plugin.getDataFolder(), "users.yml");
+		data = new YamlConfiguration(file);
 	}
 
 	@Override
@@ -89,11 +95,12 @@ public class YamlUserManager implements UserManager {
 
 	private void addDefaults() {
 		try {
-			data.getNode("users/Notch/group").setValue("admin");
-			data.getNode("users/Notch/permissions/foo.bar").setValue(false);
-			data.save();
+			FileUtils.copyInputStreamToFile(Spout.getFileSystem().getResourceStream("file://WindPerms/users.yml"), file);
+			data.load();
 		} catch (ConfigurationException e) {
 			plugin.getLogger().severe("Failed to add defaults: " + e.getMessage());
+		} catch (IOException e) {
+			plugin.getLogger().severe("Failed to copy defaults to configuration file: " + e.getMessage());
 		}
 	}
 
