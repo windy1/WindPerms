@@ -186,9 +186,9 @@ public class WindPerms extends Plugin {
 			if (response != 301) return null;
 
 			// get the version from the suggested filename
-			String v = connection.getHeaderField("Location");
-			debug("Redirect URL: " + v);
-			v = v.substring(v.lastIndexOf('/')).split("-")[1];
+			String redirect = connection.getHeaderField("Location");
+			debug("Redirect URL: " + redirect);
+			String v = redirect.substring(redirect.lastIndexOf('/')).split("-")[1];
 			debug("Latest version: " + v);
 			String curr = pdf.getVersion().split("-")[0];
 			debug("Current version: " + v);
@@ -198,7 +198,7 @@ public class WindPerms extends Plugin {
 			DefaultArtifactVersion current = new DefaultArtifactVersion(curr);
 			boolean available = newest.compareTo(current) > 0;
 			debug("Newer version available: " + available);
-			return available ? uri : null;
+			return available ? new URI(redirect) : null;
 		} catch (URISyntaxException e) {
 			throw new SpoutRuntimeException("Error creating update URI.", e);
 		} catch (MalformedURLException e) {
