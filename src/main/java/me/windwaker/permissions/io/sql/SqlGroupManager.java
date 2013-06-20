@@ -67,6 +67,10 @@ public class SqlGroupManager implements GroupManager {
 	}
 
 	@Override
+	public void setDefaultGroup(Group group) {
+	}
+
+	@Override
 	public Group getGroup(String name) {
 		return null;
 	}

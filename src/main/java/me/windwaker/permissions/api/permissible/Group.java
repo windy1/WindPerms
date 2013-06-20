@@ -38,7 +38,6 @@ import org.spout.api.data.DataValue;
  */
 public class Group extends Permissible {
 	private final GroupManager groupManager;
-	private boolean def = false;
 	private final Map<Group, Boolean> indirectInheritedGroups = new HashMap<Group, Boolean>();
 	private final Map<Group, Boolean> inheritedGroups = new HashMap<Group, Boolean>();
 	private final Set<User> users = new HashSet<User>();
@@ -179,25 +178,6 @@ public class Group extends Permissible {
 			return indirectInheritedGroups.get(group);
 		}
 		return false;
-	}
-
-	/**
-	 * Sets if the group should be the default group.
-	 * @param def
-	 */
-	public void setDefault(boolean def) {
-		this.def = def;
-		if (autoSave) {
-			save();
-		}
-	}
-
-	/**
-	 * Whether or not the group is a default group
-	 * @return true if default
-	 */
-	public boolean isDefault() {
-		return def;
 	}
 
 	@Override

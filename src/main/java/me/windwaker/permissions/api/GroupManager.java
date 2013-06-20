@@ -72,6 +72,13 @@ public interface GroupManager {
 	public Group getDefaultGroup();
 
 	/**
+	 * Sets the default group.
+	 *
+	 * @param group to set
+	 */
+	public void setDefaultGroup(Group group);
+
+	/**
 	 * Gets a group from said name
 	 * @param name
 	 * @return group

@@ -50,6 +50,7 @@ public class YamlGroupManager implements GroupManager {
 	private final YamlConfiguration data;
 	private final Set<Group> groups = new HashSet<Group>();
 	private final WindPerms plugin;
+	private Group defaultGroup;
 
 	public YamlGroupManager(WindPerms plugin) {
 		this.plugin = plugin;
@@ -85,6 +86,7 @@ public class YamlGroupManager implements GroupManager {
 				loadInheritance(group);
 			}
 
+			defaultGroup = getGroup(data.getNode("default").getString());
 			if (!names.isEmpty()) {
 				plugin.getLogger().info("Group data loaded. " + groups.size() + " unique groups loaded!");
 			}
@@ -98,6 +100,7 @@ public class YamlGroupManager implements GroupManager {
 		for (Group group : groups) {
 			saveGroup(group);
 		}
+		data.getNode("default").setValue(defaultGroup.getName());
 	}
 
 	private void addDefaults() {
@@ -156,11 +159,9 @@ public class YamlGroupManager implements GroupManager {
 	public void saveGroup(Group group) {
 		try {
 			debug("Saving group: " + group.getName());
-			String path = "groups/" + group.getName();
 			saveInheritance(group);
 			savePermissions(group);
 			saveData(group);
-			data.getNode(path + "/default").setValue(group.isDefault());
 			data.save();
 		} catch (ConfigurationException e) {
 			plugin.getLogger().severe("Failed to save group " + group.getName() + ": " + e.getMessage());
@@ -171,12 +172,9 @@ public class YamlGroupManager implements GroupManager {
 	public void loadGroup(String group) {
 		debug("Loading group: " + group);
 		// Create new group
-		String path = "groups/" + group;
 		Group g = new Group(plugin, group);
 		// Turn off auto-save for loading.
 		g.setAutoSave(false);
-		// Set some values.
-		g.setDefault(data.getNode(path + "/default").getBoolean());
 		// Load permissions, data, and worlds
 		loadPermissions(g);
 		loadData(g);
@@ -226,12 +224,12 @@ public class YamlGroupManager implements GroupManager {
 
 	@Override
 	public Group getDefaultGroup() {
-		for (Group group : groups) {
-			if (group.isDefault()) {
-				return group;
-			}
-		}
-		return null;
+		return defaultGroup;
+	}
+
+	@Override
+	public void setDefaultGroup(Group defaultGroup) {
+		this.defaultGroup = defaultGroup;
 	}
 
 	@Override

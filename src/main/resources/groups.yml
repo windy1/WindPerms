@@ -1,6 +1,6 @@
+default: guest
 groups:
     guest:
-        default: true
         permissions:
             example.guest: true
         metadata:

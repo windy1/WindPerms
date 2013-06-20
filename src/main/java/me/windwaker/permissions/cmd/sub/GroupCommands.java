@@ -47,7 +47,6 @@ public class GroupCommands {
 		Group group = getGroup(groupManager, args, 0);
 		assertHasPermission(source, "windperms.group.info." + group.getName());
 		source.sendMessage("========== " + group.getName() + " ==========");
-		source.sendMessage("Default: " + group.isDefault());
 	}
 
 	@Command(aliases = {"mk", "make", "add", "create"}, usage = "<group>", desc = "Creates a new group.", min = 1, max = 1)
@@ -74,12 +73,8 @@ public class GroupCommands {
 		String message;
 		if (property.equalsIgnoreCase("default")) {
 			assertHasPermission(source, "windperms.group.set.default." + groupName);
-			Boolean def = true;
-			if (args.length() == 3) {
-				def = getBoolean(args, 2);
-			}
-			group.setDefault(def);
-			message = "Set default state of group '" + groupName + "' to " + def.toString();
+			groupManager.setDefaultGroup(group);
+			message = groupName + " is now the default group.";
 		} else if (property.equalsIgnoreCase("inherit")) {
 			assertHasPermission(source, "windperms.group.set.inherit." + groupName);
 			Group inherited = getGroup(groupManager, args, 2);
