@@ -5,7 +5,7 @@
 	<!-- Project info -->
 	<groupId>me.windwaker</groupId>
 	<artifactId>windperms</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>WindPerms</name>
 	<description>WindPerms is a plugin for the Spout server that provides permissible player actions for other plugins.</description>
