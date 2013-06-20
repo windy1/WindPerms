@@ -31,6 +31,7 @@ import me.windwaker.permissions.api.permissible.Permissible;
 import me.windwaker.permissions.api.permissible.User;
 import me.windwaker.permissions.io.Settings;
 
+import org.spout.api.data.DataValue;
 import org.spout.api.event.EventHandler;
 import org.spout.api.event.Listener;
 import org.spout.api.event.Order;
@@ -39,6 +40,8 @@ import org.spout.api.event.player.PlayerLoginEvent;
 import org.spout.api.event.server.RetrieveDataEvent;
 import org.spout.api.event.server.permissions.PermissionGroupsEvent;
 import org.spout.api.event.server.permissions.PermissionNodeEvent;
+
+import static org.spout.api.Spout.*;
 
 /**
  * Handles all calls in SpoutAPI like PermissionsSubject.getGroups(), PermissionsSubject.isInGroup(String group),
@@ -64,17 +67,23 @@ public class PermissionsHandler implements Listener {
 	@EventHandler(order = Order.EARLIEST)
 	public void getGroups(PermissionGroupsEvent event) {
 		// Get the user
-		User user = userManager.getUser(event.getSubject().getName());
+		String subject = event.getSubject().getName();
+		debug("Groups requested for user: " + subject);
+		User user = userManager.getUser(subject);
 		if (user == null) {
+			debug("\tUser not found.");
 			return;
 		}
+
 		// Get the users group
 		Group group = user.getGroup();
-		if (group == null) {
-			return;
-		}
+		if (group == null)
+			throw new IllegalStateException("Specified user exists but does not have a group.");
+
 		// Return the group
-		String[] name = {group.getName()};
+		String groupName = group.getName();
+		debug("\tReturning group: " + groupName);
+		String[] name = {groupName};
 		event.setGroups(name);
 	}
 
@@ -87,10 +96,13 @@ public class PermissionsHandler implements Listener {
 	public void getNodes(PermissionNodeEvent event) {
 		// Get the subject - hasPermission(String node) can be called on a group or a user
 		String name = event.getSubject().getName();
+		debug("Permission nodes requested for subject: " + name);
 		Permissible subject = groupManager.getGroup(name) != null ? groupManager.getGroup(name) : userManager.getUser(name);
 		if (subject == null) {
+			debug("\tSubject not found.");
 			return;
 		}
+
 		/*
 		 * Get the node and all parent nodes of the events.
 		 *	For instance, if 'foo.bar.baz' is queried, 
@@ -101,12 +113,14 @@ public class PermissionsHandler implements Listener {
 		 */
 		for (String node : event.getNodes()) {
 			if (subject.hasPermission(node) || (subject.hasPermission("*") && Settings.WILDCARD_ENABLED.getBoolean())) {
+				debug("\tSubject has permission.");
 				event.setResult(Result.ALLOW);
 				return;
 			} else {
 				event.setResult(Result.DEFAULT);
 			}
 		}
+		debug("\tSubject does not have permission.");
 	}
 
 	/**
@@ -118,15 +132,22 @@ public class PermissionsHandler implements Listener {
 	public void retrieveData(RetrieveDataEvent event) {
 		// Gets the subject (group or user)
 		String name = event.getSubject().getName();
+		debug("Data requested for subject: " + name);
 		Permissible subject = groupManager.getGroup(name) != null ? groupManager.getGroup(name) : userManager.getUser(name);
 		if (subject == null) {
+			debug("\tSubject not found.");
 			return;
 		}
+
 		// Set the data if we have some
 		String node = event.getNode();
+		debug("\tKey: " + node);
 		if (subject.hasMetadata(node)) {
-			event.setResult(subject.getMetadata(node));
+			DataValue value = subject.getMetadata(node);
+			debug("\tValue: " + value);
+			event.setResult(value);
 		}
+		debug("\tData not found.");
 	}
 
 	/**

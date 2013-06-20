@@ -70,7 +70,7 @@ public class UserCommands {
 		source.sendMessage("Removed user '" + name + "'.");
 	}
 
-	@Command(aliases = "set", usage = "<group|perm> <user> <value...>", desc = "Set a property of a user.", min = 3, max = 4)
+	@Command(aliases = "set", usage = "<group|perm|data> <user> <value...>", desc = "Set a property of a user.", min = 3, max = 4)
 	public void set(CommandSource source, CommandArguments args) throws CommandException {
 		String property = args.getString(0);
 		User user = getUser(userManager, args, 1);
@@ -90,6 +90,12 @@ public class UserCommands {
 			String node = args.getString(2);
 			user.setPermission(node, state);
 			message = "Set state of node '" + node + "' to " + state.toString();
+		} else if (property.equalsIgnoreCase("data") || property.equalsIgnoreCase("md") || property.equalsIgnoreCase("metadata")) {
+			assertHasPermission(source, "windperms.user.set.metadata." + name);
+			String key = args.getString(2);
+			Object value = args.get(3);
+			user.setMetadata(key, value);
+			message = "Set state of data key '" + key + "' to " + value;
 		} else {
 			throw new CommandException("Unknown argument: " + property);
 		}

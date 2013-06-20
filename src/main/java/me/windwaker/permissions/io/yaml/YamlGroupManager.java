@@ -39,6 +39,8 @@ import org.spout.api.data.DataValue;
 import org.spout.api.exception.ConfigurationException;
 import org.spout.api.util.config.yaml.YamlConfiguration;
 
+import static org.spout.api.Spout.*;
+
 /**
  * Flat-file implementation of GroupManager done in YAML.
  * @author Windwaker
@@ -59,10 +61,12 @@ public class YamlGroupManager implements GroupManager {
 	public void load() {
 		try {
 
+			debug("Loading user data...");
 			data.load();
 			data.setPathSeparator("/");
 			if (!data.getNode("groups").isAttached()) {
 				// load some defaults if the file is empty
+				debug("\tNo data found, loading defaults.");
 				addDefaults();
 			}
 
@@ -110,26 +114,38 @@ public class YamlGroupManager implements GroupManager {
 	private void loadPermissions(Group group) {
 		String path = "groups/" + group.getName();
 		Set<String> nodes = data.getNode(path + "/permissions").getKeys(false);
+		debug("Loading permission nodes for group: " + group.getName());
 		for (String node : nodes) {
-			group.setPermission(node, data.getNode(path + "/permissions/" + node).getBoolean());
+			boolean value = data.getNode(path + "/permissions/" + node).getBoolean();
+			debug("\tNode: " + node);
+			debug("\tValue: " + value);
+			group.setPermission(node, value);
 		}
 	}
 
 	private void loadData(Group group) {
 		String path = "groups/" + group.getName();
 		Set<String> nodes = data.getNode(path + "/metadata").getKeys(false);
+		debug("Loading metadata for group: " + group.getName());
 		for (String node : nodes) {
-			group.setMetadata(node, data.getNode(path + "/metadata/" + node).getValue());
+			Object value = data.getNode(path + "/metadata/" + node).getValue();
+			debug("\tKey: " + node);
+			debug("\tValue: " + value);
+			group.setMetadata(node, value);
 		}
 	}
 
 	private void loadInheritance(Group group) {
 		String path = "groups/" + group.getName();
 		Set<String> inheritedNames = data.getNode(path + "/inherited").getKeys(false);
+		debug("Loading inheritance of group: " + group.getName());
 		for (String inheritedName : inheritedNames) {
 			Group inherited = getGroup(inheritedName);
 			if (inherited != null) {
-				group.setInheritedGroup(inherited, data.getNode(path + "/inherited/" + inheritedName).getBoolean());
+				boolean value = data.getNode(path + "/inherited/" + inheritedName).getBoolean();
+				debug("\tGroup: " + inheritedName);
+				debug("\tInherited: " + value);
+				group.setInheritedGroup(inherited, value);
 			}
 		}
 		// after all groups are inherited, make sure all their data is up to date
@@ -139,6 +155,7 @@ public class YamlGroupManager implements GroupManager {
 	@Override
 	public void saveGroup(Group group) {
 		try {
+			debug("Saving group: " + group.getName());
 			String path = "groups/" + group.getName();
 			saveInheritance(group);
 			savePermissions(group);
@@ -152,6 +169,7 @@ public class YamlGroupManager implements GroupManager {
 
 	@Override
 	public void loadGroup(String group) {
+		debug("Loading group: " + group);
 		// Create new group
 		String path = "groups/" + group;
 		Group g = new Group(plugin, group);
@@ -168,26 +186,41 @@ public class YamlGroupManager implements GroupManager {
 	}
 
 	private void saveInheritance(Group group) {
+		debug("Saving inheritance of group: " + group.getName());
 		String path = "groups/" + group.getName();
 		Map<Group, Boolean> groupMap = group.getInheritedGroups();
 		for (Map.Entry<Group, Boolean> entry : groupMap.entrySet()) {
-			data.getNode(path + "/inherited/" + entry.getKey().getName()).setValue(entry.getValue());
+			String groupName = entry.getKey().getName();
+			boolean inherited = entry.getValue();
+			debug("\tGroup: " + groupName);
+			debug("\tInherited: " + inherited);
+			data.getNode(path + "/inherited/" + groupName).setValue(inherited);
 		}
 	}
 
 	private void savePermissions(Group group) {
+		debug("Loading permission nodes of group: " + group.getName());
 		String path = "groups/" + group.getName();
 		Set<Map.Entry<String, Boolean>> perms = group.getPermissions().entrySet();
 		for (Map.Entry<String, Boolean> perm : perms) {
-			data.getNode(path + "/permissions/" + perm.getKey()).setValue(perm.getValue());
+			String node = perm.getKey();
+			boolean value = perm.getValue();
+			debug("\tNode: " + node);
+			debug("\tValue: " + value);
+			data.getNode(path + "/permissions/" + node).setValue(value);
 		}
 	}
 
 	private void saveData(Group group) {
+		debug("Saving metadata for group: " + group.getName());
 		String path = "groups/" + group.getName();
 		Set<Map.Entry<String, DataValue>> values = group.getMetadataMap().entrySet();
 		for (Map.Entry<String, DataValue> value : values) {
-			data.getNode(path + "/metadata/" + value.getKey()).setValue(value.getValue());
+			String key = value.getKey();
+			DataValue v = value.getValue();
+			debug("\tKey: " + key);
+			debug("\tValue: " + v);
+			data.getNode(path + "/metadata/" + key).setValue(v);
 		}
 	}
 

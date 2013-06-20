@@ -30,6 +30,7 @@ import org.spout.api.command.CommandArguments;
 import org.spout.api.command.CommandSource;
 import org.spout.api.command.annotated.Command;
 import org.spout.api.command.annotated.Permissible;
+import org.spout.api.data.DataValue;
 import org.spout.api.exception.CommandException;
 
 import static me.windwaker.permissions.cmd.CommandUtil.*;
@@ -97,6 +98,12 @@ public class GroupCommands {
 			}
 			group.setPermission(node, state);
 			message = "Set the state of node '" + node + "' to " + state.toString();
+		} else if (property.equalsIgnoreCase("data") || property.equalsIgnoreCase("md") || property.equalsIgnoreCase("metadata")) {
+			assertHasPermission(source, "windperms.group.set.metadata." + groupName);
+			String key = args.getString(2);
+			Object value = args.get(3);
+			group.setMetadata(key, value);
+			message = "Set the state of data key '" + key + "' to " + value.toString();
 		} else {
 			throw new CommandException("Unknown argument: " + property);
 		}

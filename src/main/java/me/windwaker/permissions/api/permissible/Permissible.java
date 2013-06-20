@@ -74,9 +74,7 @@ public abstract class Permissible {
 	 */
 	public void setPermission(String node, boolean state) {
 		permissionNodes.put(node, state);
-		if (autoSave) {
-			save();
-		}
+		if (autoSave) save();
 	}
 
 	/**
@@ -116,9 +114,7 @@ public abstract class Permissible {
 	 */
 	public void setMetadata(String node, DataValue value) {
 		metadata.put(node, value);
-		if (autoSave) {
-			save();
-		}
+		if (autoSave) save();
 	}
 
 	/**

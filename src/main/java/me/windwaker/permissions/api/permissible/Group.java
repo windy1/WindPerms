@@ -110,14 +110,14 @@ public class Group extends Permissible {
 			// inherited do not save to disk
 			indirectInheritedGroups.put(group, inherit);
 		}
+
 		if (inherit) {
 			inheritGroups(group);
 		}
+
 		// load data from inherited groups
 		inheritData();
-		if (autoSave) {
-			save();
-		}
+		if (autoSave) save();
 	}
 
 	public void reloadInheritance() {
@@ -135,16 +135,13 @@ public class Group extends Permissible {
 
 	private void inheritGroups(Group group) {
 		// no circle inheritance here
-		if (group.isAssignableFrom(this)) {
+		if (group.isAssignableFrom(this))
 			throw new IllegalStateException("Group " + group.getName() + " already inherits " + name + ". Two groups may not inherit each other.");
-		}
 		// inherit the groups inherited groups
-		for (Map.Entry<Group, Boolean> entry : group.getIndirectInheritedGroups().entrySet()) {
+		for (Map.Entry<Group, Boolean> entry : group.getIndirectInheritedGroups().entrySet())
 			setInheritedGroup(entry.getKey(), entry.getValue(), false);
-		}
-		for (Map.Entry<Group, Boolean> entry : group.getInheritedGroups().entrySet()) {
+		for (Map.Entry<Group, Boolean> entry : group.getInheritedGroups().entrySet())
 			setInheritedGroup(entry.getKey(), entry.getValue(), false);
-		}
 	}
 
 	private void inheritData() {
@@ -157,22 +154,15 @@ public class Group extends Permissible {
 			if (entry.getValue()) {
 				Group group = entry.getKey();
 				// inherit nodes
-				for (Map.Entry<String, Boolean> node : group.getInheritedPermissions().entrySet()) {
+				for (Map.Entry<String, Boolean> node : group.getInheritedPermissions().entrySet())
 					inheritedNodes.put(node.getKey(), node.getValue());
-				}
-
-				for (Map.Entry<String, Boolean> node : group.getPermissions().entrySet()) {
+				for (Map.Entry<String, Boolean> node : group.getPermissions().entrySet())
 					inheritedNodes.put(node.getKey(), node.getValue());
-				}
-
 				// inherit data
-				for (Map.Entry<String, DataValue> data : group.getInheritedMetadataMap().entrySet()) {
+				for (Map.Entry<String, DataValue> data : group.getInheritedMetadataMap().entrySet())
 					inheritedMetadata.put(data.getKey(), data.getValue());
-				}
-
-				for (Map.Entry<String, DataValue> data : group.getMetadataMap().entrySet()) {
+				for (Map.Entry<String, DataValue> data : group.getMetadataMap().entrySet())
 					inheritedMetadata.put(data.getKey(), data.getValue());
-				}
 			}
 		}
 	}

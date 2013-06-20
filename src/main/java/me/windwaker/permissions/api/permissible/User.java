@@ -70,22 +70,15 @@ public class User extends Permissible {
 
 	public void inherit(Group group) {
 		// inherit nodes
-		for (Map.Entry<String, Boolean> node : group.getInheritedPermissions().entrySet()) {
+		for (Map.Entry<String, Boolean> node : group.getInheritedPermissions().entrySet())
 			inheritedNodes.put(node.getKey(), node.getValue());
-		}
-
-		for (Map.Entry<String, Boolean> node : group.getPermissions().entrySet()) {
+		for (Map.Entry<String, Boolean> node : group.getPermissions().entrySet())
 			inheritedNodes.put(node.getKey(), node.getValue());
-		}
-
 		// inherit data
-		for (Map.Entry<String, DataValue> data : group.getInheritedMetadataMap().entrySet()) {
+		for (Map.Entry<String, DataValue> data : group.getInheritedMetadataMap().entrySet())
 			inheritedMetadata.put(data.getKey(), data.getValue());
-		}
-
-		for (Map.Entry<String, DataValue> data : group.getMetadataMap().entrySet()) {
+		for (Map.Entry<String, DataValue> data : group.getMetadataMap().entrySet())
 			inheritedMetadata.put(data.getKey(), data.getValue());
-		}
 	}
 
 	/**

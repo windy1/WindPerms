@@ -40,6 +40,8 @@ import org.spout.api.data.DataValue;
 import org.spout.api.exception.ConfigurationException;
 import org.spout.api.util.config.yaml.YamlConfiguration;
 
+import static org.spout.api.Spout.*;
+
 /**
  * Flat-file implementation of UserManager done in YAML.
  * @author Windwaker
@@ -62,9 +64,11 @@ public class YamlUserManager implements UserManager {
 	public void load() {
 		try {
 
+			debug("Loading user data...");
 			data.load();
 			data.setPathSeparator("/");
 			if (!data.getNode("users").isAttached()) {
+				debug("\tNo data found, adding defaults.");
 				addDefaults();
 			}
 
@@ -105,18 +109,26 @@ public class YamlUserManager implements UserManager {
 	}
 
 	private void loadPermissions(User user) {
+		debug("Loading permission nodes for user: " + user.getName());
 		String path = "users/" + user.getName();
 		Set<String> nodes = data.getNode(path + "/permissions").getKeys(false);
 		for (String node : nodes) {
-			user.setPermission(node, data.getNode(path + "/permissions/" + node).getBoolean());
+			boolean value = data.getNode(path + "/permissions/" + node).getBoolean();
+			debug("\tNode: " + node);
+			debug("\tValue: " + value);
+			user.setPermission(node, value);
 		}
 	}
 
 	private void loadData(User user) {
+		debug("Loading metadata for user: " + user.getName());
 		String path = "users/" + user.getName();
 		Set<String> nodes = data.getNode(path + "/metadata").getKeys(false);
 		for (String node : nodes) {
-			user.setMetadata(node, data.getNode(path + "/metadata/" + node).getValue());
+			Object value = data.getNode(path + "/metadata/" + node).getValue();
+			debug("\tKey: " + node);
+			debug("\tValue: " + value);
+			user.setMetadata(node, value);
 		}
 	}
 
@@ -154,18 +166,28 @@ public class YamlUserManager implements UserManager {
 	}
 
 	private void savePermissions(User user) {
+		debug("Saving permission nodes for user: " + user.getName());
 		String path = "users/" + user.getName();
 		Set<Map.Entry<String, Boolean>> perms = user.getPermissions().entrySet();
 		for (Map.Entry<String, Boolean> perm : perms) {
-			data.getNode(path + "/permissions/" + perm.getKey()).setValue(perm.getValue());
+			String node = perm.getKey();
+			boolean value = perm.getValue();
+			debug("\tNode: " + node);
+			debug("\tValue: " + value);
+			data.getNode(path + "/permissions/" + node).setValue(value);
 		}
 	}
 
 	private void saveData(User user) {
+		debug("Saving metadata for user: " + user.getName());
 		String path = "users/" + user.getName();
 		Set<Map.Entry<String, DataValue>> values = user.getMetadataMap().entrySet();
 		for (Map.Entry<String, DataValue> value : values) {
-			data.getNode(path + "/metadata/" + value.getKey()).setValue(value.getValue());
+			String key = value.getKey();
+			DataValue v = value.getValue();
+			debug("\tKey: " + key);
+			debug("\tValue: " + v);
+			data.getNode(path + "/metadata/" + key).setValue(v);
 		}
 	}
 

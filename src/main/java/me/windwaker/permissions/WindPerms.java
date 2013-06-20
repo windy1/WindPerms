@@ -47,6 +47,8 @@ import org.spout.api.exception.SpoutRuntimeException;
 import org.spout.api.plugin.Plugin;
 import org.spout.api.plugin.PluginDescriptionFile;
 
+import static org.spout.api.Spout.*;
+
 /**
  * Implementation of PermissionsPlugin
  * @author Windwaker
@@ -80,11 +82,9 @@ public class WindPerms extends Plugin {
 
 	private void loadPlayers() {
 		Engine engine = getEngine();
-		if (engine instanceof Server) {
-			userManager.clear();
-			for (Player player : ((Server) engine).getOnlinePlayers()) {
-				userManager.addUser(player.getName());
-			}
+		userManager.clear();
+		for (Player player : ((Server) engine).getOnlinePlayers()) {
+			userManager.addUser(player.getName());
 		}
 	}
 
@@ -135,7 +135,6 @@ public class WindPerms extends Plugin {
 	public void onReload() {
 		// Load data directly from disk
 		load();
-		getLogger().info("WindPerms " + getDescription().getVersion() + " reloaded.");
 	}
 
 	@Override
@@ -149,19 +148,18 @@ public class WindPerms extends Plugin {
 		// Register events
 		getEngine().getEventManager().registerEvents(handler, this);
 		registerCommands();
-		getLogger().info("WindPerms " + getDescription().getVersion() + " enabled.");
 	}
 
 	@Override
 	public void onDisable() {
 		// Save data
 		save();
-		getLogger().info("WindPerms " + getDescription().getVersion() + " disabled.");
 	}
 
 	@Override
 	public URI getUpdate() {
 		// create the URL
+		debug("Checking for update...");
 		PluginDescriptionFile pdf = getDescription();
 		String repoUrl = pdf.getData("repo-url");
 		String repoId = pdf.getData("repo-id");
@@ -174,7 +172,7 @@ public class WindPerms extends Plugin {
 				+ "&a=" + artifactId
 				+ "&v=" + updateVersion;
 
-		System.out.println("URL: "  + path);
+		debug("URL: " + path);
 
 		// check if there is a newer version
 		try {
@@ -184,22 +182,22 @@ public class WindPerms extends Plugin {
 
 			// make sure the url should redirect
 			int response = connection.getResponseCode();
-			System.out.println("Response: " + response);
+			debug("Connection responded with: " + response);
 			if (response != 301) return null;
 
 			// get the version from the suggested filename
 			String v = connection.getHeaderField("Location");
-			System.out.println("Location: " + v);
+			debug("Redirect URL: " + v);
 			v = v.substring(v.lastIndexOf('/')).split("-")[1];
-			System.out.println("Version: " + v);
+			debug("Latest version: " + v);
 			String curr = pdf.getVersion().split("-")[0];
-			System.out.println("Current version: " + curr);
+			debug("Current version: " + v);
 
 			// compare the suggested version with the current version
 			DefaultArtifactVersion newest = new DefaultArtifactVersion(v);
 			DefaultArtifactVersion current = new DefaultArtifactVersion(curr);
 			boolean available = newest.compareTo(current) > 0;
-			System.out.println("Newer version available: " + available);
+			debug("Newer version available: " + available);
 			return available ? uri : null;
 		} catch (URISyntaxException e) {
 			throw new SpoutRuntimeException("Error creating update URI.", e);
