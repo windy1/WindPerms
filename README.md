@@ -1,51 +1,44 @@
-WindPerms
-=========
+## WindPerms
 
-Download
---------
+### Download
 ![Status]
 
 [Latest Build] | [Recommended Build]
 
-About
------
+### About
 WindPerms is a plugin for the Spout platform that provides permissible actions between player's on a Spout server.
 Further details can been seen [here][Home].
 
 Copyright (c) 2012 Walker Crouse <http://windwaker.me/>
 
-Licensing
----------
+### Licensing
 WindPerms is licensed under the MIT license viewable in the [LICENSE.txt] file.
 The latest source can be seen on [GitHub].
 Download the [Latest Build] or the latest [Recommended Build] to get started.
 
-Installation
-------------
+### Installation
 Installation of WindPerms is simple, just place the WindPerms JAR file in the 'plugins' directory of your Spout server. All configuration files will be automatically generated with some defaults that you can edit as you please.
 
-Contact
--------
+### Operation
+A guide to operating WindPerms can be found [here][Wiki].
+
+### Contact
 I can be reached by the following methods.
 * Email me at walkercrouse@hotmail.com
 * Private message me on http://spout.org
 * Private message me on #spout on irc://irc.esper.net:55555
 
-Caveats
--------
+### Caveats
 All bugs should be reported [here][Issues].
 
-Changelog
----------
+### Changelog
 The projects history can be viewed in it's entirety [here][Commits].
 
-Donate
-------
+### Donate
 I put a lot of time and care into my projects to try and bring the community the best product I can, and I do it all for free! Donations are most definitely appreciated and I will be eternally grateful if you can spare a few dollars.
 If you do want to donate you can do so [here][Donate]. Thanks!
 
-For Developers
---------------
+### For Developers
 **NOTE:** It is absolutely unnecessary for your plugin to use WindPerms as a dependency. Think of WindPerms as the engine of SpoutAPI's permissions system. **The only library required is [SpoutAPI]**
 
 **Checking if someone/something has permission:**
@@ -89,3 +82,4 @@ Users inherit their data from their groups but is overridden by conflicting data
 [SpoutAPI]: https://github.com/SpoutDev/SpoutAPI
 [Issues]: https://github.com/W1ndwaker/WindPerms/issues
 [Commits]: https://github.com/W1ndwaker/WindPerms/commits/master
+[Wiki]: https://github.com/W1ndwaker/WindPerms/wiki
