@@ -7,7 +7,6 @@
 
 ### About
 WindPerms is a plugin for the Spout platform that provides permissible actions between player's on a Spout server.
-Further details can been seen [here][Home].
 
 Copyright (c) 2012 Walker Crouse <http://windwaker.me/>
 
@@ -80,7 +79,6 @@ Users inherit their data from their groups but is overridden by conflicting data
 [Jenkins Icon]: http://forums.spout.org/attachments/jenkins-png.1023/
 [Latest Build]: http://build.spout.org/job/WindPerms/lastSuccessfulBuild/
 [Recommended Build]: http://build.spout.org/job/WindPerms/Recommended/
-[Home]: http://forums.spout.org/threads/2004/
 [LICENSE.txt]: http://github.com/W1ndwaker/WindPerms/LICENSE.txt/
 [GitHub]: http://github.com/W1ndwaker/WindPerms/
 [Donate]: https://www.paypal.com/us/cgi-bin/webscr?cmd=_flow&SESSION=4TN0_fr0Gi-575SxsOoYeRENqYWhhKsx4GwKTY1SrhwQTXOFbAeTG1uQ_PG&dispatch=5885d80a13c0db1f8e263663d3faee8db02a037e263542f58098410815cf7df7
