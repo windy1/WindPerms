@@ -22,6 +22,11 @@ Installation of WindPerms is simple, just place the WindPerms JAR file in the 'p
 ### Operation
 A guide to operating WindPerms can be found [here][Wiki].
 
+### Compiling
+WindPerms uses Maven for handling it's dependencies.
+* [Install Maven][Maven].
+* Run `mvn` in the root directory of the project.
+
 ### Contact
 I can be reached by the following methods.
 * Email me at walkercrouse@hotmail.com
@@ -83,3 +88,4 @@ Users inherit their data from their groups but is overridden by conflicting data
 [Issues]: https://github.com/W1ndwaker/WindPerms/issues
 [Commits]: https://github.com/W1ndwaker/WindPerms/commits/master
 [Wiki]: https://github.com/W1ndwaker/WindPerms/wiki
+[Maven]: http://maven.apache.org/download.cgi
