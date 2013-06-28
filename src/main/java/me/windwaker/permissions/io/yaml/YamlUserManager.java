@@ -79,6 +79,7 @@ public class YamlUserManager implements UserManager {
 
 			// Load users
 			for (String name : names) {
+				debug("\tLoading user: " + name);
 				loadUser(name);
 			}
 
@@ -162,6 +163,7 @@ public class YamlUserManager implements UserManager {
 		group.addUser(u);
 		// Turn auto-save back on and add user.
 		u.setAutoSave(true);
+		debug("\tLoaded " + u.getName());
 		users.add(u);
 	}
 
@@ -221,7 +223,7 @@ public class YamlUserManager implements UserManager {
 	@Override
 	public User getUser(String name) {
 		for (User user : users) {
-			if (user.getName().equals(name)) {
+			if (user.getName().equalsIgnoreCase(name)) {
 				return user;
 			}
 		}

@@ -82,7 +82,6 @@ public class WindPerms extends Plugin {
 
 	private void loadPlayers() {
 		Engine engine = getEngine();
-		userManager.clear();
 		for (Player player : ((Server) engine).getOnlinePlayers()) {
 			userManager.addUser(player.getName());
 		}
