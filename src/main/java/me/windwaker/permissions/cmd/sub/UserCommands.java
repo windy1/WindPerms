@@ -23,10 +23,10 @@
 package me.windwaker.permissions.cmd.sub;
 
 import me.windwaker.permissions.WindPerms;
-import me.windwaker.permissions.api.GroupManager;
-import me.windwaker.permissions.api.UserManager;
-import me.windwaker.permissions.api.permissible.Group;
-import me.windwaker.permissions.api.permissible.User;
+import me.windwaker.permissions.io.GroupManager;
+import me.windwaker.permissions.io.UserManager;
+import me.windwaker.permissions.permissible.Group;
+import me.windwaker.permissions.permissible.User;
 import org.spout.api.command.CommandArguments;
 import org.spout.api.command.CommandSource;
 import org.spout.api.command.annotated.Command;

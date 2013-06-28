@@ -24,8 +24,8 @@ package me.windwaker.permissions.io.sql;
 
 import java.util.Set;
 
-import me.windwaker.permissions.api.GroupManager;
-import me.windwaker.permissions.api.permissible.Group;
+import me.windwaker.permissions.io.GroupManager;
+import me.windwaker.permissions.permissible.Group;
 
 /*
  *            ------------------------------

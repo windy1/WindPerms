@@ -20,7 +20,7 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package me.windwaker.permissions.api.permissible;
+package me.windwaker.permissions.permissible;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -28,7 +28,7 @@ import java.util.Map;
 import java.util.Set;
 
 import me.windwaker.permissions.WindPerms;
-import me.windwaker.permissions.api.GroupManager;
+import me.windwaker.permissions.io.GroupManager;
 
 import org.spout.api.data.DataValue;
 

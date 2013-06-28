@@ -25,8 +25,6 @@ package me.windwaker.permissions.io;
 import java.io.File;
 
 import me.windwaker.permissions.WindPerms;
-import me.windwaker.permissions.api.GroupManager;
-import me.windwaker.permissions.api.UserManager;
 import me.windwaker.permissions.io.sql.SqlGroupManager;
 import me.windwaker.permissions.io.sql.SqlUserManager;
 import me.windwaker.permissions.io.yaml.YamlGroupManager;
@@ -43,7 +41,7 @@ import org.spout.api.util.config.yaml.YamlConfiguration;
  */
 public class Settings extends ConfigurationHolderConfiguration {
 	/**
-	 * Whether to use the wildcard node ('*') for giving {@link me.windwaker.permissions.api.permissible.Group}s or {@link me.windwaker.permissions.api.permissible.User}s all permissions.
+	 * Whether to use the wildcard node ('*') for giving {@link me.windwaker.permissions.permissible.Group}s or {@link me.windwaker.permissions.permissible.User}s all permissions.
 	 */
 	public static final ConfigurationHolder WILDCARD_ENABLED = new ConfigurationHolder(true, "wildcard-enabled");
 	/**

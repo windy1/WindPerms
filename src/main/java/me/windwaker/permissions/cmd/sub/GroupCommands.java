@@ -23,14 +23,13 @@
 package me.windwaker.permissions.cmd.sub;
 
 import me.windwaker.permissions.WindPerms;
-import me.windwaker.permissions.api.GroupManager;
-import me.windwaker.permissions.api.permissible.Group;
+import me.windwaker.permissions.io.GroupManager;
+import me.windwaker.permissions.permissible.Group;
 
 import org.spout.api.command.CommandArguments;
 import org.spout.api.command.CommandSource;
 import org.spout.api.command.annotated.Command;
 import org.spout.api.command.annotated.Permissible;
-import org.spout.api.data.DataValue;
 import org.spout.api.exception.CommandException;
 
 import static me.windwaker.permissions.cmd.CommandUtil.*;

@@ -28,8 +28,8 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import me.windwaker.permissions.api.GroupManager;
-import me.windwaker.permissions.api.UserManager;
+import me.windwaker.permissions.io.GroupManager;
+import me.windwaker.permissions.io.UserManager;
 import me.windwaker.permissions.cmd.sub.GroupCommands;
 import me.windwaker.permissions.cmd.sub.PermissionsCommands;
 import me.windwaker.permissions.cmd.sub.UserCommands;

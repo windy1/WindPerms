@@ -20,66 +20,84 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package me.windwaker.permissions.api;
+package me.windwaker.permissions.io;
 
 import java.util.Set;
 
-import me.windwaker.permissions.api.permissible.User;
+import me.windwaker.permissions.permissible.Group;
 
 /**
- * Utility class for user management.
+ * Utility class for group management.
  * @author Windwaker
  */
-public interface UserManager {
+public interface GroupManager {
 	/**
-	 * Loads all user data.
+	 * Loads all group data
 	 */
 	public void load();
 
 	/**
-	 * Saves all user data.
+	 * Saves all group data
 	 */
 	public void save();
 
 	/**
-	 * Adds a user
-	 * @param username
-	 */
-	public void addUser(String username);
-
-	/**
-	 * Removes a user
-	 * @param username
-	 */
-	public void removeUser(String username);
-
-	/**
-	 * Saves a user from said name
-	 * @param user
-	 */
-	public void saveUser(User user);
-
-	/**
-	 * Load a user from disk.
-	 * @param user
-	 */
-	public void loadUser(String user);
-
-	/**
-	 * Gets a user from said name
+	 * Adds a group
 	 * @param name
-	 * @return user
 	 */
-	public User getUser(String name);
+	public void addGroup(String name);
 
 	/**
-	 * Gets all defined users.
-	 * @return all users.
+	 * Removes a group
+	 * @param name
 	 */
-	public Set<User> getUsers();
+	public void removeGroup(String name);
 
 	/**
-	 * Clears all users.
+	 * Saves a group from said name
+	 * @param group
+	 */
+	public void saveGroup(Group group);
+
+	/**
+	 * Loads a group from disk.
+	 * @param group
+	 */
+	public void loadGroup(String group);
+
+	/**
+	 * Gets the default group.
+	 * @return
+	 */
+	public Group getDefaultGroup();
+
+	/**
+	 * Sets the default group.
+	 *
+	 * @param group to set
+	 */
+	public void setDefaultGroup(Group group);
+
+	/**
+	 * Gets a group from said name
+	 * @param name
+	 * @return group
+	 */
+	public Group getGroup(String name);
+
+	/**
+	 * Gets all defined groups.
+	 * @return all groups.
+	 */
+	public Set<Group> getGroups();
+
+	/**
+	 * Reloads the inheritance ladder
+	 */
+	public void reloadInheritance();
+
+	/**
+	 * Clears all groups.
 	 */
 	public void clear();
 }

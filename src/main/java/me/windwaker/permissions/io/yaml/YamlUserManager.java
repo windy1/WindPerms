@@ -29,10 +29,10 @@ import java.util.Map;
 import java.util.Set;
 
 import me.windwaker.permissions.WindPerms;
-import me.windwaker.permissions.api.GroupManager;
-import me.windwaker.permissions.api.UserManager;
-import me.windwaker.permissions.api.permissible.Group;
-import me.windwaker.permissions.api.permissible.User;
+import me.windwaker.permissions.io.GroupManager;
+import me.windwaker.permissions.io.UserManager;
+import me.windwaker.permissions.permissible.Group;
+import me.windwaker.permissions.permissible.User;
 import org.apache.commons.io.FileUtils;
 
 import org.spout.api.Spout;

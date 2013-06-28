@@ -24,11 +24,11 @@ package me.windwaker.permissions;
 
 import java.util.logging.Logger;
 
-import me.windwaker.permissions.api.GroupManager;
-import me.windwaker.permissions.api.UserManager;
-import me.windwaker.permissions.api.permissible.Group;
-import me.windwaker.permissions.api.permissible.Permissible;
-import me.windwaker.permissions.api.permissible.User;
+import me.windwaker.permissions.io.GroupManager;
+import me.windwaker.permissions.io.UserManager;
+import me.windwaker.permissions.permissible.Group;
+import me.windwaker.permissions.permissible.Permissible;
+import me.windwaker.permissions.permissible.User;
 import me.windwaker.permissions.io.Settings;
 
 import org.spout.api.data.DataValue;
