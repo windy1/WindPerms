@@ -1,5 +1,7 @@
 ## WindPerms
 
+### NOTE: WindPerms is no longer being actively developed / maintained.
+
 ### Download
 ![Status]
 
